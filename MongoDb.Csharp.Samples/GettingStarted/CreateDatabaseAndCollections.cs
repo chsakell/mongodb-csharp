@@ -68,12 +68,17 @@ namespace MongoDb.Csharp.Samples.GettingStarted
         private void CollectionOperations()
         {
             var usersDatabase = Client.GetDatabase(Databases.Persons);
+
+            #region Typed classes commands
+
             var personsTypedCollection = usersDatabase.GetCollection<AppPerson>("users");
-            
-            // insert some persons in the collection - this will also create the database on the fly
 
             AppPerson typedUser = RandomData.GeneratePerson();
             personsTypedCollection.InsertOne(typedUser);
+
+            #endregion
+
+            #region BsonDocument commands
 
             var personsBsonCollection = usersDatabase.GetCollection<BsonDocument>("users");
             var bsonUser = BsonDocument.Parse(@"{
@@ -103,6 +108,41 @@ namespace MongoDb.Csharp.Samples.GettingStarted
              }");
 
             personsBsonCollection.InsertOne(bsonUser);
+
+            #endregion
+
+            #region Shell commands
+
+            /*
+            use Persons
+            db.users.insertOne({
+                'firstName': 'Lee',
+                'lastName': 'Brown',
+                'userName': 'Lee_Brown3',
+                'avatar': 'https://s3.amazonaws.com/uifaces/faces/twitter/ccinojasso1/128.jpg',
+                'email': 'Lee_Brown369@yahoo.com',
+                'dateOfBirth': '1984-01-16T21:31:27.87666',
+                'address': {
+                    'street': '2552 Bernard Rapid',
+                    'suite': 'Suite 199',
+                    'city': 'New Haskell side',
+                    'zipCode': '78425-0411',
+                    'geo': {
+                        'lat': -35.8154,
+                        'lng': -140.2044
+                    }
+                },
+                'phone': '1-500-790-8836 x5069',
+                'website': 'javier.biz',
+                'company': {
+                    'name': 'Kuphal and Sons',
+                    'catchPhrase': 'Organic even-keeled monitoring',
+                    'ns': 'open-source brand e-business'
+                }
+            })
+            */
+
+            #endregion
         }
     }
 }
