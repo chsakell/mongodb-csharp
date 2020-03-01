@@ -1,8 +1,9 @@
-‌# Summary​
+# Table of contents
 
-## Use headings to create page groups like this one​
+* [Introduction](README.md)
 
-* [Welcome](getting-started/welcome.md)    
-    * [About the docs](getting-started/about.md)    
-    * [How to contribute](getting-started/contribute.md)
-    
+## 📌Getting started
+
+* [Environment setup](getting-started/environment-setup.md)
+* [Repository samples](getting-started/repository-samples.md)
+
