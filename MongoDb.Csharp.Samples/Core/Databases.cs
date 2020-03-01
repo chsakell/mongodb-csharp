@@ -6,6 +6,6 @@ namespace MongoDb.Csharp.Samples.Core
 {
     public class Databases
     {
-        public const string Users = "Users";
+        public const string Persons = "Persons";
     }
 }

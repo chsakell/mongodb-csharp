@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDb.Csharp.Samples.Core;
+using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 
 namespace MongoDb.Csharp.Samples
@@ -11,6 +13,8 @@ namespace MongoDb.Csharp.Samples
         
         static void Main(string[] args)
         {
+            RegisterClasses();
+
             var samples  = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(t => typeof(IRunnableSample).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
@@ -25,6 +29,11 @@ namespace MongoDb.Csharp.Samples
             }
 
             Console.ReadKey();
+        }
+
+        static void RegisterClasses()
+        {
+            BsonClassMap.RegisterClassMap<AppPerson>();
         }
     }
 }
