@@ -1,80 +1,46 @@
 ﻿using System.Linq;
-using Bogus;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 using Utils = MongoDb.Csharp.Samples.Core.Utils;
 
-namespace MongoDb.Csharp.Samples.GettingStarted
+namespace MongoDb.Csharp.Samples.Basics
 {
-    public class CreateDatabaseAndCollections : RunnableSample, IRunnableSample
+    public class Collections : RunnableSample, IRunnableSample
     {
         public bool Enabled => true;
-        protected override Core.Samples Sample => Core.Samples.CreateDatabaseAndCollections;
+        protected override Core.Samples Sample => Core.Samples.Basic_Collections;
         protected override void Init()
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Databases.Persons);
+            Utils.DropDatabase(Client, Core.Databases.Persons);
         }
 
-        public void Run()
+        public async Task Run()
         {
-            DatabaseOperations();
-            CollectionOperations();
+            await CollectionOperations();
         }
-
-        private void DatabaseOperations()
+        private async Task CollectionOperations()
         {
-            // Lists the databases on the server
-            // Default schema for each db: {"name":"admin","sizeOnDisk":40960.0,"empty":false}
-
-            var databases = Client.ListDatabases();
-
-            // iterate databases
-            // Throws System.ObjectDisposedException: 'Cannot access a disposed object if ToList() or .Any() has been used
-            // databases.ToList() returns a list containing all the documents returned by a cursor
-            // databases.Any() determines whether the cursor contains any documents
-            while (databases.MoveNext())
-            {
-                var currentBatch = databases.Current;
-                Utils.Log(currentBatch.AsEnumerable());
-            }
-
-            var adminDatabase = Client.ListDatabases(new ListDatabasesOptions
-            {
-                Filter = Builders<BsonDocument>.Filter.Eq("name", "admin"),
-                NameOnly = true
-            }).FirstOrDefault();
-            Utils.Log(adminDatabase);
-
-            // Returns the names of the databases on the server.
-            var databaseNames = Client.ListDatabaseNames().ToList();
-
-            // Shell commands
-            // show dbs | show databases
-
-            // Gets a database
-            IMongoDatabase adminDb = Client.GetDatabase("admin");
-
-            // Check if database exists
-            var dbNameFilter = Builders<BsonDocument>.Filter.Eq("name", "fictionDb");
-            var fictionDbExists = Client
-                                      .ListDatabases(new ListDatabasesOptions() { Filter = dbNameFilter })
-                                      .FirstOrDefault() != null;
-        }
-
-        private void CollectionOperations()
-        {
-            var usersDatabase = Client.GetDatabase(Databases.Persons);
+            var usersDatabase = Client.GetDatabase(Core.Databases.Persons);
 
             #region Typed classes commands
 
+            // Will create the users collection on the fly if it doesn't exists
             var personsTypedCollection = usersDatabase.GetCollection<AppPerson>("users");
 
             AppPerson typedUser = RandomData.GeneratePerson();
-            personsTypedCollection.InsertOne(typedUser);
+            await personsTypedCollection.InsertOneAsync(typedUser);
+
+            // Create another collection
+            await usersDatabase.CreateCollectionAsync("logins");
+
+            // list collections
+            var collections = (await usersDatabase.ListCollectionsAsync()).ToList();
+            Utils.Log(collections, "List Collections");
 
             #endregion
 
@@ -107,7 +73,7 @@ namespace MongoDb.Csharp.Samples.GettingStarted
                 }
              }");
 
-            personsBsonCollection.InsertOne(bsonUser);
+            await personsBsonCollection.InsertOneAsync(bsonUser);
 
             #endregion
 

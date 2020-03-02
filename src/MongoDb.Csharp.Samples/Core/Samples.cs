@@ -2,6 +2,7 @@
 {
     public enum Samples
     {
-        CreateDatabaseAndCollections
+        Basic_Databases,
+        Basic_Collections
     }
 }

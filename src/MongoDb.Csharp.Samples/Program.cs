@@ -1,34 +1,49 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
-using MongoDB.Bson;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson.Serialization;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
-using MongoDB.Driver;
 
 namespace MongoDb.Csharp.Samples
 {
     class Program
     {
         
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            RegisterClasses();
+            var services = new ServiceCollection();
+            ConfigureServices(services);
 
-            var samples  = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(t => typeof(IRunnableSample).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
-
-            foreach (var sample in samples)
+            await using (var serviceProvider = services.BuildServiceProvider())
             {
-                var instance = (IRunnableSample)Activator.CreateInstance(sample);
-                if (instance != null && instance.Enabled)
+                RegisterClasses();
+
+                var samples = AppDomain.CurrentDomain.GetAssemblies()
+                    .SelectMany(s => s.GetTypes())
+                    .Where(t => typeof(IRunnableSample).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+
+                foreach (var sample in samples)
                 {
-                    instance.Run();
+                    var instance = (IRunnableSample)Activator.CreateInstance(sample);
+                    if (instance != null && instance.Enabled)
+                    {
+                        await instance.Run();
+                    }
                 }
             }
+            
 
             Console.ReadKey();
+        }
+
+        static void ConfigureServices(ServiceCollection services)
+        {
+            
         }
 
         static void RegisterClasses()
