@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
 
@@ -21,6 +19,7 @@ namespace MongoDb.Csharp.Samples
 
             await using (var serviceProvider = services.BuildServiceProvider())
             {
+                SetCamelCaseConventionPack();
                 RegisterClasses();
 
                 var samples = AppDomain.CurrentDomain.GetAssemblies()
@@ -44,6 +43,12 @@ namespace MongoDb.Csharp.Samples
         static void ConfigureServices(ServiceCollection services)
         {
             
+        }
+
+        static void SetCamelCaseConventionPack()
+        {
+            var pack = new ConventionPack {new CamelCaseElementNameConvention()};
+            ConventionRegistry.Register("camel case", pack, t => true);
         }
 
         static void RegisterClasses()
