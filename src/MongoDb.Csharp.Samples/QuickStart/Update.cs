@@ -6,7 +6,7 @@ using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 using Utils = MongoDb.Csharp.Samples.Core.Utils;
 
-namespace MongoDb.Csharp.Samples.Basics
+namespace MongoDb.Csharp.Samples.QuickStart
 {
     public class Update : RunnableSample, IRunnableSample
     {
@@ -85,7 +85,7 @@ namespace MongoDb.Csharp.Samples.Basics
             var bsonPersonCollection = usersDatabase.GetCollection<BsonDocument>("users");
             // Find a person using a class filter
             var bsonSingleFilter = Builders<BsonDocument>.Filter.Eq("_id", appPerson.Id);
-            var bsonUpdate = Builders<BsonDocument>.Update.Set("phone", "");
+            var bsonUpdate = Builders<BsonDocument>.Update.Set("phone", "123-456-678");
             var bsonPersonUpdateResult = await bsonPersonCollection.UpdateOneAsync(bsonSingleFilter, bsonUpdate);
             if (bsonPersonUpdateResult.MatchedCount == 1)
             {
@@ -99,14 +99,15 @@ namespace MongoDb.Csharp.Samples.Basics
             /*
             use Persons
 
-            // find a single document
+            // update a single document
+            db.users.updateOne({}, { $set: {  phone: "123-456-678" } })
 
+            // update multiple documents
+            db.users.updateMany(
+                { $and: [{ salary: { $gt: 1200} }, {salary: { $lt: 3500} }] },
+                { $set: { salary: 4000  } }
+            )
 
-            // find multiple documents
-            db.users.find(
-            {
-                $and: [{ salary: { $gt: 1200} }, {salary: { $lt: 3500} }]
-            })
              */
 
             #endregion

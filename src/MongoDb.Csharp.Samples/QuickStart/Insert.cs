@@ -6,7 +6,7 @@ using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 using Utils = MongoDb.Csharp.Samples.Core.Utils;
 
-namespace MongoDb.Csharp.Samples.Basics
+namespace MongoDb.Csharp.Samples.QuickStart
 {
     public class Insert : RunnableSample, IRunnableSample
     {

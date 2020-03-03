@@ -2,11 +2,10 @@
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
-using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 using Utils = MongoDb.Csharp.Samples.Core.Utils;
 
-namespace MongoDb.Csharp.Samples.Basics
+namespace MongoDb.Csharp.Samples.QuickStart
 {
     public class Databases : RunnableSample, IRunnableSample
     {
