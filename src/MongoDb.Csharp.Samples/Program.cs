@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
 
@@ -21,6 +23,7 @@ namespace MongoDb.Csharp.Samples
             {
                 SetCamelCaseConventionPack();
                 RegisterClasses();
+                RegisterSerializers();
 
                 var samples = AppDomain.CurrentDomain.GetAssemblies()
                     .SelectMany(s => s.GetTypes())
@@ -54,6 +57,13 @@ namespace MongoDb.Csharp.Samples
         static void RegisterClasses()
         {
             BsonClassMap.RegisterClassMap<AppPerson>();
+        }
+
+        static void RegisterSerializers()
+        {
+            BsonSerializer.RegisterSerializer(typeof(decimal), new DecimalSerializer(BsonType.Decimal128));
+            BsonSerializer.RegisterSerializer(typeof(decimal?),
+                new NullableSerializer<decimal>(new DecimalSerializer(BsonType.Decimal128)));
         }
     }
 }

@@ -70,7 +70,7 @@ namespace MongoDb.Csharp.Samples.Basics
             var bsonPersonCollection = usersDatabase.GetCollection<BsonDocument>("users");
             var bsonPersonInserted = await bsonPersonCollection.Find(bsonSingleFilter).FirstOrDefaultAsync();
             bsonPersonInserted = await bsonPersonCollection.Find(new BsonDocument("_id", personInserted.Id)).FirstOrDefaultAsync();
-
+            Utils.Log(bsonPersonInserted);
             #endregion
 
             #region Shell commands

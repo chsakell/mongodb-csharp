@@ -26,7 +26,8 @@ namespace MongoDb.Csharp.Samples.Core
                     Name = f.Company.CompanyName(new int?()),
                     CatchPhrase = f.Company.CatchPhrase(),
                     Bs = f.Company.Bs()
-                });
+                })
+                .RuleFor(u => u.Salary, (f,u) => f.Finance.Amount(1000, 5000));
 
             return person.Generate();
         }
