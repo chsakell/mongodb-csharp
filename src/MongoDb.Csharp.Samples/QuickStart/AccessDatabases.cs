@@ -7,10 +7,10 @@ using Utils = MongoDb.Csharp.Samples.Core.Utils;
 
 namespace MongoDb.Csharp.Samples.QuickStart
 {
-    public class Databases : RunnableSample, IRunnableSample
+    public class AccessDatabases : RunnableSample, IRunnableSample
     {
         public bool Enabled => true;
-        protected override Core.Samples Sample => Core.Samples.Basic_Databases;
+        protected override Core.Samples Sample => Core.Samples.QuickStart_AccessDatabases;
         protected override void Init()
         {
             // Create a mongodb client

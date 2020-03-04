@@ -8,10 +8,10 @@ using Utils = MongoDb.Csharp.Samples.Core.Utils;
 
 namespace MongoDb.Csharp.Samples.QuickStart
 {
-    public class Insert : RunnableSample, IRunnableSample
+    public class InsertDocuments : RunnableSample, IRunnableSample
     {
         public bool Enabled => true;
-        protected override Core.Samples Sample => Core.Samples.Basic_Insert;
+        protected override Core.Samples Sample => Core.Samples.QuickStart_InsertDocuments;
         protected override void Init()
         {
             // Create a mongodb client

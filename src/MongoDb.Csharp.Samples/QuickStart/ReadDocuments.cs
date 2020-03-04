@@ -8,10 +8,10 @@ using Utils = MongoDb.Csharp.Samples.Core.Utils;
 
 namespace MongoDb.Csharp.Samples.QuickStart
 {
-    public class Read : RunnableSample, IRunnableSample
+    public class ReadDocuments : RunnableSample, IRunnableSample
     {
         public bool Enabled => true;
-        protected override Core.Samples Sample => Core.Samples.Basic_Read;
+        protected override Core.Samples Sample => Core.Samples.QuickStart_ReadDocuments;
         protected override void Init()
         {
             // Create a mongodb client
