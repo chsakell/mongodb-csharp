@@ -1,12 +1,13 @@
-﻿namespace MongoDb.Csharp.Samples.Core
+﻿// ReSharper disable InconsistentNaming
+namespace MongoDb.Csharp.Samples.Core
 {
     public enum Samples
     {
-        Basic_Databases,
-        Basic_Collections,
-        Basic_Insert,
-        Basic_Read,
-        Basic_Update,
-        Basic_Delete,
+        QuickStart_AccessDatabases,
+        QuickStart_AccessCollections,
+        QuickStart_InsertDocuments,
+        QuickStart_ReadDocuments,
+        QuickStart_UpdateDocuments,
+        QuickStart_DeleteDocuments,
     }
 }
