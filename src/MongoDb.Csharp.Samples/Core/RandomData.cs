@@ -7,9 +7,9 @@ namespace MongoDb.Csharp.Samples.Core
 {
     public class RandomData
     {
-        public static AppPerson GeneratePerson(string locale = "en")
+        public static User GeneratePerson(string locale = "en")
         {
-            var person = new Faker<AppPerson>(locale)
+            var person = new Faker<User>(locale)
                 .RuleFor(u => u.Gender, f => f.PickRandom<Gender>())
                 .RuleFor(u => u.FirstName, (f, u) => 
                     f.Name.FirstName(u.Gender.MapToLibGender()))
@@ -21,7 +21,7 @@ namespace MongoDb.Csharp.Samples.Core
                 .RuleFor(u => u.Phone, f => f.Phone.PhoneNumber())
                 .RuleFor(u => u.Website, f => f.Internet.DomainName())
                 .RuleFor(u => u.Address, f => GenerateCardAddress(locale))
-                .RuleFor(u => u.Company, (f, u) => new AppCardCompany()
+                .RuleFor(u => u.Company, (f, u) => new CompanyCard()
                 {
                     Name = f.Company.CompanyName(new int?()),
                     CatchPhrase = f.Company.CatchPhrase(),
@@ -32,15 +32,15 @@ namespace MongoDb.Csharp.Samples.Core
             return person.Generate();
         }
 
-        public static AppCardAddress GenerateCardAddress(string locale = "en")
+        public static AddressCard GenerateCardAddress(string locale = "en")
         {
-            var cardAddress = new Faker<AppCardAddress>(locale)
+            var cardAddress = new Faker<AddressCard>(locale)
                 .RuleFor(a => a.Street, (f, u) => f.Address.StreetAddress())
                 .RuleFor(a => a.Suite, (f, u) => f.Address.SecondaryAddress())
                 .RuleFor(a => a.City, (f, u) => f.Address.City())
                 .RuleFor(a => a.State, (f, u) => f.Address.State())
                 .RuleFor(a => a.ZipCode, (f, u) => f.Address.ZipCode())
-                .RuleFor(a => a.Geo, (f, u) => new AppCardAddress.AppCardGeo()
+                .RuleFor(a => a.Geo, (f, u) => new AddressCard.AppCardGeo()
                 {
                     Lat = f.Address.Latitude(-90.0, 90.0),
                     Lng = f.Address.Longitude(-180.0, 180.0)

@@ -30,14 +30,14 @@ namespace MongoDb.Csharp.Samples.QuickStart
             #region Typed classes commands
 
             // Will create the users collection on the fly if it doesn't exists
-            var personsCollection = usersDatabase.GetCollection<AppPerson>("users");
+            var personsCollection = usersDatabase.GetCollection<User>("users");
 
-            AppPerson appPerson = RandomData.GeneratePerson();
+            User appPerson = RandomData.GeneratePerson();
             // Insert one document
             await personsCollection.InsertOneAsync(appPerson);
 
             // Insert multiple documents
-            var persons = new List<AppPerson>();
+            var persons = new List<User>();
             for (int i = 0; i < 10; i++)
             {
                 persons.Add(RandomData.GeneratePerson());

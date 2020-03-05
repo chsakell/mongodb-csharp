@@ -30,15 +30,15 @@ namespace MongoDb.Csharp.Samples.QuickStart
             #region Prepare data
 
             // Will create the users collection on the fly if it doesn't exists
-            var personsCollection = usersDatabase.GetCollection<AppPerson>("users");
+            var personsCollection = usersDatabase.GetCollection<User>("users");
 
-            AppPerson appPerson = RandomData.GeneratePerson();
+            User appPerson = RandomData.GeneratePerson();
             // Insert one document
             await personsCollection.InsertOneAsync(appPerson);
 
 
             // Insert multiple documents
-            var persons = new List<AppPerson>();
+            var persons = new List<User>();
             for (int i = 0; i < 30; i++)
             {
                 persons.Add(RandomData.GeneratePerson());
@@ -50,13 +50,13 @@ namespace MongoDb.Csharp.Samples.QuickStart
             #region Typed classes commands
 
             // Find a person using a class filter
-            var classSingleFilter = Builders<AppPerson>.Filter.Eq(person => person.Id, appPerson.Id);
+            var classSingleFilter = Builders<User>.Filter.Eq(person => person.Id, appPerson.Id);
             var personInserted = await personsCollection.Find(classSingleFilter).FirstOrDefaultAsync();
             Utils.Log(personInserted.ToBsonDocument(), "Document Find with filter");
 
             // Find multiple documents using a filter
 
-            var classFemaleGenderFilter = Builders<AppPerson>.Filter.Eq(person => person.Gender, Gender.Female);
+            var classFemaleGenderFilter = Builders<User>.Filter.Eq(person => person.Gender, Gender.Female);
             var females = await personsCollection.Find(classFemaleGenderFilter).ToListAsync();
             Utils.Log($"Found {females.Count} female persons");
 

@@ -56,7 +56,7 @@ namespace MongoDb.Csharp.Samples
 
         static void RegisterClasses()
         {
-            BsonClassMap.RegisterClassMap<AppPerson>();
+            BsonClassMap.RegisterClassMap<User>();
         }
 
         static void RegisterSerializers()

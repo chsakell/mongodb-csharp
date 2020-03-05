@@ -1,6 +1,6 @@
 ﻿namespace MongoDb.Csharp.Samples.Models
 {
-    public class AppCardCompany
+    public class CompanyCard
     {
         public string Name { get; set; }
         public string CatchPhrase { get; set; }

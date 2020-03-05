@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace MongoDb.Csharp.Samples.Models
 {
-    public class AppPerson
+    public class User
     {
         [BsonId]
         public ObjectId Id { get; set; }
@@ -16,10 +16,10 @@ namespace MongoDb.Csharp.Samples.Models
         public string Avatar {get; set; }
         public string Email {get; set; }
         public DateTime DateOfBirth {get; set; }
-        public AppCardAddress Address {get; set; }
+        public AddressCard Address {get; set; }
         public string Phone {get; set; }
         public string Website {get; set; }
-        public AppCardCompany Company {get; set; }
+        public CompanyCard Company {get; set; }
         public decimal Salary { get; set; }
     }
 }

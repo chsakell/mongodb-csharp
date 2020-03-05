@@ -31,15 +31,15 @@ namespace MongoDb.Csharp.Samples.QuickStart
             #region Prepare data
 
             // Will create the users collection on the fly if it doesn't exists
-            var personsCollection = usersDatabase.GetCollection<AppPerson>("users");
+            var personsCollection = usersDatabase.GetCollection<User>("users");
 
-            AppPerson appPerson = RandomData.GeneratePerson();
+            User appPerson = RandomData.GeneratePerson();
             // Insert one document
             await personsCollection.InsertOneAsync(appPerson);
 
 
             // Insert multiple documents
-            var persons = new List<AppPerson>();
+            var persons = new List<User>();
             for (int i = 0; i < 30; i++)
             {
                 persons.Add(RandomData.GeneratePerson());
@@ -51,7 +51,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
             #region Typed classes commands
 
             // Find a person using a class filter
-            var filter = Builders<AppPerson>.Filter.Eq(person => person.Id, appPerson.Id);
+            var filter = Builders<User>.Filter.Eq(person => person.Id, appPerson.Id);
 
             // delete person
             var personDeleteResult = await personsCollection.DeleteOneAsync(filter);
@@ -62,10 +62,10 @@ namespace MongoDb.Csharp.Samples.QuickStart
 
             // Find multiple documents having 1200 < salary < 3500 
 
-            var salaryFilter = Builders<AppPerson>.Filter
+            var salaryFilter = Builders<User>.Filter
                 .And(
-                    Builders<AppPerson>.Filter.Gt(person => person.Salary, 1200),
-                    Builders<AppPerson>.Filter.Lt(person => person.Salary, 3500)
+                    Builders<User>.Filter.Gt(person => person.Salary, 1200),
+                    Builders<User>.Filter.Lt(person => person.Salary, 3500)
                     );
 
             var totalPersons = await personsCollection.Find(salaryFilter).CountDocumentsAsync();
