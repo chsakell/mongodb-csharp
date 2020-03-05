@@ -23,8 +23,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
         {
             await DeleteOperations();
         }
-        private async Task DeleteOperations
-            ()
+        private async Task DeleteOperations()
         {
             var usersDatabase = Client.GetDatabase(Core.Databases.Persons);
 
@@ -57,7 +56,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
             var personDeleteResult = await personsCollection.DeleteOneAsync(filter);
             if (personDeleteResult.DeletedCount == 1)
             {
-                Utils.Log( $"Document {appPerson.Id} deleted");
+                Utils.Log($"Document {appPerson.Id} deleted");
             }
 
             // Find multiple documents having 1200 < salary < 3500 
@@ -83,7 +82,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
             var bsonPersonCollection = usersDatabase.GetCollection<BsonDocument>("users");
             // Find a person using a class filter
             var bsonSingleFilter = Builders<BsonDocument>.Filter.Gt("salary", 2000);
-            
+
             var bsonPersonDeleteResult = await bsonPersonCollection.DeleteOneAsync(bsonSingleFilter);
             if (bsonPersonDeleteResult.DeletedCount == 1)
             {
