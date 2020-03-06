@@ -76,7 +76,7 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 
                 await sportsCollection.InsertManyAsync(sportsToAddWithRollback, 
                     new InsertManyOptions
-                    {
+                    { 
                         IsOrdered = false
                     });
             }
