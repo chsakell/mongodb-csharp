@@ -16,6 +16,10 @@
 
 ## 📝Deep dive in CRUD <a id="crud"></a>
 
-* [Read operations](read-operations/README.md)
-  * [Creating documents](read-operations/creating-documents.md)
+* [Create](create/README.md)
+  * [Ordered insert](create/ordered-insert.md)
+  * [Write concern](create/write-concern.md)
+* [Read](read.md)
+* [Update](update.md)
+* [Delete](delete.md)
 
