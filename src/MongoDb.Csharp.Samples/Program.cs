@@ -34,7 +34,15 @@ namespace MongoDb.Csharp.Samples
                     var instance = (IRunnableSample)Activator.CreateInstance(sample);
                     if (instance != null && instance.Enabled)
                     {
-                        await instance.Run();
+                        try
+                        {
+                            await instance.Run();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
+                        
                     }
                 }
             }
