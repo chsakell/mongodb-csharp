@@ -17,7 +17,8 @@ namespace MongoDb.Csharp.Samples.Core
         #region CRUD
 
         Crud_Insert_Ordered,
-        Crud_Write_Concern
+        Crud_Write_Concern,
+        Crud_Finding_Documents    
 
         #endregion
     }

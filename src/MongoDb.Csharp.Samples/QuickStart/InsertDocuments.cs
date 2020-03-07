@@ -107,7 +107,8 @@ namespace MongoDb.Csharp.Samples.QuickStart
                     'name': 'Kuphal and Sons',
                     'catchPhrase': 'Organic even-keeled monitoring',
                     'ns': 'open-source brand e-business'
-                }
+                },
+                'salary': NumberDecimal(3000)
             })
             */
 

@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace MongoDb.Csharp.Samples.Models
 {
@@ -21,5 +21,7 @@ namespace MongoDb.Csharp.Samples.Models
         public string Website {get; set; }
         public CompanyCard Company {get; set; }
         public decimal Salary { get; set; }
+        public List<string> FavoriteSports { get; set; }
+        public string Profession { get; set; }
     }
 }

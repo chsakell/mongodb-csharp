@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MongoDB.Bson.Serialization.Conventions;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 
 namespace MongoDb.Csharp.Samples.Core
 {

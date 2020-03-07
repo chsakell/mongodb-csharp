@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Bogus;
 using Bogus.DataSets;
 using MongoDb.Csharp.Samples.Models;
@@ -7,11 +9,25 @@ namespace MongoDb.Csharp.Samples.Core
 {
     public class RandomData
     {
+        public static List<string> AvailableSports = new List<string>()
+        {
+            "Soccer","Basketball", "Tennis","Volleyball", "Beach Volleyball", "American Football", 
+            "Baseball", "Ice Hockey", "Formula 1", "Moto GP","Motor Sport", "Handball", "Water Polo",
+            "Table Tennis", "Darts","Snooker", "MMA", "Boxing","Cricket", "Cycling", "Golf"
+        };
+
+        public static List<string> AvailableProfessions = new List<string>()
+        {
+            "Dentist","Photographer","Pharmacist","Teacher","Flight Attendant","Founder / Entrepreneur",
+            "Personal Trainer","Waitress / Bartender","Physical Therapist","Lawyer","Marketing Manager","Pilot",
+            "Producer","Visual Designer","Model","Engineer", "Firefighter","Doctor","Financial Adviser", "Police Officer",
+            "Social-Media Manager","Nurse","Real-Estate Agent"
+        };
         public static User GeneratePerson(string locale = "en")
         {
             var person = new Faker<User>(locale)
                 .RuleFor(u => u.Gender, f => f.PickRandom<Gender>())
-                .RuleFor(u => u.FirstName, (f, u) => 
+                .RuleFor(u => u.FirstName, (f, u) =>
                     f.Name.FirstName(u.Gender.MapToLibGender()))
                 .RuleFor(u => u.LastName, (f, u) => f.Name.LastName(u.Gender.MapToLibGender()))
                 .RuleFor(u => u.UserName, (f, u) => f.Internet.UserName(u.FirstName, u.LastName))
@@ -27,7 +43,10 @@ namespace MongoDb.Csharp.Samples.Core
                     CatchPhrase = f.Company.CatchPhrase(),
                     Bs = f.Company.Bs()
                 })
-                .RuleFor(u => u.Salary, (f,u) => f.Finance.Amount(1000, 5000));
+                .RuleFor(u => u.Salary, (f, u) => Math.Round(f.Finance.Amount(1000, 5000)))
+                .RuleFor(u => u.FavoriteSports,
+                    (f, u) => f.PickRandom(AvailableSports, f.Random.Number(1, 19)).ToList())
+                .RuleFor(u => u.Profession, (f, u) => f.PickRandom(AvailableProfessions, 1).FirstOrDefault());
 
             return person.Generate();
         }
