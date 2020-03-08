@@ -8,8 +8,8 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 {
     public class FindingDocuments : RunnableSample, IRunnableSample
     {
-        public bool Enabled => true;
-        protected override Core.Samples Sample => Core.Samples.Crud_Finding_Documents;
+
+        public override Core.Samples Sample => Core.Samples.Crud_Read_FindingDocuments;
         protected override void Init()
         {
             // Create a mongodb client

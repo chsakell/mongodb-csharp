@@ -4,9 +4,23 @@ namespace MongoDb.Csharp.Samples.Core
 {
     public abstract class RunnableSample
     {
-        public RunnableSample() => Init();
+        public bool Enabled
+        {
+            get
+            {
+                var enabled = Program.Configuration[$"Samples:{Sample}"];
+                if (bool.TryParse(enabled, out var result))
+                {
+                    return result;
+                }
+
+                return true;
+            }
+        }
+
+        protected RunnableSample() => Init();
         protected MongoClient Client { get; set; }
-        protected abstract Samples Sample { get; }
+        public abstract Samples Sample { get; }
 
         protected abstract void Init();
     }

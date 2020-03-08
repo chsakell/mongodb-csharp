@@ -10,8 +10,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
 {
     public class ReadDocuments : RunnableSample, IRunnableSample
     {
-        public bool Enabled => true;
-        protected override Core.Samples Sample => Core.Samples.QuickStart_ReadDocuments;
+        public override Core.Samples Sample => Core.Samples.QuickStart_ReadDocuments;
         protected override void Init()
         {
             // Create a mongodb client

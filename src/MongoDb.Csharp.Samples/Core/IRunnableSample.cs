@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace MongoDb.Csharp.Samples.Core
 {
@@ -9,5 +6,6 @@ namespace MongoDb.Csharp.Samples.Core
     {
         Task Run();
         bool Enabled { get; }
+        Samples Sample { get; }
     }
 }

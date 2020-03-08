@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDb.Csharp.Samples.Core;
-using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 
 namespace MongoDb.Csharp.Samples.Crud.Insert
 {
-    public class OrderInsert : RunnableSample, IRunnableSample
+    public class OrderedInsert : RunnableSample, IRunnableSample
     {
-        public bool Enabled => true;
-        protected override Core.Samples Sample => Core.Samples.Crud_Insert_Ordered;
+        public override Core.Samples Sample => Core.Samples.Crud_Insert_OrderedInsert;
         protected override void Init()
         {
             // Register Classes

@@ -10,8 +10,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
 {
     public class UpdateDocuments : RunnableSample, IRunnableSample
     {
-        public bool Enabled => true;
-        protected override Core.Samples Sample => Core.Samples.QuickStart_UpdateDocuments;
+        public override Core.Samples Sample => Core.Samples.QuickStart_UpdateDocuments;
         protected override void Init()
         {
             // Create a mongodb client

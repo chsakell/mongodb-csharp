@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -13,7 +14,8 @@ namespace MongoDb.Csharp.Samples
 {
     class Program
     {
-        
+        public static IConfiguration Configuration;
+
         static async Task Main(string[] args)
         {
             var services = new ServiceCollection();
@@ -36,24 +38,27 @@ namespace MongoDb.Csharp.Samples
                     {
                         try
                         {
+                            Utils.Log($"Running {instance.Sample} sample..");
                             await instance.Run();
                         }
                         catch (Exception e)
                         {
+                            Utils.Log($"Exception running {instance.Sample} sample");
                             Console.WriteLine(e);
                         }
-                        
                     }
                 }
             }
             
-
+            Utils.Log("Press any key to exit...");
             Console.ReadKey();
         }
 
         static void ConfigureServices(ServiceCollection services)
         {
-            
+            Configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", true, true)
+                .Build();
         }
 
         static void SetCamelCaseConventionPack()

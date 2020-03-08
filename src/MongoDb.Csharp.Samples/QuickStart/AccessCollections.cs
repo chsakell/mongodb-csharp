@@ -8,8 +8,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
 {
     public class AccessCollections : RunnableSample, IRunnableSample
     {
-        public bool Enabled => true;
-        protected override Core.Samples Sample => Core.Samples.QuickStart_AccessCollections;
+        public override Core.Samples Sample => Core.Samples.QuickStart_AccessCollections;
         protected override void Init()
         {
             // Create a mongodb client

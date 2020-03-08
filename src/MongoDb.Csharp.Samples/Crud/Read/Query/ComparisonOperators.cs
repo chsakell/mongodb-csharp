@@ -6,12 +6,11 @@ using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 
-namespace MongoDb.Csharp.Samples.Crud.Insert
+namespace MongoDb.Csharp.Samples.Crud.Read.Query
 {
     public class ComparisonOperators : RunnableSample, IRunnableSample
     {
-        public bool Enabled => true;
-        protected override Core.Samples Sample => Core.Samples.Crud_Comparison_Operators;
+        public override Core.Samples Sample => Core.Samples.Crud_Read_Query_ComparisonOperators;
         protected override void Init()
         {
             // Create a mongodb client

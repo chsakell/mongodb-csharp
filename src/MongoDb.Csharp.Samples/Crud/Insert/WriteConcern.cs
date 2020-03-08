@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
@@ -12,8 +10,7 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 {
     public class WriteConcernInsert : RunnableSample, IRunnableSample
     {
-        public bool Enabled => false;
-        protected override Core.Samples Sample => Core.Samples.Crud_Write_Concern;
+        public override Core.Samples Sample => Core.Samples.Crud_Insert_WriteConcern;
         protected override void Init()
         {
             // Create a mongodb client
