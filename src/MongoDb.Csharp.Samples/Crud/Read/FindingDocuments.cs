@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
@@ -19,10 +20,10 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 
         public async Task Run()
         {
-            await WriteConcernOperations();
+            await FindDocumentsOperations();
         }
 
-        private async Task WriteConcernOperations()
+        private async Task FindDocumentsOperations()
         {
             var collectionName = "users";
             var database = Client.GetDatabase(Databases.Persons);
@@ -30,10 +31,20 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
             var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
             #region Prepare data
 
+            var users = new List<User>();
             for (int i = 0; i < 1000; i++)
             {
-                await collection.InsertOneAsync(RandomData.GeneratePerson());
+                var user = RandomData.GeneratePerson();
+
+                if (i >= 30 && i < 50)
+                {
+                    user.Address.City = "Athens";
+                }
+
+                users.Add(user);
             }
+
+            await collection.InsertManyAsync(users);
 
             var sampleUser = RandomData.GeneratePerson();
             sampleUser.Email = "sample@example.com";
@@ -57,6 +68,30 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
             // same result with .Find
             // doctors = collection.Find(doctorsFilter).ToCursor();
             Utils.Log($"{doctors.Count} doctors found");
+
+            // Query on an embedded field, eg. address.city
+
+            // find all users with address.city = Athens
+            var athensCityFilter = Builders<User>.Filter.Eq(u => u.Address.City, "Athens");
+            var athensUsers = await collection.Find(athensCityFilter).ToListAsync();
+            Utils.Log($"{athensUsers.Count} total users live in Athens");
+
+            // Query on array property
+
+            // find all users that have Basketball on their favorite sports -
+            // doesn't have to be the only item on the array, may have more favorite sports as well
+            var basketballFilter = Builders<User>.Filter.AnyEq(u => u.FavoriteSports, "Basketball");
+            var usersHaveBasketball = await collection.Find(basketballFilter).ToListAsync();
+            Utils.Log($"{usersHaveBasketball.Count} have Basketball on their favorite sports collection");
+
+            // find all users that have ONLY Soccer on their favorite sports
+            var onlySoccerFilter = Builders<User>.Filter
+                .Eq(u => u.FavoriteSports, new List<string> { "Soccer" });
+
+            var soccerUsers = await collection.Find(onlySoccerFilter).ToListAsync();
+
+            Utils.Log($"{soccerUsers.Count} have only Soccer on their favorite sports collection");
+
             #endregion
 
             #region BsonDocument commands
@@ -69,6 +104,16 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
             var bsonDoctorsFilter = Builders<BsonDocument>.Filter.Eq("profession", "Doctor");
             var bsonDoctors = await bsonCollection.Find(bsonDoctorsFilter).FirstOrDefaultAsync();
 
+            var bsonAthensCityFilter = Builders<BsonDocument>.Filter.Eq("address.city", "Athens");
+            var bsonAthensUsers = await bsonCollection.Find(bsonAthensCityFilter).ToListAsync();
+
+            var bsonBasketballFilter = Builders<BsonDocument>.Filter.AnyEq("favoriteSports", "Basketball");
+            var bsonUsersHaveBasketball = await bsonCollection.Find(bsonBasketballFilter).ToListAsync();
+
+            var bsonOnlySoccerFilter = Builders<BsonDocument>.Filter
+                .Eq("favoriteSports", new List<string>() { "Soccer" });
+
+            var bsonSoccerUsers = await bsonCollection.Find(bsonOnlySoccerFilter).ToListAsync();
             #endregion
 
             #region Shell commands
@@ -77,6 +122,10 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
             db.users.findOne({})
             db.users.findOne({ email: "sample@example.com" })
             db.users.find({ profession: "Doctor"})
+            db.users.find({"address.city": { $eq: "Athens"}}
+            db.users.find({"favoriteSports": "Basketball"})
+            db.users.find({"favoriteSports": ["Basketball"]})
+            db.users.find({"favoriteSports": ["Soccer"]})
 #endif
 
             #endregion

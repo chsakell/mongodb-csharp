@@ -64,6 +64,21 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
                       $"Salary Greater or equal to 4500 total: {greaterOrEqualThan4500.Count}{Environment.NewLine}" +
                       $"Salary Less than 2500 total: {lessThan2500.Count}{Environment.NewLine}" +
                       $"Salary Less than or equal to 1500 total: {lessThanOrEqual1500.Count}{Environment.NewLine}");
+
+            var totalUsers = await collection.CountDocumentsAsync(Builders<User>.Filter.Empty);
+
+            // Equal
+            // Case sensitive matters!
+            var equalPilotsFilter = Builders<User>.Filter.Eq(u => u.Profession, "Pilot");
+            var pilots = await collection.Find(equalPilotsFilter).ToListAsync();
+            Utils.Log($"Among {totalUsers} users, {pilots.Count} are pilots");
+
+            // Not equal
+            // Case sensitive matters!
+            var notEqualDoctorsFilter = Builders<User>.Filter.Ne(u => u.Profession, "Doctor");
+            var notDoctors = await collection.Find(notEqualDoctorsFilter).ToListAsync();
+            Utils.Log($"Among {totalUsers} users, {notDoctors.Count} aren't doctors");
+
             #endregion
 
             #region BsonDocument commands
@@ -84,6 +99,15 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             var bsonFilterLessOrEqualThan = Builders<BsonDocument>.Filter.Lte("salary", 1500);
             var bsonLessThanOrEqual1500 = await bsonCollection.Find(bsonFilterLessOrEqualThan).ToListAsync();
 
+            // Equal
+            // Case sensitive matters!
+            var bsonEqualPilotsFilter = Builders<BsonDocument>.Filter.Eq("profession", "Pilot");
+            var bsonPilots = await bsonCollection.Find(bsonEqualPilotsFilter).ToListAsync();
+
+            // Not equal
+            var bsonNotEqualDoctorsFilter = Builders<BsonDocument>.Filter.Ne("profession", "Doctor");
+            var bsonNotDoctors = await bsonCollection.Find(bsonNotEqualDoctorsFilter).ToListAsync();
+
             #endregion
 
             #region Shell commands
@@ -93,6 +117,8 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             db.users.find({salary: { $gte: 4500}})
             db.users.find({salary: { $lt: 2500}})
             db.users.find({salary: { $lte: 1500}})
+            db.users.find({profession: { $eq: "Pilot"}})
+            db.users.find({profession: { $ne: "Doctor"}})
 #endif
 
             #endregion
