@@ -18,8 +18,8 @@ namespace MongoDb.Csharp.Samples.Core
 
         Crud_Insert_Ordered,
         Crud_Write_Concern,
-        Crud_Finding_Documents    
-
+        Crud_Finding_Documents,
+        Crud_Comparison_Operators
         #endregion
     }
 }
