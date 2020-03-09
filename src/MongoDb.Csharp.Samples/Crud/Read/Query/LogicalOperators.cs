@@ -70,6 +70,31 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             #endregion
 
+            #region or
+
+            // users with salary either < 1500 (too low) or > 4000 (too high)
+            var orSalaryFilter = Builders<User>.Filter.Or(
+                Builders<User>.Filter.Lt(u => u.Salary, 1500),
+                Builders<User>.Filter.Gt(u => u.Salary, 4000));
+
+            var lowOrHighSalaryUsers = await collection.Find(orSalaryFilter).ToListAsync();
+            Utils.Log($"{lowOrHighSalaryUsers.Count} users have salary either too low or too high");
+
+            #region nor
+
+            // users with profession other than Doctor, salary other than < 4500
+            // should fail all conditions
+            var norFilter = Builders<User>.Filter.And(
+                Builders<User>.Filter.Not(Builders<User>.Filter.Eq(u => u.Profession, "Doctor")),
+                Builders<User>.Filter.Not(Builders<User>.Filter.Lt(u => u.Salary, 4500)));
+
+            var norUsers = await collection.Find(norFilter).ToListAsync();
+            Utils.Log($"{norUsers.Count} users aren't doctors and have salary greater than 4500");
+
+            #endregion
+
+            #endregion
+
             #endregion
 
             #region BsonDocument commands
@@ -95,6 +120,26 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             #endregion
 
+            #region or
+
+            var bsonOrSalaryFilter = Builders<BsonDocument>.Filter.Or(
+                Builders<BsonDocument>.Filter.Lt("salary", 1500),
+                Builders<BsonDocument>.Filter.Gt("salary", 4000));
+
+            var bsonLowOrHighSalaryUsers = await bsonCollection.Find(bsonOrSalaryFilter).ToListAsync();
+
+            #endregion
+
+            #region nor
+
+            var bsonNorFilter = Builders<BsonDocument>.Filter.And(
+                Builders<BsonDocument>.Filter.Not(Builders<BsonDocument>.Filter.Eq("profession", "Doctor")),
+                Builders<BsonDocument>.Filter.Not(Builders<BsonDocument>.Filter.Lt("salary", 4500)));
+
+            var bsonNorUsers = await bsonCollection.Find(bsonNorFilter).ToListAsync();
+
+            #endregion
+
             #endregion
 
             #region Shell commands
@@ -109,7 +154,12 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
                                                 { salary: { $gte: 2000 } }, 
                                                 { salary: { $lte: 3200 }} ] } 
                                     ] })
+            db.users.find( { $or: [ { salary: { $lt: 1500 } }, { salary: { $gt: 4000 }}]})
 
+            db.users.find( { $nor: [ 
+                                    { profession: { $eq: "Doctor" } }, 
+                                    { salary: { $lt: 4500 }}
+                                ]})
 #endif
 
             #endregion
