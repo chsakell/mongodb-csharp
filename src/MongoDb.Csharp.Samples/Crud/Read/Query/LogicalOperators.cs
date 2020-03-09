@@ -70,6 +70,19 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             #endregion
 
+            #region not
+
+            // all users that are males, hence not females
+
+            var notFemaleFilter = Builders<User>.Filter.Not(
+                Builders<User>.Filter.Eq(u => u.Gender, Gender.Female)
+            );
+
+            var notFemaleUsers = await collection.Find(notFemaleFilter).ToListAsync();
+            Utils.Log($"{notFemaleUsers.Count} users have male gender");
+
+            #endregion
+
             #region or
 
             // users with salary either < 1500 (too low) or > 4000 (too high)
@@ -120,6 +133,18 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             #endregion
 
+            #region not
+
+            // all users that are males, hence not females
+
+            var bsonNotFemaleFilter = Builders<BsonDocument>.Filter.Not(
+                Builders<BsonDocument>.Filter.Eq("gender", Gender.Female)
+            );
+
+            var bsonNotFemaleUsers = await bsonCollection.Find(bsonNotFemaleFilter).ToListAsync();
+
+            #endregion
+
             #region or
 
             var bsonOrSalaryFilter = Builders<BsonDocument>.Filter.Or(
@@ -154,6 +179,8 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
                                                 { salary: { $gte: 2000 } }, 
                                                 { salary: { $lte: 3200 }} ] } 
                                     ] })
+            
+            db.users.find( { gender: { $not: { $eq: 0   } }} ) |  db.users.find( { gender: { $ne: 1 }} )
             db.users.find( { $or: [ { salary: { $lt: 1500 } }, { salary: { $gt: 4000 }}]})
 
             db.users.find( { $nor: [ 
