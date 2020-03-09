@@ -79,6 +79,17 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             var notDoctors = await collection.Find(notEqualDoctorsFilter).ToListAsync();
             Utils.Log($"Among {totalUsers} users, {notDoctors.Count} aren't doctors");
 
+            // In
+            var medicalProfessionsFilter = Builders<User>.Filter.In(u => u.Profession,
+                new[] { "Dentist", "Pharmacist", "Nurse" });
+            var medicalUsers = await collection.Find(medicalProfessionsFilter).ToListAsync();
+            Utils.Log($"{medicalUsers.Count} users have medical related profession");
+
+            // Not In
+            var nonMedicalProfessionsFilter = Builders<User>.Filter.Nin(u => u.Profession,
+                new[] { "Dentist", "Pharmacist", "Nurse" });
+            var nonMedicalUsers = await collection.Find(nonMedicalProfessionsFilter).ToListAsync();
+            Utils.Log($"{nonMedicalUsers.Count} users have no medical related profession");
             #endregion
 
             #region BsonDocument commands
@@ -108,6 +119,15 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             var bsonNotEqualDoctorsFilter = Builders<BsonDocument>.Filter.Ne("profession", "Doctor");
             var bsonNotDoctors = await bsonCollection.Find(bsonNotEqualDoctorsFilter).ToListAsync();
 
+            // In
+            var bsonMedicalProfessionsFilter = Builders<BsonDocument>.Filter.In("profession",
+                new[] { "Dentist", "Pharmacist", "Nurse" });
+            var bsonMedicalUsers = await bsonCollection.Find(bsonMedicalProfessionsFilter).ToListAsync();
+
+            // Not In
+            var bsonNotMedicalProfessionsFilter = Builders<BsonDocument>.Filter.Nin("profession",
+                new[] { "Dentist", "Pharmacist", "Nurse" });
+            var bsonNotMedicalUsers = await bsonCollection.Find(bsonNotMedicalProfessionsFilter).ToListAsync();
             #endregion
 
             #region Shell commands
@@ -119,6 +139,8 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             db.users.find({salary: { $lte: 1500}})
             db.users.find({profession: { $eq: "Pilot"}})
             db.users.find({profession: { $ne: "Doctor"}})
+            db.users.find({profession: { $in: ["Dentist", "Pharmacist", "Nurse"]}})
+            db.users.find({profession: { $nin: ["Dentist", "Pharmacist", "Nurse"]}})
 #endif
 
             #endregion
