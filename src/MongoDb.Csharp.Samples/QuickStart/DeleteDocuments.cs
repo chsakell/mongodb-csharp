@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
@@ -31,17 +32,12 @@ namespace MongoDb.Csharp.Samples.QuickStart
             // Will create the users collection on the fly if it doesn't exists
             var personsCollection = usersDatabase.GetCollection<User>("users");
 
-            User appPerson = RandomData.GeneratePerson();
+            var appPerson = RandomData.GenerateUsers(1).First();
             // Insert one document
             await personsCollection.InsertOneAsync(appPerson);
 
-
             // Insert multiple documents
-            var persons = new List<User>();
-            for (int i = 0; i < 30; i++)
-            {
-                persons.Add(RandomData.GeneratePerson());
-            }
+            var persons = RandomData.GenerateUsers(30);
 
             await personsCollection.InsertManyAsync(persons);
             #endregion

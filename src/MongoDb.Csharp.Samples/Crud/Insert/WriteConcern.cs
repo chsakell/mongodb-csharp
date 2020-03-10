@@ -30,7 +30,7 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 
             #region Prepare data
             var writeConcern = new WriteConcern(w: new Optional<WriteConcern.WValue>("0"), journal: false);
-            var user = RandomData.GeneratePerson();
+            var user = RandomData.GenerateUsers(1).First();
             var usersCollection = personsDatabase.GetCollection<User>("users")
                 .WithWriteConcern(writeConcern);
 
@@ -39,12 +39,7 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
             // Command insert failed: cannot use non-majority 'w' mode 0 when a host is not a member of a replica set.'
             await usersCollection.InsertOneAsync(user);
 
-            List<User> users = new List<User>();
-
-            for (int i = 0; i < 3000; i++)
-            {
-                users.Add(RandomData.GeneratePerson());
-            }
+            List<User> users = RandomData.GenerateUsers(3000);
 
             await usersCollection.InsertManyAsync(users);
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
@@ -31,22 +32,18 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
             var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
             #region Prepare data
 
-            var users = new List<User>();
-            for (int i = 0; i < 1000; i++)
+            var users = RandomData.GenerateUsers(1000);
+            for (int i = 0; i < users.Count; i++)
             {
-                var user = RandomData.GeneratePerson();
-
                 if (i >= 30 && i < 50)
                 {
-                    user.Address.City = "Athens";
+                    users[i].Address.City = "Athens";
                 }
-
-                users.Add(user);
             }
 
             await collection.InsertManyAsync(users);
 
-            var sampleUser = RandomData.GeneratePerson();
+            var sampleUser = RandomData.GenerateUsers(1).First();
             sampleUser.Email = "sample@example.com";
             sampleUser.Phone = "123-456-789";
             await collection.InsertOneAsync(sampleUser);

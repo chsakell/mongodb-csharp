@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
@@ -29,7 +30,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
             // Will create the users collection on the fly if it doesn't exists
             var personsTypedCollection = usersDatabase.GetCollection<User>("users");
 
-            User typedUser = RandomData.GeneratePerson();
+            User typedUser = RandomData.GenerateUsers(1).First();
             await personsTypedCollection.InsertOneAsync(typedUser);
 
             // Create another collection

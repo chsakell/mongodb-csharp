@@ -15,7 +15,7 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Databases.Persons);
+            Utils.DropDatabase(Client, Databases.Orders);
         }
 
         public async Task Run()
@@ -25,34 +25,38 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
         private async Task ElementOperatorsOperations()
         {
-            var collectionName = "users";
-            var database = Client.GetDatabase(Databases.Persons);
-            var collection = database.GetCollection<User>(collectionName);
+            var collectionName = "invoices";
+            var database = Client.GetDatabase(Databases.Orders);
+            var collection = database.GetCollection<Order>(collectionName);
             var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
             #region Prepare data
 
-            var users = new List<User>();
-            for (int i = 0; i < 1000; i++)
-            {
-                users.Add(RandomData.GeneratePerson());
-            }
+            var orders = RandomData.GenerateOrders(1000);
 
-            await collection.InsertManyAsync(users);
+            await collection.InsertManyAsync(orders);
 
             #endregion
 
             #region Typed classes commands
 
+            var lotNumberFilter = Builders<Order>.Filter.Exists(o => o.LotNumber, exists:true);
+            var ordersWithLotNumber = await collection.Find(lotNumberFilter).ToListAsync();
+            Utils.Log($"{ordersWithLotNumber.Count} orders have Lot number");
+
             #endregion
 
             #region BsonDocument commands
+
+            var bsonLotNumberFilter = Builders<BsonDocument>.Filter.Exists("lotNumber", exists: true);
+            var bsonOrdersWithLotNumber = await collection.Find(lotNumberFilter).ToListAsync();
 
             #endregion
 
             #region Shell commands
 
 #if false
+            db.invoices.find({ lotNumber: { $exists: true } })
 #endif
 
             #endregion

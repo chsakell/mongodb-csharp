@@ -31,11 +31,7 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             #region Prepare data
 
-            var users = new List<User>();
-            for (int i = 0; i < 1000; i++)
-            {
-                users.Add(RandomData.GeneratePerson());
-            }
+            var users = RandomData.GenerateUsers(1000);
 
             await collection.InsertManyAsync(users);
 

@@ -4,5 +4,6 @@
     {
         public const string Persons = "Persons";
         public const string Betting = "Betting";
+        public const string Orders = "Orders";
     }
 }
