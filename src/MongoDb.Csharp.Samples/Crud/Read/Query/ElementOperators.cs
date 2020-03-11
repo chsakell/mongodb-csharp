@@ -42,6 +42,10 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             var ordersWithLotNumber = await collection.Find(lotNumberFilter).ToListAsync();
             Utils.Log($"{ordersWithLotNumber.Count} orders have Lot number");
 
+            // use exists in nested property
+            var shippedOrdersFilter = Builders<Order>.Filter.Exists(o => o.ShipmentDetails.ShippedDate);
+            var shippedOrders = await collection.Find(shippedOrdersFilter).ToListAsync();
+            Utils.Log($"{shippedOrders.Count} orders have been already shipped");
             #endregion
 
             #region BsonDocument commands
@@ -49,12 +53,16 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             var bsonLotNumberFilter = Builders<BsonDocument>.Filter.Exists("lotNumber", exists: true);
             var bsonOrdersWithLotNumber = await collection.Find(lotNumberFilter).ToListAsync();
 
+
+            var bsonShippedOrdersFilter = Builders<BsonDocument>.Filter.Exists("shipmentDetails.shippedDate");
+            var bsonShippedOrders = await bsonCollection.Find(bsonShippedOrdersFilter).ToListAsync();
             #endregion
 
             #region Shell commands
 
 #if false
             db.invoices.find({ lotNumber: { $exists: true } })
+            db.invoices.find({"shipmentDetails.shippedDate" : { $exists: true }})
 #endif
 
             #endregion

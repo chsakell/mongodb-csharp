@@ -15,6 +15,9 @@ namespace MongoDb.Csharp.Samples
     class Program
     {
         public static IConfiguration Configuration;
+        public static BsonClassMap<User> DefaultUserClassMap;
+        public static BsonClassMap<Order> DefaultOrderClassMap;
+        public static BsonClassMap<ShipmentDetails> DefaultShipmentDetailsClassMap;
 
         static async Task Main(string[] args)
         {
@@ -69,8 +72,9 @@ namespace MongoDb.Csharp.Samples
 
         static void RegisterClasses()
         {
-            BsonClassMap.RegisterClassMap<User>();
-            BsonClassMap.RegisterClassMap<Order>();
+            DefaultUserClassMap = BsonClassMap.RegisterClassMap<User>();
+            DefaultOrderClassMap = BsonClassMap.RegisterClassMap<Order>();
+            DefaultShipmentDetailsClassMap = BsonClassMap.RegisterClassMap<ShipmentDetails>();
         }
 
         static void RegisterSerializers()

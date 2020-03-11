@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace MongoDb.Csharp.Samples.Models
 {
@@ -11,5 +12,18 @@ namespace MongoDb.Csharp.Samples.Models
 
         [BsonIgnoreIfDefault]
         public int? LotNumber { get; set; }
+
+        public ShipmentDetails ShipmentDetails { get; set; }
+    }
+
+    public class ShipmentDetails
+    {
+        [BsonIgnoreIfDefault]
+        public DateTime? ShippedDate { get; set; }
+        public string ShipAddress { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string ContactName { get; set; }
+        public string ContactPhone { get; set; }
     }
 }

@@ -67,10 +67,25 @@ namespace MongoDb.Csharp.Samples.Core
                 .RuleFor(o => o.Quantity, f => f.Random.Number(1, 10))
                 //A nullable int? with 80% probability of being null.
                 //The .OrNull extension is in the Bogus.Extensions namespace.
-                .RuleFor(o => o.LotNumber, f => f.Random.Int(0, 100).OrNull(f, .8f));
+                .RuleFor(o => o.LotNumber, f => f.Random.Int(0, 100).OrNull(f, .8f))
+                .RuleFor(o => o.ShipmentDetails, f => GenerateShipmentDetails(locale));
 
             return order.Generate(count);
 
+        }
+
+        public static ShipmentDetails GenerateShipmentDetails(string locale = "en")
+        {
+            var shipmentDetails = new Faker<ShipmentDetails>(locale)
+                .RuleFor(u => u.ContactName, (f, u) => f.Name.FullName())
+                .RuleFor(u => u.ContactPhone, (f, u) => f.Phone.PhoneNumber())
+                .RuleFor(u => u.City, (f, u) => f.Address.City())
+                .RuleFor(u => u.ShipAddress, (f, u) => f.Address.FullAddress())
+                .RuleFor(u => u.Country, f => f.Address.Country())
+                .RuleFor(u => u.ShippedDate, (f, u) => 
+                    f.Date.Between(DateTime.UtcNow.AddYears(-1), DateTime.UtcNow).OrNull(f, .8f));
+
+            return shipmentDetails.Generate();
         }
 
         public static AddressCard GenerateCardAddress(string locale = "en")
@@ -89,5 +104,7 @@ namespace MongoDb.Csharp.Samples.Core
 
             return cardAddress.Generate();
         }
+
+        
     }
 }
