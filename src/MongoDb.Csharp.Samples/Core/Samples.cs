@@ -21,7 +21,8 @@ namespace MongoDb.Csharp.Samples.Core
         Crud_Read_FindingDocuments,
         Crud_Read_Query_ComparisonOperators,
         Crud_Read_Query_LogicalOperators,
-        Crud_Read_Query_ElementOperators
+        Crud_Read_Query_ElementOperators,
+        Crud_Read_Query_EvaluationOperators
         #endregion
     }
 }

@@ -1,6 +1,63 @@
-﻿namespace MongoDb.Csharp.Samples.Crud.Read.Query
+﻿using System.Threading.Tasks;
+using MongoDB.Bson;
+using MongoDb.Csharp.Samples.Core;
+using MongoDb.Csharp.Samples.Models;
+using MongoDB.Driver;
+
+namespace MongoDb.Csharp.Samples.Crud.Read.Query
 {
-    class EvaluationOperators
+    public class EvaluationOperators : RunnableSample, IRunnableSample
     {
+        public override Core.Samples Sample => Core.Samples.Crud_Read_Query_EvaluationOperators;
+        protected override void Init()
+        {
+            // Create a mongodb client
+            Client = new MongoClient(Utils.DefaultConnectionString);
+            Utils.DropDatabase(Client, Databases.Persons);
+        }
+
+        public async Task Run()
+        {
+            await ElementOperatorsOperations();
+        }
+
+        private async Task ElementOperatorsOperations()
+        {
+            var collectionName = "users";
+            var database = Client.GetDatabase(Databases.Persons);
+            var collection = database.GetCollection<User>(collectionName);
+            var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+
+            #region Prepare data
+
+            var users = RandomData.GenerateUsers(1000);
+
+            await collection.InsertManyAsync(users);
+
+            #endregion
+
+            #region Typed classes commands
+
+            var gmailFilter = Builders<User>.Filter.Regex(u => u.Email, new BsonRegularExpression("/gmail/"));
+            var gmailUsers = await collection.Find(gmailFilter).ToListAsync();
+
+            #endregion
+
+            #region BsonDocument commands
+            var bsonGmailFilter = Builders<BsonDocument>.Filter
+                .Regex("email", new BsonRegularExpression("/gmail/"));
+
+            var bsonGmailUsers = await bsonCollection.Find(bsonGmailFilter).ToListAsync();
+            #endregion
+
+            #region Shell commands
+
+#if false
+        db.users.find({"email": { $regex : /gmail/ }})
+#endif
+
+
+            #endregion
+        }
     }
 }
