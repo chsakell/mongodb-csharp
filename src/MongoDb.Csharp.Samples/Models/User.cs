@@ -21,6 +21,7 @@ namespace MongoDb.Csharp.Samples.Models
         public string Website {get; set; }
         public CompanyCard Company {get; set; }
         public decimal Salary { get; set; }
+        public decimal MonthlyExpenses { get; set; }
         public List<string> FavoriteSports { get; set; }
         public string Profession { get; set; }
     }

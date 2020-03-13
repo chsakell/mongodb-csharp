@@ -45,6 +45,7 @@ namespace MongoDb.Csharp.Samples.Core
                     Bs = f.Company.Bs()
                 })
                 .RuleFor(u => u.Salary, (f, u) => Math.Round(f.Finance.Amount(1000, 5000)))
+                .RuleFor(u => u.MonthlyExpenses, (f, u) => Math.Round(f.Finance.Amount(2500, 6500)))
                 .RuleFor(u => u.FavoriteSports,
                     (f, u) => f.PickRandom(AvailableSports, f.Random.Number(1, 19)).ToList())
                 .RuleFor(u => u.Profession, (f, u) => f.PickRandom(AvailableProfessions, 1).FirstOrDefault());

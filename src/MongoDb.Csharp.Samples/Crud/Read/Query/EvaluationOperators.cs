@@ -38,16 +38,33 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             #region Typed classes commands
 
+            #region regex
+
             var gmailFilter = Builders<User>.Filter.Regex(u => u.Email, new BsonRegularExpression("/gmail/"));
             var gmailUsers = await collection.Find(gmailFilter).ToListAsync();
+            Utils.Log($"{gmailUsers.Count} users found to have gmail acounts");
+
+            #endregion
+
+            #region expression
+
+            // needs projection
+
+            #endregion
 
             #endregion
 
             #region BsonDocument commands
+
+            #region regex
+
             var bsonGmailFilter = Builders<BsonDocument>.Filter
                 .Regex("email", new BsonRegularExpression("/gmail/"));
 
             var bsonGmailUsers = await bsonCollection.Find(bsonGmailFilter).ToListAsync();
+
+            #endregion
+
             #endregion
 
             #region Shell commands

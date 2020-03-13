@@ -77,6 +77,7 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             // In
             var medicalProfessionsFilter = Builders<User>.Filter.In(u => u.Profession,
                 new[] { "Dentist", "Pharmacist", "Nurse" });
+
             var medicalUsers = await collection.Find(medicalProfessionsFilter).ToListAsync();
             Utils.Log($"{medicalUsers.Count} users have medical related profession");
 
