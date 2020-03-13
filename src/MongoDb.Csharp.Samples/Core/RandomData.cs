@@ -106,6 +106,23 @@ namespace MongoDb.Csharp.Samples.Core
             return cardAddress.Generate();
         }
 
-        
+        public static List<Traveler> GenerateTravelers(int count, string locale = "en")
+        {
+            var traveler = new Faker<Traveler>(locale)
+                .RuleFor(t => t.Name, (f, u) => f.Name.FullName())
+                .RuleFor(u => u.VisitedCountries, (f, u) => GenerateVisitedCountries(f.Random.Int(0, 30)));
+
+            return traveler.Generate(count);
+        }
+
+        public static List<VisitedCountry> GenerateVisitedCountries(int count, string locale = "en")
+        {
+            var visitedCountry = new Faker<VisitedCountry>(locale)
+                .RuleFor(u => u.Name, f => f.Address.Country())
+                .RuleFor(u => u.DateVisited, (f, u) =>
+                    f.Date.Between(DateTime.UtcNow.AddYears(-5), DateTime.UtcNow));
+
+            return visitedCountry.Generate(count);
+        }
     }
 }
