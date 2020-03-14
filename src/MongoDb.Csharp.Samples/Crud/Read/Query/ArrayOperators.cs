@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bogus;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
+using Utils = MongoDb.Csharp.Samples.Core.Utils;
 
 namespace MongoDb.Csharp.Samples.Crud.Read.Query
 {
@@ -33,38 +36,85 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             #region Prepare data
 
             var travelers = RandomData.GenerateTravelers(1000);
-
             await collection.InsertManyAsync(travelers);
+
+            // ElemMatch
+            var greeceAndItalyTravelers = RandomData.GenerateTravelers(15);
+            foreach (var grcItTraveler in greeceAndItalyTravelers)
+            {
+                var firstCountry = RandomData.GenerateVisitedCountries(1).First();
+                var secondCountry = RandomData.GenerateVisitedCountries(1).First();
+                var random = new Faker().PickRandom(0, 1);
+                switch (random)
+                {
+                    case 0:
+                        firstCountry.Name = "Greece";
+                        secondCountry.Name = "Italy";
+                        break;
+                    default:
+                        firstCountry.Name = "Italy";
+                        secondCountry.Name = "Greece";
+                        break;
+                }
+
+                grcItTraveler.VisitedCountries = new List<VisitedCountry> { firstCountry, secondCountry };
+            }
+
+            await collection.InsertManyAsync(greeceAndItalyTravelers);
 
             #endregion
 
             #region Typed classes commands
 
             // Get all travelers that have visited Greece
-            
+
             //same results
             var greeceTravelers = await collection.Find(t => t.VisitedCountries.Any(c => c.Name == "Greece")).ToListAsync();
-
-            Utils.Log($"{greeceTravelers.Count} total travelers have visited Greece");
 
             // using filter - same results
             var stringGreeceVisitedFilter = Builders<Traveler>.Filter.AnyEq("visitedCountries.name", "Greece");
             greeceTravelers = await collection.Find(stringGreeceVisitedFilter).ToListAsync();
+            Utils.Log($"{greeceTravelers.Count} total travelers have visited Greece");
+
+            #region size
+
+            var fiveVisitedCountriesFilter = await collection.Find(t => t.VisitedCountries.Count == 5).ToListAsync();
+            Utils.Log($"{fiveVisitedCountriesFilter.Count} total travelers have visited 5 countries exactly");
+
+            var moreThan10VisitedCountries = await collection.Find(t => t.VisitedCountries.Count > 10).ToListAsync();
+
+            Utils.Log($"{moreThan10VisitedCountries.Count} total travelers have visited more than 10 countries");
+
+            #endregion
+
+            #region All
+
+            // Order doesn't matter - items are included on the array
+            var climbingAndBackpackingFilter = Builders<Traveler>.Filter
+                .All(t => t.Activities, new List<string> { "Backpacking", "Climbing" });
+
+            var climbingAndBackpackingTravelers = await collection.Find(climbingAndBackpackingFilter).ToListAsync();
+            Utils.Log($"{climbingAndBackpackingTravelers.Count} total travelers have 'Backpacking' & 'Climbing' activities");
+            #endregion
 
             #endregion
 
             #region BsonDocument commands
             var bsonGreeceVisitedFilter = Builders<BsonDocument>.Filter.AnyEq("visitedCountries.name", "Greece");
-
             var bsonGreeceTravelers = await bsonCollection.Find(bsonGreeceVisitedFilter).ToListAsync();
 
+            var bsonClimbingAndBackpackingFilter = Builders<BsonDocument>.Filter
+                .All("activities", new List<string> { "Backpacking", "Climbing" });
 
+            var bsonClimbingAndBackpackingTravelers = await bsonCollection.Find(bsonClimbingAndBackpackingFilter).ToListAsync();
             #endregion
 
             #region Shell commands
 
 #if false
             db.travelers.find({ "visitedCountries.name" : "Greece" })
+            db.travelers.find({ visitedCountries : { $size: 5 } }).count()
+            db.travelers.find({ activities: { $all : [ "Climbing", "Backpacking" ] } }
 #endif
 
 
@@ -72,4 +122,4 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
         }
 
     }
-    }
+}

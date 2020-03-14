@@ -10,6 +10,14 @@ namespace MongoDb.Csharp.Samples.Core
 {
     public class RandomData
     {
+        public static List<string> Activities = new List<string>()
+        {
+            "Baking","Blogging", "Bowling","Collecting", "Hacking", "Backpacking",
+            "Canyoning", "Geocaching", "Orienteering", "Golf","Climbing", "Running", "Snow-kiting",
+            "Horseback riding", "Photography", "Scuba diving","Wildlife watching",
+            "Wine tourism", "Road Touring"
+        };
+
         public static List<string> AvailableSports = new List<string>()
         {
             "Soccer","Basketball", "Tennis","Volleyball", "Beach Volleyball", "American Football", 
@@ -63,7 +71,7 @@ namespace MongoDb.Csharp.Samples.Core
                 //OrderId is deterministic
                 .RuleFor(o => o.OrderId, f => orderIds++)
                 //Pick some fruit from a basket
-                .RuleFor(o => o.Item, f => f.PickRandom(f.Lorem.Sentence()))
+                .RuleFor(o => o.Item, f => f.Commerce.ProductName())
                 //A random quantity from 1 to 10
                 .RuleFor(o => o.Quantity, f => f.Random.Number(1, 10))
                 //A nullable int? with 80% probability of being null.
@@ -110,6 +118,7 @@ namespace MongoDb.Csharp.Samples.Core
         {
             var traveler = new Faker<Traveler>(locale)
                 .RuleFor(t => t.Name, (f, u) => f.Name.FullName())
+                .RuleFor(t => t.Activities, (f, u) => f.PickRandom(Activities, f.Random.Number(1, 19)).ToList())
                 .RuleFor(u => u.VisitedCountries, (f, u) => GenerateVisitedCountries(f.Random.Int(0, 30)));
 
             return traveler.Generate(count);
