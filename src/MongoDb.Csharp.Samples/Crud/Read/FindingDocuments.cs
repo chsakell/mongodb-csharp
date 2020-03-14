@@ -6,7 +6,7 @@ using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 
-namespace MongoDb.Csharp.Samples.Crud.Insert
+namespace MongoDb.Csharp.Samples.Crud.Read
 {
     public class FindingDocuments : RunnableSample, IRunnableSample
     {

@@ -18,12 +18,15 @@ namespace MongoDb.Csharp.Samples.Core
 
         Crud_Insert_OrderedInsert,
         Crud_Insert_WriteConcern,
+
         Crud_Read_FindingDocuments,
         Crud_Read_Query_ComparisonOperators,
         Crud_Read_Query_LogicalOperators,
         Crud_Read_Query_ElementOperators,
         Crud_Read_Query_EvaluationOperators,
-        Crud_Read_Query_ArrayOperators
+        Crud_Read_Query_ArrayOperators,
+
+        Crud_Update_UpdatingDocuments
         #endregion
     }
 }

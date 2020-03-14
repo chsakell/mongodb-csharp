@@ -47,7 +47,7 @@ namespace MongoDb.Csharp.Samples
                         }
                         catch (Exception e)
                         {
-                            Utils.Log($"Exception running {instance.Sample} sample");
+                            Utils.Log($"Exception running {instance.Sample} sample {Environment.NewLine}{e}");
                             Console.WriteLine(e);
                         }
                     }
