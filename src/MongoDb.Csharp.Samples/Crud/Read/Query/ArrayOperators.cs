@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
@@ -87,6 +86,28 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             #endregion
 
+            #region elemMatch
+
+            var visitedGreeceExactly3Times = Builders<Traveler>.Filter.ElemMatch(t => t.VisitedCountries,
+                country => country.Name == "Greece" && country.TimesVisited == 3);
+
+            var visitedGreeceExactly3TimesTravelers = await collection.Find(visitedGreeceExactly3Times).ToListAsync();
+            Utils.Log($"{visitedGreeceExactly3TimesTravelers.Count} total travelers have visited Greece exactly 3 times");
+
+            #region multiple conditions
+
+            var countryNameFilter = Builders<VisitedCountry>.Filter.In(c => c.Name, new[] {"Greece", "Italy"});
+            var countryTimesVisitedFilter = Builders<VisitedCountry>.Filter.Eq(c => c.TimesVisited, 3);
+
+            var visitedGreeceOrItalyExactly3Times = Builders<Traveler>.Filter.ElemMatch(t => t.VisitedCountries,
+                Builders<VisitedCountry>.Filter.And(countryNameFilter, countryTimesVisitedFilter));
+
+            var visitedGreeceOrItalyExactly3TimesTravelers = await collection.Find(visitedGreeceOrItalyExactly3Times).ToListAsync();
+            Utils.Log($"{visitedGreeceOrItalyExactly3TimesTravelers.Count} total travelers have visited Greece or Italy exactly 3 times");
+            #endregion
+
+            #endregion
+
             #region All
 
             // Order doesn't matter - items are included on the array
@@ -103,10 +124,37 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             var bsonGreeceVisitedFilter = Builders<BsonDocument>.Filter.AnyEq("visitedCountries.name", "Greece");
             var bsonGreeceTravelers = await bsonCollection.Find(bsonGreeceVisitedFilter).ToListAsync();
 
+            #region elemmMatch
+
+            var bsonVisitedGreeceExactly3Times = Builders<BsonDocument>.Filter
+                .ElemMatch<BsonValue>("visitedCountries", new BsonDocument { { "name", "Greece" }, { "timesVisited", 3 } });
+
+            var bsonVisitedGreeceExactly3TimesTravelers = await bsonCollection.Find(bsonVisitedGreeceExactly3Times).ToListAsync();
+
+            #region multiple conditions
+
+            var bsonVisitedGreeceOrItalyExactly3Times = Builders<BsonDocument>.Filter
+                .ElemMatch<BsonValue>("visitedCountries", new BsonDocument
+                {
+                    { "name", new BsonDocument("$in", new BsonArray { "Greece", "Italy" }) }, 
+                    { "timesVisited", 3 }
+                });
+
+            var bsonVisitedGreeceOrItalyExactly3TimesTravelers = await bsonCollection.Find(bsonVisitedGreeceOrItalyExactly3Times).ToListAsync();
+
+            #endregion
+
+            #endregion
+
+            #region All
+
             var bsonClimbingAndBackpackingFilter = Builders<BsonDocument>.Filter
                 .All("activities", new List<string> { "Backpacking", "Climbing" });
 
             var bsonClimbingAndBackpackingTravelers = await bsonCollection.Find(bsonClimbingAndBackpackingFilter).ToListAsync();
+
+            #endregion
+
             #endregion
 
             #region Shell commands
@@ -115,6 +163,22 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             db.travelers.find({ "visitedCountries.name" : "Greece" })
             db.travelers.find({ visitedCountries : { $size: 5 } }).count()
             db.travelers.find({ activities: { $all : [ "Climbing", "Backpacking" ] } }
+            db.travelers.find({
+                visitedCountries: {
+                    $elemMatch: {
+                        name : "Greece",
+                        timesVisited: 3
+                    }
+                }})
+            db.travelers.find(
+            {
+                visitedCountries: {
+                    $elemMatch: {
+                        name : { $in: [ "Greece", "Italy" ] },
+                        timesVisited: 3
+                    }
+                }
+            })
 #endif
 
 

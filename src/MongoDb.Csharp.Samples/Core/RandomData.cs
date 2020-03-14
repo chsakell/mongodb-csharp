@@ -128,7 +128,8 @@ namespace MongoDb.Csharp.Samples.Core
         {
             var visitedCountry = new Faker<VisitedCountry>(locale)
                 .RuleFor(u => u.Name, f => f.Address.Country())
-                .RuleFor(u => u.DateVisited, (f, u) =>
+                .RuleFor(u => u.TimesVisited, f => f.Random.Number(1, 10))
+                .RuleFor(u => u.LastDateVisited, (f, u) =>
                     f.Date.Between(DateTime.UtcNow.AddYears(-5), DateTime.UtcNow));
 
             return visitedCountry.Generate(count);
