@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-
-namespace MongoDb.Csharp.Samples.Crud.Insert
+﻿namespace MongoDb.Csharp.Samples.Crud.Insert
 {
     public class Sport
     {
