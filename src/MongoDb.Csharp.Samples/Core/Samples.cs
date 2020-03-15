@@ -26,7 +26,9 @@ namespace MongoDb.Csharp.Samples.Core
         Crud_Read_Query_EvaluationOperators,
         Crud_Read_Query_ArrayOperators,
 
-        Crud_Update_UpdatingDocuments
+        Crud_Update_BasicOperators,
+        Crud_Update_ReplaceDocuments,
+        Crud_Update_UpdatingArrays
         #endregion
     }
 }

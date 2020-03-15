@@ -44,7 +44,7 @@ namespace MongoDb.Csharp.Samples.Core
                 .RuleFor(u => u.Avatar, f => f.Internet.Avatar())
                 .RuleFor(u => u.DateOfBirth, (f, u) => f.Date.Past(50, new DateTime?(Date.SystemClock().AddYears(-20))))
                 .RuleFor(u => u.Phone, f => f.Phone.PhoneNumber())
-                .RuleFor(u => u.Website, f => f.Internet.DomainName())
+                .RuleFor(u => u.Website, f => f.Internet.DomainName().OrNull(f, 0.1f))
                 .RuleFor(u => u.Address, f => GenerateCardAddress(locale))
                 .RuleFor(u => u.Company, (f, u) => new CompanyCard()
                 {

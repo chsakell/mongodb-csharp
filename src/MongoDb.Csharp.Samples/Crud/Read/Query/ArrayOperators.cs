@@ -99,8 +99,10 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             var countryNameFilter = Builders<VisitedCountry>.Filter.In(c => c.Name, new[] {"Greece", "Italy"});
             var countryTimesVisitedFilter = Builders<VisitedCountry>.Filter.Eq(c => c.TimesVisited, 3);
 
-            var visitedGreeceOrItalyExactly3Times = Builders<Traveler>.Filter.ElemMatch(t => t.VisitedCountries,
-                Builders<VisitedCountry>.Filter.And(countryNameFilter, countryTimesVisitedFilter));
+            var visitedGreeceOrItalyExactly3Times = Builders<Traveler>.Filter
+                .ElemMatch(t => t.VisitedCountries,
+                        Builders<VisitedCountry>.Filter.And(countryNameFilter, countryTimesVisitedFilter));
+
 
             var visitedGreeceOrItalyExactly3TimesTravelers = await collection.Find(visitedGreeceOrItalyExactly3Times).ToListAsync();
             Utils.Log($"{visitedGreeceOrItalyExactly3TimesTravelers.Count} total travelers have visited Greece or Italy exactly 3 times");

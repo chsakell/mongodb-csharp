@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
@@ -7,10 +8,10 @@ using MongoDB.Driver;
 
 namespace MongoDb.Csharp.Samples.Crud.Update
 {
-    public class UpdatingDocuments : RunnableSample, IRunnableSample
+    public class BasicOperators : RunnableSample, IRunnableSample
     {
 
-        public override Core.Samples Sample => Core.Samples.Crud_Update_UpdatingDocuments;
+        public override Core.Samples Sample => Core.Samples.Crud_Update_BasicOperators;
         protected override void Init()
         {
             // Create a mongodb client
@@ -50,7 +51,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             var multiUpdateDefinition = Builders<User>.Update
                 .Set(u => u.Phone, "123-456-789")
                 .Set(u => u.Website, "https://chsakell.com")
-                .Set(u => u.FavoriteSports, new List<string> {"Soccer", "Basketball"});
+                .Set(u => u.FavoriteSports, new List<string> { "Soccer", "Basketball" });
 
             var multiUpdateResult = await collection.UpdateOneAsync(firstUserFilter, multiUpdateDefinition);
             Utils.Log($"Multiple user's fields were updated");
@@ -106,6 +107,30 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
             #endregion
 
+            #region unset
+
+            // remove the website field for the first user
+            var removeWebsiteDefinition = Builders<User>.Update.Unset(u => u.Website);
+            var removeWebsiteFieldUpdateResult =
+                await collection.UpdateOneAsync(firstUserFilter, removeWebsiteDefinition);
+            Utils.Log("Website field entirely removed from the first document");
+
+            #endregion
+
+            #region rename
+
+            // rename the phone field to phoneNumber for the first user
+            var renamePhoneDefinition = Builders<User>.Update.Rename(u => u.Phone, "phoneNumber");
+            var renamePhoneFieldUpdateResult =
+                await collection.UpdateOneAsync(firstUserFilter, renamePhoneDefinition);
+            Utils.Log("Phone field renamed to phone");
+
+            // Switch back to phone
+            await collection.UpdateOneAsync(firstUserFilter, Builders<User>.Update.Rename("phoneNumber", "phone"));
+
+
+            #endregion
+
             #endregion
 
             #region BsonDocument commands
@@ -113,7 +138,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             #region set
 
             var bsonFirstUserFilter = Builders<BsonDocument>.Filter.Empty;
-            
+
             // single field
             var bsonUpdateNameDefinition = Builders<BsonDocument>.Update.Set("firstName", "John");
             var bsonUpdateNameResult = await bsonCollection.UpdateOneAsync(bsonFirstUserFilter, bsonUpdateNameDefinition);
@@ -143,7 +168,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
             #region min
             // preparation - set current salary to 3000
-            await bsonCollection.UpdateOneAsync(bsonFirstUserFilter, 
+            await bsonCollection.UpdateOneAsync(bsonFirstUserFilter,
                 Builders<BsonDocument>.Update.Set("salary", 3000));
             // update only if the new value is less than the current
             // would not update if the new salary was > 3000
@@ -169,11 +194,34 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             #region mul
 
             // preparation - set current salary to 1000
-            await bsonCollection.UpdateOneAsync(bsonFirstUserFilter, 
+            await bsonCollection.UpdateOneAsync(bsonFirstUserFilter,
                 Builders<BsonDocument>.Update.Set("salary", 1000));
             // set salary X 2
             var bsonMulUpdateDefinition = Builders<BsonDocument>.Update.Mul("salary", 2);
             var bsonMulUpdateResult = await bsonCollection.UpdateOneAsync(bsonFirstUserFilter, bsonMulUpdateDefinition);
+
+            #endregion
+
+            #region unset
+
+            // remove the website field for the first user
+            var bsonRemoveWebsiteDefinition = Builders<BsonDocument>.Update.Unset("website");
+            var bsonRemoveWebsiteFieldUpdateResult =
+                await bsonCollection.UpdateOneAsync(bsonFirstUserFilter, bsonRemoveWebsiteDefinition);
+
+            #endregion
+
+            #region rename
+
+            // rename the phone field to phoneNumber for the first user
+            var bsonRenamePhoneDefinition = Builders<BsonDocument>.Update.Rename("phone", "phoneNumber");
+            var bsonRenamePhoneFieldUpdateResult =
+                await bsonCollection.UpdateOneAsync(bsonFirstUserFilter, bsonRenamePhoneDefinition);
+
+            // Switch back to phone
+            await bsonCollection.UpdateOneAsync(bsonFirstUserFilter, 
+                Builders<BsonDocument>.Update.Rename("phoneNumber", "phone"));
+
 
             #endregion
 
@@ -182,16 +230,18 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             #region Shell commands
 
 #if false
-            db.users.update({}, { $set: { firstName: "Chris"  }});
-            db.users.update({}, { $set: { 
+            db.users.updateOne({}, { $set: { firstName: "Chris"  }});
+            db.users.updateOne({}, { $set: { 
                 phone: "123-456-789", 
                 website: "https://chsakell.com", 
                 favoriteSports: ["Soccer", "Basketball"]  
             }});
-            db.users.update({}, { $set: { firstName: "Chris"  }, $inc: { salary: 450 }});
-            db.users.update({}, { $min: { salary: 2000 } })
-            db.users.update({}, { $max: { salary: 3500 } })
-            db.users.update({}, { $mul: { salary: 2 } })
+            db.users.updateOne({}, { $set: { firstName: "Chris"  }, $inc: { salary: 450 }});
+            db.users.updateOne({}, { $min: { salary: 2000 } })
+            db.users.updateOne({}, { $max: { salary: 3500 } })
+            db.users.updateOne({}, { $mul: { salary: 2 } })
+            db.users.updateOne({}, { $unset: { website: ""  }})
+            db.users.updateOne({}, { $rename: { phone: "phoneNumber" } })
 #endif
 
             #endregion

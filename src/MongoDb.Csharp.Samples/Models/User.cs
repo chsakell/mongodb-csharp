@@ -8,6 +8,7 @@ namespace MongoDb.Csharp.Samples.Models
     public class User
     {
         [BsonId]
+        [BsonIgnoreIfDefault] // required for replace documents 
         public ObjectId Id { get; set; }
         public Gender Gender { get; set; }
         public string FirstName {get; set; }
@@ -18,6 +19,8 @@ namespace MongoDb.Csharp.Samples.Models
         public DateTime DateOfBirth {get; set; }
         public AddressCard Address {get; set; }
         public string Phone {get; set; }
+        
+        [BsonIgnoreIfDefault]
         public string Website {get; set; }
         public CompanyCard Company {get; set; }
         public decimal Salary { get; set; }
