@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
@@ -56,9 +59,37 @@ namespace MongoDb.Csharp.Samples.Crud.Update
                 .ElemMatch(t => t.VisitedCountries,
                     country => country.Name == "Hellas" && country.TimesVisited == 3);
 
-            // TODO : more with projection
+            // TODO : more with Aggregation Pipeline
             var updateGreeceDefinition = Builders<Traveler>.Update.Inc("visitedCountries.$[].timesVisited", 10);
             var updateGreeceResult = await collection.UpdateManyAsync(visitedHellasExactly3Times, updateGreeceDefinition);
+
+            // TODO : more with Aggregation Pipeline
+            var updateExactVisitedDefinition = Builders<Traveler>.Update.Inc("visitedCountries.$[el].timesVisited", 10);
+            var updateExactVisitedResult = await collection.UpdateManyAsync(
+                Builders<Traveler>.Filter
+                    .ElemMatch(t => t.VisitedCountries,country => country.Name == "Hellas")
+                , updateExactVisitedDefinition, 
+                new UpdateOptions()
+                {
+                    ArrayFilters = new List<ArrayFilterDefinition<VisitedCountry>>()
+                    {
+                        "{ $and: [{ 'el.timesVisited': 13 }, { 'el.name': 'Hellas'} ] }"
+                    }
+                });
+
+            #endregion
+
+            #region Adding array items
+
+            var firstUser = Builders<Traveler>.Filter.Empty;
+            var visitedCountry = RandomData.GenerateVisitedCountries(1).First();
+            visitedCountry.Name = "South Korea";
+            visitedCountry.TimesVisited = 5;
+            visitedCountry.LastDateVisited = DateTime.UtcNow.AddYears(5);
+
+            var pushCountryDefinition = Builders<Traveler>.Update.Push(t => t.VisitedCountries, visitedCountry);
+            var addNewVisitedCountryResult = await collection.UpdateOneAsync(firstUser, pushCountryDefinition);
+            Utils.Log("South Korea has been added to user's visited countries");
 
             #endregion
 
@@ -89,6 +120,22 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
             #endregion
 
+            #region Adding array items
+
+            var bsonFirstUser = Builders<BsonDocument>.Filter.Empty;
+            var bsonVisitedCountry = RandomData.GenerateVisitedCountries(1).First();
+            visitedCountry.Name = "North Korea";
+            visitedCountry.TimesVisited = 5;
+            visitedCountry.LastDateVisited = DateTime.UtcNow.AddYears(5);
+
+            var bsonPushCountryDefinition = Builders<BsonDocument>.Update
+                .Push("visitedCountries", visitedCountry.ToBsonDocument());
+
+            var bsonAddNewVisitedCountryResult = await bsonCollection
+                .UpdateOneAsync(bsonFirstUser, bsonPushCountryDefinition);
+
+            #endregion
+
             #endregion
 
             #region Shell commands
@@ -103,6 +150,12 @@ namespace MongoDb.Csharp.Samples.Crud.Update
                 { visitedCountries: { $elemMatch: { name: "Hellas", timesVisited: 10 }}},
                 { $inc: { "visitedCountries.$[].timesVisited": 100 } }
             )
+
+
+            db.travelers.updateOne( {}, { 
+                $push: { visitedCountries: { name: "My Own Country", visitedTimes: 2, lastDateVisited: ISODate("2018-07-11T10:00:23.454Z") } }
+            })
+
 #endif
 
             #endregion
