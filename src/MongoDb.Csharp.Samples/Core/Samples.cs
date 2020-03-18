@@ -28,7 +28,13 @@ namespace MongoDb.Csharp.Samples.Core
 
         Crud_Update_BasicOperators,
         Crud_Update_ReplaceDocuments,
-        Crud_Update_UpdatingArrays
+        Crud_Update_UpdatingArrays,
+        #endregion
+
+        #region Aggregation
+
+        Aggregation_Stages_Match
+
         #endregion
     }
 }
