@@ -33,7 +33,8 @@ namespace MongoDb.Csharp.Samples.Core
 
         #region Aggregation
 
-        Aggregation_Stages_Match
+        Aggregation_Stages_Match,
+        Aggregation_Stages_Group
 
         #endregion
     }
