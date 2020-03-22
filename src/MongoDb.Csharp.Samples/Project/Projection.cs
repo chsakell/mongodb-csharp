@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using Enumerable = System.Linq.Enumerable;
 
 namespace MongoDb.Csharp.Samples.Project
 {
@@ -17,6 +19,7 @@ namespace MongoDb.Csharp.Samples.Project
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
             Utils.DropDatabase(Client, Databases.Persons);
+            Utils.DropDatabase(Client, Databases.Trips);
         }
 
         public async Task Run()
@@ -26,14 +29,21 @@ namespace MongoDb.Csharp.Samples.Project
 
         private async Task ProjectionOperations()
         {
-            var collectionName = "users";
-            var database = Client.GetDatabase(Databases.Persons);
-            var collection = database.GetCollection<User>(collectionName);
-            var queryableCollection = database.GetCollection<User>(collectionName).AsQueryable();
-            var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+            var usersCollectionName = "users";
+            var personsDatabase = Client.GetDatabase(Databases.Persons);
+            var usersCollection = personsDatabase.GetCollection<User>(usersCollectionName);
+            var usersQueryableCollection = personsDatabase.GetCollection<User>(usersCollectionName).AsQueryable();
+            var personsBsonCollection = personsDatabase.GetCollection<BsonDocument>(usersCollectionName);
+
+            var travelersCollectionName = "travelers";
+            var tripsDatabase = Client.GetDatabase(Databases.Trips);
+            var travelersCollection = tripsDatabase.GetCollection<Traveler>(travelersCollectionName);
+            var travelersQueryableCollection = tripsDatabase.GetCollection<Traveler>(travelersCollectionName).AsQueryable();
+            var travelersBsonCollection = tripsDatabase.GetCollection<BsonDocument>(travelersCollectionName);
             #region Prepare data
 
-            await collection.InsertManyAsync(RandomData.GenerateUsers(1000));
+            await usersCollection.InsertManyAsync(RandomData.GenerateUsers(500));
+            await travelersCollection.InsertManyAsync(RandomData.GenerateTravelers(500));
 
             #endregion
 
@@ -45,7 +55,7 @@ namespace MongoDb.Csharp.Samples.Project
                 .Include(u => u.Gender)
                 .Include(u => u.DateOfBirth);
 
-            var simpleProjectionResults = await collection.Find(Builders<User>.Filter.Empty)
+            var simpleProjectionResults = await usersCollection.Find(Builders<User>.Filter.Empty)
                 .Project(simpleProjection)
                 .ToListAsync();
 
@@ -59,7 +69,7 @@ namespace MongoDb.Csharp.Samples.Project
                     age = DateTime.Today.Year - u.DateOfBirth.Year
                 });
 
-            var results = await collection.Find(Builders<User>.Filter.Empty)
+            var results = await usersCollection.Find(Builders<User>.Filter.Empty)
                 .Project(customProjection)
                 .ToListAsync();
 
@@ -77,7 +87,7 @@ namespace MongoDb.Csharp.Samples.Project
 
             #region Linq
 
-            var linqSimpleProjection = from u in queryableCollection
+            var linqSimpleProjection = from u in usersQueryableCollection
                                        select new
                                        {
                                            lastName = u.FirstName + " " + u.LastName,
@@ -125,6 +135,21 @@ namespace MongoDb.Csharp.Samples.Project
                 } 
             }])
 #endif
+
+            #endregion
+
+            #region 
+            // return the first user with address in one field
+
+            var exercice_1_projection =
+                from user in usersQueryableCollection
+                select new
+                {
+                    fullName = user.FirstName + " " + user.LastName,
+                    address = user.Address.Street + ", " + user.Address.City +", Zip Code:" +  user.Address.ZipCode
+                };
+
+            var exercice_1_result = await exercice_1_projection.FirstOrDefaultAsync();
 
             #endregion
         }

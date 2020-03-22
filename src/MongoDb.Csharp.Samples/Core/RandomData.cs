@@ -129,10 +129,20 @@ namespace MongoDb.Csharp.Samples.Core
             var visitedCountry = new Faker<VisitedCountry>(locale)
                 .RuleFor(u => u.Name, f => f.Address.Country())
                 .RuleFor(u => u.TimesVisited, f => f.Random.Number(1, 10))
+                .RuleFor(c => c.Coordinates, f => GenerateGeolocations(1).First())
                 .RuleFor(u => u.LastDateVisited, (f, u) =>
                     f.Date.Between(DateTime.UtcNow.AddYears(-5), DateTime.UtcNow));
 
             return visitedCountry.Generate(count);
+        }
+
+        public static List<GeoLocation> GenerateGeolocations(int count, string locale = "en")
+        {
+            var geolocation = new Faker<GeoLocation>(locale)
+                .RuleFor(c => c.Latitude, f => f.Address.Latitude())
+                .RuleFor(c => c.Longitude, f => f.Address.Longitude());
+
+            return geolocation.Generate(count);
         }
     }
 }
