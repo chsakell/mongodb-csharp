@@ -65,17 +65,10 @@ namespace MongoDb.Csharp.Samples.Core
         {
             var orderIds = 0;
             var order = new Faker<Order>(locale)
-                //Ensure all properties have rules. By default, StrictMode is false
-                //Set a global policy by using Faker.DefaultStrictMode
                 .StrictMode(true)
-                //OrderId is deterministic
                 .RuleFor(o => o.OrderId, f => orderIds++)
-                //Pick some fruit from a basket
                 .RuleFor(o => o.Item, f => f.Commerce.ProductName())
-                //A random quantity from 1 to 10
                 .RuleFor(o => o.Quantity, f => f.Random.Number(1, 10))
-                //A nullable int? with 80% probability of being null.
-                //The .OrNull extension is in the Bogus.Extensions namespace.
                 .RuleFor(o => o.LotNumber, f => f.Random.Int(0, 100).OrNull(f, .8f))
                 .RuleFor(o => o.ShipmentDetails, f => GenerateShipmentDetails(locale));
 
@@ -114,11 +107,13 @@ namespace MongoDb.Csharp.Samples.Core
             return cardAddress.Generate();
         }
 
-        public static List<Traveler> GenerateTravelers(int count, string locale = "en")
+        public static List<Traveler> GenerateTravelers(int count, int maximumActivities = 20, string locale = "en")
         {
             var traveler = new Faker<Traveler>(locale)
                 .RuleFor(t => t.Name, (f, u) => f.Name.FullName())
-                .RuleFor(t => t.Activities, (f, u) => f.PickRandom(Activities, f.Random.Number(1, 19)).ToList())
+                .RuleFor(t => t.Age, (f) => (DateTime.Now.Year - 
+                                             f.Date.Past(50, new DateTime?(Date.SystemClock().AddYears(-20))).Year))
+                .RuleFor(t => t.Activities, (f, u) => f.PickRandom(Activities, f.Random.Number(1, maximumActivities)).ToList())
                 .RuleFor(u => u.VisitedCountries, (f, u) => GenerateVisitedCountries(f.Random.Int(0, 30)));
 
             return traveler.Generate(count);

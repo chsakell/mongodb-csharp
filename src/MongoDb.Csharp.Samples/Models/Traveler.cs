@@ -9,6 +9,7 @@ namespace MongoDb.Csharp.Samples.Models
         [BsonId]
         public ObjectId Id { get; set; }
         public string Name { get; set; }
+        public int Age { get; set; }
         public List<string> Activities { get; set; }
         public List<VisitedCountry> VisitedCountries { get; set; }
     }

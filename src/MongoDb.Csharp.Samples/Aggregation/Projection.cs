@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Enumerable = System.Linq.Enumerable;
 
-namespace MongoDb.Csharp.Samples.Project
+namespace MongoDb.Csharp.Samples.Aggregation
 {
     public class Projection : RunnableSample, IRunnableSample
     {
-
-        public override Core.Samples Sample => Core.Samples.Projection;
+        public override Core.Samples Sample => Core.Samples.Aggregation_Projection;
         protected override void Init()
         {
             // Create a mongodb client

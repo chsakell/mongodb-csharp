@@ -81,7 +81,7 @@ namespace MongoDb.Csharp.Samples.Aggregation
             //      b) group by gender & display average monthly expenses
             //      c) sort in descending order on avg monthly expenses
             //      truncation resulted in data loss => https://jira.mongodb.org/browse/CSHARP-2399
-            var excercice_1_aggregate = collection.Aggregate()
+            var excercice1Aggregate = collection.Aggregate()
                 .Match(Builders<User>.Filter.Gte(u => u.Salary, 1500) &
                        Builders<User>.Filter.Lte(u => u.Salary, 3000))
                 .Group(u => u.Gender,
@@ -93,13 +93,25 @@ namespace MongoDb.Csharp.Samples.Aggregation
                     })
                 .SortByDescending(group => group.averageMonthlyExpenses);
 
-            var excercice_1_result = await excercice_1_aggregate.ToListAsync();
+            var excercice1Result = await excercice1Aggregate.ToListAsync();
 
             Utils.Log("Grouped by gender with average monthly expenses");
-            foreach (var group in excercice_1_result)
+            foreach (var group in excercice1Result)
             {
                 Utils.Log($"{group.gender}: total - {group.total}, average monthly expenses - {group.averageMonthlyExpenses}");
             }
+
+            // count births by year
+            var excercice2Aggregate = collection.Aggregate()
+                .Group(u => u.DateOfBirth.Year,
+                    ac => new
+                    {
+                        year = ac.Key,
+                        total = ac.Sum(u => 1)
+                    })
+                .SortByDescending(group => group.year);
+
+            var excercice2AggregateResult = await excercice2Aggregate.ToListAsync();
 
             #endregion
 
@@ -132,6 +144,13 @@ namespace MongoDb.Csharp.Samples.Aggregation
                                 "averageMonthlyExpenses" : { "$avg" : "$monthlyExpenses" }, 
                                 "total" : { "$sum" : 1 } } }, 
                 { "$sort" : { "averageMonthlyExpenses" : -1 } }
+            ])
+
+            db.users.aggregate([
+                { "$group" : 
+                    { "_id" : { "$year" : "$dateOfBirth" }, "total" : { "$sum" : 1 } } 
+                }, 
+                { "$sort" : { "_id" : -1 } }
             ])
 
 
