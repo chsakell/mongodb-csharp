@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -39,15 +40,25 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
             #endregion
 
-            #region Typed classes commands
+            #region Linq
 
-            //var pipeLineDefinition = new PipelineStagePipelineDefinition<Traveler, object>(
-            //{
-            //    new 
-            //});
+            // $addToSet with Distinct
+            var linqQuery = travelersQueryableCollection
+                .SelectMany(t => t.Activities, (t, a) => new
+                {
+                    age = t.Age,
+                    activity = a
+                })
+                .GroupBy(q => q.age)
+                .Select(g => new { age = g.Key, activities = g.Select(a => a.activity).Distinct() })
+                .OrderBy(r => r.age);
 
-            //travelersCollection.Aggregate()
+            var linqQueryResults = await linqQuery.ToListAsync();
 
+            foreach (var result in linqQueryResults)
+            {
+                Utils.Log($"Age: {result.age} - activities: {string.Join(',', result.activities)}");
+            }
             #endregion
 
             #region BsonDocument commands
@@ -85,30 +96,11 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
             foreach (var result in results)
             {
-                Utils.Log($"Age: {result.GetValue("_id").AsInt32} - activities: {result.GetValue("activities").AsBsonArray.ToString()}");
+                //Utils.Log($"Age: {result.GetValue("_id").AsInt32} - activities: {result.GetValue("activities").AsBsonArray.ToString()}");
             }
 
             #endregion
-
-            #region Linq
-
-            var c = from t in travelersQueryableCollection
-                from a in t.Activities
-                group t by t.Age into g
-                select new
-                {
-                    age = g.Key, activities = g.SelectMany(t => t.Activities)
-                };
-
-            var re = c.ToList();
-
-            var query = travelersCollection.Aggregate()
-                .Unwind(t => t.Activities)
-                .Group(t => "$age", ac => new { age = ac.Key, activities = "ctivities") });
-
-            var queryR = await query.ToListAsync();
-
-            #endregion
+           
 
             #region Shell commands
 
