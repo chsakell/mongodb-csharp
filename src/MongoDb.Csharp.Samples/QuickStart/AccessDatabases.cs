@@ -19,10 +19,10 @@ namespace MongoDb.Csharp.Samples.QuickStart
 
         public async Task Run()
         {
-            await DatabaseOperations();
+            await DatabaseSamples();
         }
 
-        private async Task DatabaseOperations()
+        private async Task DatabaseSamples()
         {
             // Lists the databases on the server
             // Default schema for each db: {"name":"admin","sizeOnDisk":40960.0,"empty":false}

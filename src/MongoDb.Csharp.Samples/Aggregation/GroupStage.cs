@@ -21,10 +21,10 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
         public async Task Run()
         {
-            await GroupStageOperations();
+            await GroupStageSamples();
         }
 
-        private async Task GroupStageOperations()
+        private async Task GroupStageSamples()
         {
             var collectionName = "users";
             var database = Client.GetDatabase(Databases.Persons);

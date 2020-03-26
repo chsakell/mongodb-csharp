@@ -21,10 +21,10 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
         public async Task Run()
         {
-            await BucketOperations();
+            await BucketSamples();
         }
 
-        private async Task BucketOperations()
+        private async Task BucketSamples()
         {
             var travelersCollectionName = "travelers";
             var tripsDatabase = Client.GetDatabase(Databases.Trips);

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Sockets;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Serializers;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
@@ -12,7 +8,7 @@ using MongoDB.Driver.Linq;
 
 namespace MongoDb.Csharp.Samples.Aggregation
 {
-    public class Unwind : RunnableSample, IRunnableSample
+    public class UnwindStage : RunnableSample, IRunnableSample
     {
         public override Core.Samples Sample => Core.Samples.Aggregation_Stages_Unwind;
         protected override void Init()
@@ -24,10 +20,10 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
         public async Task Run()
         {
-            await ProjectionOperations();
+            await UnWindSamples();
         }
 
-        private async Task ProjectionOperations()
+        private async Task UnWindSamples()
         {
             var travelersCollectionName = "travelers";
             var tripsDatabase = Client.GetDatabase(Databases.Trips);

@@ -21,9 +21,9 @@ namespace MongoDb.Csharp.Samples.QuickStart
 
         public async Task Run()
         {
-            await ReadOperations();
+            await ReadSamples();
         }
-        private async Task ReadOperations()
+        private async Task ReadSamples()
         {
             var usersDatabase = Client.GetDatabase(Core.Databases.Persons);
 

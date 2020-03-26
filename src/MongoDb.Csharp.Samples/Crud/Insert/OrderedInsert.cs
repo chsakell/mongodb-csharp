@@ -20,10 +20,10 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 
         public async Task Run()
         {
-            await OrderedInsertOperations();
+            await OrderedInsertSamples();
         }
 
-        private async Task OrderedInsertOperations()
+        private async Task OrderedInsertSamples()
         {
             var bettingDatabase = Client.GetDatabase(Databases.Betting);
             var sportsCollection = bettingDatabase.GetCollection<Sport>("sports");

@@ -21,10 +21,10 @@ namespace MongoDb.Csharp.Samples.Crud.Read
 
         public async Task Run()
         {
-            await FindDocumentsOperations();
+            await FindDocumentsSamples();
         }
 
-        private async Task FindDocumentsOperations()
+        private async Task FindDocumentsSamples()
         {
             var collectionName = "users";
             var database = Client.GetDatabase(Databases.Persons);

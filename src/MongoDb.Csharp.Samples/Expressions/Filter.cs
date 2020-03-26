@@ -20,10 +20,10 @@ namespace MongoDb.Csharp.Samples.Expressions
 
         public async Task Run()
         {
-            await FilterOperations();
+            await FilterSamples();
         }
 
-        private async Task FilterOperations()
+        private async Task FilterSamples()
         {
             var travelersCollectionName = "travelers";
             var tripsDatabase = Client.GetDatabase(Databases.Trips);

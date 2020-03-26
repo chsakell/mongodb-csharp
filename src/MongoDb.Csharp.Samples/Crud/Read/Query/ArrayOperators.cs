@@ -22,10 +22,10 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
         public async Task Run()
         {
-            await ArrayOperatorsOperations();
+            await ArrayOperatorsSamples();
         }
 
-        private async Task ArrayOperatorsOperations()
+        private async Task ArrayOperatorsSamples()
         {
             var collectionName = "travelers";
             var database = Client.GetDatabase(Databases.Trips);

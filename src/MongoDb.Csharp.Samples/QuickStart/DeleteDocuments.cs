@@ -21,9 +21,9 @@ namespace MongoDb.Csharp.Samples.QuickStart
 
         public async Task Run()
         {
-            await DeleteOperations();
+            await DeleteSamples();
         }
-        private async Task DeleteOperations()
+        private async Task DeleteSamples()
         {
             var usersDatabase = Client.GetDatabase(Core.Databases.Persons);
 

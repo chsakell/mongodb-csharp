@@ -19,10 +19,10 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
         public async Task Run()
         {
-            await MatchStageOperations();
+            await MatchStageSamples();
         }
 
-        private async Task MatchStageOperations()
+        private async Task MatchStageSamples()
         {
             var collectionName = "users";
             var database = Client.GetDatabase(Databases.Persons);

@@ -20,10 +20,10 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 
         public async Task Run()
         {
-            await WriteConcernOperations();
+            await WriteConcernSamples();
         }
 
-        private async Task WriteConcernOperations()
+        private async Task WriteConcernSamples()
         {
             var personsDatabase = Client.GetDatabase(Databases.Persons);
 

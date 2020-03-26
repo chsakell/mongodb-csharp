@@ -19,10 +19,10 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
         public async Task Run()
         {
-            await ComparisonOperatorsOperations();
+            await ComparisonOperatorsSamples();
         }
 
-        private async Task ComparisonOperatorsOperations()
+        private async Task ComparisonOperatorsSamples()
         {
             var collectionName = "users";
             var database = Client.GetDatabase(Databases.Persons);
