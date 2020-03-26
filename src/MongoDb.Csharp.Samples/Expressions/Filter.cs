@@ -130,6 +130,35 @@ namespace MongoDb.Csharp.Samples.Expressions
 
             #endregion
 
+            #region Exercise
+
+            // for each traveler project name and max visited times sorted by visited times among all travelers
+            var exercise_1_linqQuery = travelersQueryableCollection
+                .SelectMany(t => t.VisitedCountries, (t, v) => new
+                {
+                    name = t.Name,
+                    timesVisited = v.TimesVisited
+                })
+                .GroupBy(q => q.name)
+                .Select(g => new { name = g.Key, maxTimesVisited = g.Max(t => t.timesVisited) })
+                .OrderBy(r => r.maxTimesVisited)
+                .ThenBy(r => r.name);
+
+            var exercise_1_linqQueryResults = await exercise_1_linqQuery.ToListAsync();
+
+#if false
+
+            db.travelers.aggregate([
+                { $unwind: "$visitedCountries" },
+                { $project: { _id: 1, name: 1, age: 1, timesVisited: "$visitedCountries.timesVisited" } },
+                { $sort: { timesVisited: -1 } },
+                { $group: { _id: "$_id", name: { $first: "$name" }, maxVisitedTimes: { $max: "$timesVisited" } } },
+                { $sort: { maxVisitedTimes: 1, name: 1 } }
+              ]).pretty();
+
+#endif
+
+            #endregion
         }
     }
 }
