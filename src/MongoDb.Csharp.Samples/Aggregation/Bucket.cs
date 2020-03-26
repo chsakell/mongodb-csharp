@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
@@ -38,7 +39,20 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
             #region Typed
 
-            
+            var aggregate = travelersCollection.Aggregate();
+
+            var bucket = aggregate.Bucket(
+                t => t.Age,
+                new[] { 20, 40, 60, 80 },
+                g => new
+                {
+                    _id = default(int),
+                    averageAge = g.Average(e => e.Age),
+                    totalTravelers = g.Count()
+
+                });
+
+            var bucketResults = await bucket.ToListAsync();
 
             #endregion
 
@@ -47,7 +61,8 @@ namespace MongoDb.Csharp.Samples.Aggregation
             var bsonAggregate = travelersBsonCollection.Aggregate();
             var bsonGroupBy = (AggregateExpressionDefinition<BsonDocument, BsonValue>)"$age";
             var bsonBuckets = 4;
-            var bsonOutput = (ProjectionDefinition<BsonDocument, BsonDocument>)"{ averageAge : { $avg : \"$age\" }, totalTravelers : { $sum : 1 } }";
+            var bsonOutput = (ProjectionDefinition<BsonDocument, BsonDocument>)
+                "{ averageAge : { $avg : \"$age\" }, totalTravelers : { $sum : 1 } }";
             var bsonBucketAuto = bsonAggregate.BucketAuto(bsonGroupBy, bsonBuckets, bsonOutput);
 
             var bsonBucketResults = await bsonBucketAuto.ToListAsync();
@@ -58,7 +73,22 @@ namespace MongoDb.Csharp.Samples.Aggregation
             #region Shell commands
 
 #if false
-
+            db.travelers.aggregate([
+               {
+                  "$bucket":{
+                     "groupBy":"$age",
+                     "boundaries":[20,40,60,80],
+                     "output":{
+                        "averageAge":{
+                           "$avg":"$age"
+                        },
+                        "totalTravelers":{
+                           "$sum":1
+                        }
+                     }
+                  }
+               }
+            ])
 #endif
 
             #endregion
