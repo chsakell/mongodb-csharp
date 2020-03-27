@@ -38,6 +38,7 @@ namespace MongoDb.Csharp.Samples.Core
         Aggregation_Projection,
         Aggregation_Stages_Unwind,
         Aggregation_Stages_Bucket,
+        Aggregation_Stages_Limit_Skip,
         #endregion
 
         #region Expressions
