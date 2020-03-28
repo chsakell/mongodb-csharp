@@ -43,7 +43,7 @@ namespace MongoDb.Csharp.Samples.Aggregation
             #region Top Level
 
             // In find order doesn't matter but in pipelines it does!
-            
+
             // Order users by their birth date, older persons first
 
             var topLevelProjection = Builders<User>.Projection
@@ -92,7 +92,6 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
             #endregion
 
-
             #region Shell commands
 
 #if false
@@ -103,6 +102,46 @@ namespace MongoDb.Csharp.Samples.Aggregation
                 { "$limit": 3 }
             ])
 #endif
+
+            #endregion
+
+            #region Tips
+
+            // 1. Remember to use Slice to paginate in an embedded document array field
+            // Let's paginate in the favoriteSports array field
+            var user = await usersCollection.Find(u => u.FavoriteSports.Count > 10).FirstOrDefaultAsync();
+            Utils.Log(user.Id.ToString());
+
+            var sliceQuery = usersQueryableCollection
+                .Where(u => u.Id == user.Id)
+                .SelectMany(u => u.FavoriteSports, (u, s) => new
+                {
+                    id = u.Id,
+                    sport = s
+                })
+                .OrderBy(u => u.sport)
+                .Skip(skipSize)
+                .Take(limitSize)
+                .GroupBy(q => q.id)
+                // this will create a slice
+                .Select(g => new
+                {
+                    id = g.Key,
+                    sports = g.Select(a => a.sport)
+                });
+
+
+            var sliceQueryResults = await sliceQuery.FirstOrDefaultAsync();
+
+            /*
+            db.users.aggregate([
+                { "$match" : { _id: ObjectId("5e7f6778760dd709946ee276") } },
+                { "$unwind" : "$favoriteSports" },
+                { "$sort" : { favoriteSports: 1 } },
+                { "$group": { _id: '$_id', 'favoriteSports': {$push: '$favoriteSports'} } },
+                { "$project" : { _id: 0, sports: { $slice: ["$favoriteSports", 2, 2] } } }
+            ])
+            */
 
             #endregion
 
