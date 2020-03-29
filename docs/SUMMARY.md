@@ -58,4 +58,7 @@
 * [Unwind](aggregation-framework/unwind-stage.md)
 * [Pagination](aggregation-framework/limit-skip-pagination.md)
 * [Bucket](aggregation-framework/bucket-stage.md)
+* [⭐ Expressions](expressions/README.md)
+  * [Filter](expressions/filter.md)
+  * [Slice](expressions/slice.md)
 
