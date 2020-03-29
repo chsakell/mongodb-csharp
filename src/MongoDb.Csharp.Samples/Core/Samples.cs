@@ -19,7 +19,7 @@ namespace MongoDb.Csharp.Samples.Core
         Crud_Insert_OrderedInsert,
         Crud_Insert_WriteConcern,
 
-        Crud_Read_FindingDocuments,
+        Crud_Read_Basics,
         Crud_Read_Query_ComparisonOperators,
         Crud_Read_Query_LogicalOperators,
         Crud_Read_Query_ElementOperators,
@@ -35,7 +35,7 @@ namespace MongoDb.Csharp.Samples.Core
 
         Aggregation_Stages_Match,
         Aggregation_Stages_Group,
-        Aggregation_Projection,
+        Aggregation_Stages_Projection,
         Aggregation_Stages_Unwind,
         Aggregation_Stages_Bucket,
         Aggregation_Stages_Limit_Skip,

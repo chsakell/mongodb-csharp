@@ -8,7 +8,6 @@ namespace MongoDb.Csharp.Samples.Aggregation
 {
     public class MatchStage : RunnableSample, IRunnableSample
     {
-
         public override Core.Samples Sample => Core.Samples.Aggregation_Stages_Match;
         protected override void Init()
         {

@@ -8,10 +8,10 @@ using MongoDB.Driver;
 
 namespace MongoDb.Csharp.Samples.Crud.Read
 {
-    public class FindingDocuments : RunnableSample, IRunnableSample
+    public class Basics : RunnableSample, IRunnableSample
     {
 
-        public override Core.Samples Sample => Core.Samples.Crud_Read_FindingDocuments;
+        public override Core.Samples Sample => Core.Samples.Crud_Read_Basics;
         protected override void Init()
         {
             // Create a mongodb client

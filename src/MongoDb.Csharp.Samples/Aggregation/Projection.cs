@@ -8,9 +8,9 @@ using MongoDB.Driver.Linq;
 
 namespace MongoDb.Csharp.Samples.Aggregation
 {
-    public class Projection : RunnableSample, IRunnableSample
+    public class ProjectionStage : RunnableSample, IRunnableSample
     {
-        public override Core.Samples Sample => Core.Samples.Aggregation_Projection;
+        public override Core.Samples Sample => Core.Samples.Aggregation_Stages_Projection;
         protected override void Init()
         {
             // Create a mongodb client
