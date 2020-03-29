@@ -84,3 +84,54 @@ As you can see, the solution is presented in 3 different ways. If any other code
 
 ### Repository
 
+All samples of the docs are part of the [mongodb-csharp](https://github.com/chsakell/mongodb-csharp) repository. Each sample is fully isolated and can be tested as long you have setup a local MongoDB server. Also, docs\` structure matches the solution's file and folder structure so that you can easily spot and run the sample you are interested in. What sample runs when you fire the console app, depends on what sample is activated in the _**appsettings.json**_ file.
+
+{% tabs %}
+{% tab title="part of appsetttings.json" %}
+```javascript
+{
+  "Samples": {
+    "QuickStart_AccessDatabases": false,
+    "QuickStart_AccessCollections": false,
+    "QuickStart_InsertDocuments": false,
+    "QuickStart_ReadDocuments": false,
+    "QuickStart_UpdateDocuments": false,
+    "QuickStart_DeleteDocuments": false,
+    "Crud_Insert_OrderedInsert": false,
+    "Crud_Insert_WriteConcern": false,
+    "Crud_Read_Basics": false,
+    "Crud_Read_Query_ComparisonOperators": false,
+    "Crud_Read_Query_LogicalOperators": false,
+    "Crud_Read_Query_ElementOperators": false,
+    "Crud_Read_Query_EvaluationOperators": false,
+    "Crud_Read_Query_ArrayOperators": false,
+    "Crud_Update_BasicOperators": false,
+    "Crud_Update_ReplaceDocuments": false,
+    "Crud_Update_UpdatingArrays": false,
+    "Aggregation_Stages_Match": false,
+    "Aggregation_Stages_Group": false,
+    "Aggregation_Stages_Projection": false,
+    "Aggregation_Stages_Unwind": false,
+    "Aggregation_Stages_Bucket": false,
+    "Aggregation_Stages_Limit_Skip": false,
+    "Expressions_Slice": true,
+    "Expressions_Filter": false
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+According to the above configuration when the app fires, the samples that will run are inside the _Slice.cs_ file in the _**Expressions**_ folder.
+
+{% hint style="warning" %}
+Avoid running multiple samples simultaneously. Each sample usually starts with dropping the database to be used and adding a banch of documents _\(sometimes 1000 documents\)_ to a collection.
+{% endhint %}
+
+## How to contribute
+
+Contribution on the docs is of course highly welcomed as long as it fulfills the following criteria:
+
+* **Request a new sample**: You can open a new issue at the repository's [issues](https://github.com/chsakell/mongodb-csharp/issues) page, as long as there isn't a relative one already. Make sure you have done your search either in the docs or the repo before opening the issue
+* **Fix a sample's code**: Fork the repository and create a Pull request
+
