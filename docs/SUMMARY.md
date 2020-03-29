@@ -51,5 +51,11 @@
 
 ## 🧪 Aggregation Framework
 
-* [Untitled](aggregation-framework/untitled.md)
+* [Basics](aggregation-framework/basics.md)
+* [Project](aggregation-framework/project-stage.md)
+* [Match](aggregation-framework/match-stage.md)
+* [Group](aggregation-framework/group-stage.md)
+* [Unwind](aggregation-framework/unwind-stage.md)
+* [Pagination](aggregation-framework/limit-skip-pagination.md)
+* [Bucket](aggregation-framework/bucket-stage.md)
 
