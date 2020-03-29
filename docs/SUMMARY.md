@@ -4,7 +4,7 @@
 
 ## 📌Getting started
 
-* [Docs structure](getting-started/docs-structure.md)
+* [Environment setup](getting-started/environment-setup.md)
 * [🏃‍♂️ Quick start](getting-started/quick-start/README.md)
   * [Connect to a MongoDB server](getting-started/quick-start/connect-mongodb-server.md)
   * [Access databases](getting-started/quick-start/access-databases.md)
