@@ -1,2 +1,2 @@
-# Quick start
+# 🏃‍♂️ Quick start
 
