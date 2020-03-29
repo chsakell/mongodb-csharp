@@ -15,7 +15,7 @@ namespace MongoDb.Csharp.Samples.Core
             "Baking","Blogging", "Bowling","Collecting", "Hacking", "Backpacking",
             "Canyoning", "Geocaching", "Orienteering", "Golf","Climbing", "Running", "Snow-kiting",
             "Horseback riding", "Photography", "Scuba diving","Wildlife watching",
-            "Wine tourism", "Road Touring"
+            "Wine tourism", "Road Touring", "Reading"
         };
 
         public static List<string> AvailableSports = new List<string>()
@@ -109,6 +109,11 @@ namespace MongoDb.Csharp.Samples.Core
 
         public static List<Traveler> GenerateTravelers(int count, int maximumActivities = 20, string locale = "en")
         {
+            if (maximumActivities > Activities.Count)
+            {
+                maximumActivities = Activities.Count;
+            }
+
             var traveler = new Faker<Traveler>(locale)
                 .RuleFor(t => t.Name, (f, u) => f.Name.FullName())
                 .RuleFor(t => t.Age, (f) => (DateTime.Now.Year - 

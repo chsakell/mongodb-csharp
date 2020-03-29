@@ -15,6 +15,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
             Utils.DropDatabase(Client, Core.Databases.Persons);
+            Utils.DropDatabase(Client, Core.Databases.Trips);
         }
 
         public async Task Run()
@@ -24,6 +25,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
         private async Task CollectionSamples()
         {
             var usersDatabase = Client.GetDatabase(Core.Databases.Persons);
+            var tripsDatabase = Client.GetDatabase(Core.Databases.Trips);
 
             #region Typed classes commands
 
@@ -44,8 +46,35 @@ namespace MongoDb.Csharp.Samples.QuickStart
             // remove collection
             await usersDatabase.DropCollectionAsync(loginsCollectionName);
 
+            #region Capped collection
+
+            // create a capped collection
+            // 'size' field is required when 'capped' is true
+            var travelersCollectionName = "travelers";
+            await tripsDatabase
+                .CreateCollectionAsync(travelersCollectionName,
+                    new CreateCollectionOptions() { Capped = true, MaxDocuments = 3, MaxSize = 10000});
+
+            var travelers = RandomData.GenerateTravelers(3);
+            travelers.First().Name = "Christos";
+
+            var travelersCollection = tripsDatabase.GetCollection<Traveler>(travelersCollectionName);
+
+            await travelersCollection.InsertManyAsync(travelers);
+
+            // Max documents reached - Now let's insert another one
+            await travelersCollection.InsertManyAsync(RandomData.GenerateTravelers(1));
+
+            // Read all the docs
+            var dbTravelers = await travelersCollection.Find(Builders<Traveler>.Filter.Empty).ToListAsync();
+
+            // First user 'Christos' has been removed from the collection so that the new one can fit in
+
             #endregion
-           
+
+
+            #endregion
+
         }
     }
 }
