@@ -51,22 +51,22 @@ var sliceQueryResults = await sliceQuery.ToListAsync();
 {% tab title="BsonDocument" %}
 ```csharp
 var bsonSlicePipeline = new[]
+{
+    new BsonDocument()
+    {
+        {"$project", new BsonDocument()
             {
-                new BsonDocument()
+                {   "name",  1 },
                 {
-                    {"$project", new BsonDocument()
-                        {
-                            {   "name",  1 },
-                            {
-                                "visitedCountries", new BsonDocument()
-                                {
-                                    {"$slice", new BsonArray() { "$visitedCountries", 1 } }
-                                }
-                            }
-                        }
+                    "visitedCountries", new BsonDocument()
+                    {
+                        {"$slice", new BsonArray() { "$visitedCountries", 1 } }
                     }
                 }
-            };
+            }
+        }
+    }
+};
 ```
 {% endtab %}
 
