@@ -1,29 +1,25 @@
+---
+description: Installation requirements & source code download
+---
+
 # Environment setup
 
-## Getting Super Powers
+## MongoDB server installation
 
-Becoming a super hero is a fairly straight forward process:
+In case you want to run and debug the samples existing in these docs locally, your development machine should have at least the followings configured:
 
+* **A MongoDB instance**: If you haven't any instance installed on your machine, you can download the [Community Edition](https://docs.mongodb.com/manual/administration/install-community/) which is free. Depending on your computer's OS, click the respective link and follow the instructions.
+* **.NET Core SDK:** Download the latest .NET Core SDK from Microsoft's official [page](https://dotnet.microsoft.com/download).
 
-
-
-
-```
-$ give me super-powers
-```
-
-{% hint style="info" %}
- Super-powers are granted randomly so please submit an issue if you're not happy with yours.
+{% hint style="success" %}
+Both MongoDB and .NET Core are open source projects which means you can run the samples either in a MAC, Linux or Windows machine 👏 
 {% endhint %}
 
-Once you're strong enough, save the world:
+## ⬇ Clone the repository
 
-{% code title="hello.sh" %}
-```bash
-# Ain't no code for that yet, sorry
-echo 'You got to trust me on this, I saved the world'
+You can download the source code for the docs by either selecting _**Clone or download**_ in the repository's [page](https://github.com/chsakell/mongodb-csharp) or by running the following git command
+
 ```
-{% endcode %}
-
-
+git clone https://github.com/chsakell/mongodb-csharp.git
+```
 
