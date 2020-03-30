@@ -16,7 +16,7 @@ It depends on what your are looking for. In case this is the very first time you
 
 On the other hand, in case you already have some experience with the driver and you simply want to find a sample that may help you solve your problem, just search for it. 
 
-### Samples
+### ✨ Samples
 
 All pages contain some introductory theory to get the reader on the right context. For all samples the solutions are presented in 3 different ways:
 
@@ -39,9 +39,10 @@ var travelersQueryableCollection = tripsDatabase
     .GetCollection<Traveler>(travelersCollectionName).AsQueryable();
 
 var sliceQuery = from t in travelersQueryableCollection
-                select new {
-                            t.Name, 
-                            visitedCountries = t.VisitedCountries.Take(1)
+                select new 
+                {
+                       t.Name, 
+                       visitedCountries = t.VisitedCountries.Take(1)
                 };
             
 var sliceQueryResults = await sliceQuery.ToListAsync();
@@ -74,7 +75,12 @@ var bsonSlicePipeline = new[]
 ```javascript
 db.travelers
 .aggregate()
- .project({ name: 1, visitedCountries : { $slice: ["$visitedCountries", 1] } })
+ .project({ 
+            name: 1, 
+            visitedCountries : 
+            { 
+                       $slice: ["$visitedCountries", 1] 
+            }})
  .pretty()
 ```
 {% endtab %}
