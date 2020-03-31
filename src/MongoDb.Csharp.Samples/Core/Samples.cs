@@ -32,7 +32,6 @@ namespace MongoDb.Csharp.Samples.Core
         #endregion
 
         #region Aggregation
-
         Aggregation_Stages_Match,
         Aggregation_Stages_Group,
         Aggregation_Stages_Projection,
@@ -43,9 +42,12 @@ namespace MongoDb.Csharp.Samples.Core
 
         #region Expressions
         Expressions_Slice,
-        Expressions_Filter
+        Expressions_Filter,
+        #endregion
 
-
+        #region Security
+        Security_Users,
+        Security_Roles
         #endregion
     }
 }
