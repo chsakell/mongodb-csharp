@@ -1,12 +1,44 @@
+---
+description: Run Forest run!
+---
+
 # 🏃‍♂️ Quick start
 
-## Can I become who I want to be?
+## Do you like shortcuts?
 
-That's a tough question but thankfully, our team is on it. Please bear with us while we're investigating.
+If the answer is yes then you are on the right page. Quick start section can help you get your hands dirty right on, having samples with the most used CRUD ➕➖📝 ❌ operations when dealing with any database. You will learn step by step how to:
 
-## Have you had a chance to answer the previous question?
+1. Connect to a MongoDB instance
+2. List all databases exist in the instance
+3. List all collections exist in a specific database
+4. Insert one or many documents at once in a collection
+5. Search for and read documents from a collection
+6. Update one or more documents in a collection
+7. Delete one or more document in a collection
 
-Yes, after a few months we finally found the answer. Sadly, Mike is on vacations right now so I'm afraid we are not able to provide the answer at this point.
+ 
 
+{% hint style="info" %}
+Quick start is recommended for those who are have never used the MongoDB .NET driver 
+{% endhint %}
 
+## Install Nuget packages
+
+To start writing MongoDB queries using the MongoDB C\# driver, you need to install **MongoDB.Driver** Nuget package in your project with one of the following ways:
+
+### dotnet CLI
+
+```csharp
+dotnet add package MongoDB.Driver
+```
+
+### Visual Studio
+
+Open the _Nuget Package Manager_, search for and install the package.
+
+### Nuget Package Manager
+
+```csharp
+Install-Package Elmah
+```
 
