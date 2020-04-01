@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Newtonsoft.Json;
@@ -12,7 +13,8 @@ namespace MongoDb.Csharp.Samples.Core
 {
     public class Utils
     {
-        public static string DefaultConnectionString = "mongodb://localhost:27017";
+        public static string DefaultConnectionString = 
+            Program.Configuration.GetConnectionString("MongoDBConnection"); // "mongodb://localhost:27017";
         private static string EmptySpace = "                     ";
 
         public static void Log(string message)
