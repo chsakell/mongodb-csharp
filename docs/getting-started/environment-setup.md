@@ -23,3 +23,12 @@ You can download the source code for the docs by either selecting _**Clone or do
 git clone https://github.com/chsakell/mongodb-csharp.git
 ```
 
+After doing so, don't forget to set the connection string to point your MongoDB instance in the _appsettings.json_ file.
+
+```javascript
+{
+  "ConnectionStrings": {
+    "MongoDBConnection": "mongodb://localhost:27017"
+}
+```
+
