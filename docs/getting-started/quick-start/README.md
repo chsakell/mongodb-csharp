@@ -16,15 +16,13 @@ If the answer is yes then you are on the right page. Quick start section can hel
 6. Update one or more documents in a collection
 7. Delete one or more document in a collection
 
- 
-
 {% hint style="info" %}
 Quick start is recommended for those who are have never used the MongoDB .NET driver 
 {% endhint %}
 
 ## Install Nuget packages
 
-To start writing MongoDB queries using the MongoDB C\# driver, you need to install **MongoDB.Driver** Nuget package in your project with one of the following ways:
+To start writing MongoDB queries using C\# , you need to install the **MongoDB.Driver**  🚘 Nuget package in your project with one of the following ways:
 
 ### dotnet CLI
 
