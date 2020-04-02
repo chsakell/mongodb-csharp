@@ -14,7 +14,7 @@ namespace MongoDb.Csharp.Samples.Core
     public class Utils
     {
         public static string DefaultConnectionString = 
-            Program.Configuration.GetConnectionString("MongoDBConnection"); // "mongodb://localhost:27017";
+            Program.Configuration.GetConnectionString("MongoDBConnection");
         private static string EmptySpace = "                     ";
 
         public static void Log(string message)

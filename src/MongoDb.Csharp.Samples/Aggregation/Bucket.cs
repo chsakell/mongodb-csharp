@@ -14,7 +14,7 @@ namespace MongoDb.Csharp.Samples.Aggregation
         public override Core.Samples Sample => Core.Samples.Aggregation_Stages_Bucket;
         protected override void Init()
         {
-            // Create a mongodb client
+            // Create a mongodb client using a connection string
             Client = new MongoClient(Utils.DefaultConnectionString);
             Utils.DropDatabase(Client, Databases.Trips);
         }
