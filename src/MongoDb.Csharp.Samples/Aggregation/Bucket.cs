@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 
 namespace MongoDb.Csharp.Samples.Aggregation
 {
