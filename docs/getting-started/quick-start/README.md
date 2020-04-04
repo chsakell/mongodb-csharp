@@ -1,5 +1,5 @@
 ---
-description: Run Forest run!
+description: Run Forrest run!
 ---
 
 # 🏃‍♂️ Quick start
@@ -22,7 +22,7 @@ Quick start is recommended for those who are have never used the MongoDB .NET dr
 
 ## Install Nuget packages
 
-To start writing MongoDB queries using C\# , you need to install the **MongoDB.Driver**  🚘 Nuget package in your project with one of the following ways:
+To start writing MongoDB queries using C\# , you need to install the **MongoDB.Driver** 🚘 Nuget package in your project with one of the following ways:
 
 ### dotnet CLI
 
@@ -37,6 +37,6 @@ Open the _Nuget Package Manager_, search for and install the package.
 ### Nuget Package Manager
 
 ```csharp
-Install-Package Elmah
+Install-Package MongoDB.Driver
 ```
 

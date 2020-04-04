@@ -10,6 +10,10 @@ MongoDB has been evolved dramatically over the years 💪 resulting more develop
 
 These MongoDB C\# driver docs have been created for one purpose and one purpose only - to **bridge the gap between MongoDB and C\# developers** 👏. You will find numerous samples solving problems all developers facing on a daily basis.
 
+{% hint style="warning" %}
+These docs cannot replace the official MongoDB documentation but instead act as a complementary reference, especially for C\# developers 
+{% endhint %}
+
 ## ❓ How to read the docs
 
 It depends on what your are looking for. In case this is the very first time your are dealing with MongoDB using the [C\# driver](https://docs.mongodb.com/ecosystem/drivers/csharp/) then you should definitely read the entire Getting Started section from top to bottom.
