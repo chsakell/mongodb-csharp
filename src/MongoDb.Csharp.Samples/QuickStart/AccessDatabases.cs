@@ -46,6 +46,13 @@ namespace MongoDb.Csharp.Samples.QuickStart
             })).FirstOrDefault();
             Utils.Log(adminDatabase);
 
+            var highSizeDatabases = await Client.ListDatabases(new ListDatabasesOptions
+            {
+                Filter = Builders<BsonDocument>.Filter.Gte("sizeOnDisk", 60000),
+                NameOnly = true
+            }).ToListAsync();
+            Utils.Log(highSizeDatabases);
+
             // Returns the names of the databases on the server.
             var databaseNames = (await Client.ListDatabaseNamesAsync()).ToList();
 
