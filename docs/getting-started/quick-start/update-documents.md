@@ -59,7 +59,58 @@ if (bsonPersonUpdateResult.MatchedCount == 1 &&
 
 {% tab title="Shell" %}
 ```javascript
-db.users.updateOne({ _id: Object("") }, { $set: {  phone: "123-456-789" } })
+db.users.updateOne(
+{_id: ObjectId("5e8a35e2cc20587f34f0cc48") }, 
+{ $set: {  phone: "123-456-789" }})
+```
+{% endtab %}
+
+{% tab title="Sample document" %}
+```javascript
+{
+	"_id" : ObjectId("5e89b1db4cd4d45b2039f401"),
+	"gender" : 1,
+	"firstName" : "Jo",
+	"lastName" : "Goyette",
+	"userName" : "Jo.Goyette",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/colgruv/128.jpg",
+	"email" : "Jo.Goyette32@yahoo.com",
+	"dateOfBirth" : ISODate("1995-09-13T17:24:30.390+03:00"),
+	"address" : {
+		"street" : "658 Batz Parks",
+		"suite" : "Suite 166",
+		"city" : "Lake Veronica",
+		"state" : "New Mexico",
+		"zipCode" : "09760-2248",
+		"geo" : {
+			"lat" : 41.4404,
+			"lng" : 110.3882
+		}
+	},
+	"phone" : "488-973-7447",
+	"website" : "kavon.org",
+	"company" : {
+		"name" : "Rodriguez, Cormier and West",
+		"catchPhrase" : "Focused interactive frame",
+		"bs" : "visualize clicks-and-mortar ROI"
+	},
+	"salary" : 4043,
+	"monthlyExpenses" : 2428,
+	"favoriteSports" : [
+		"Moto GP",
+		"Water Polo",
+		"MMA",
+		"Baseball",
+		"Formula 1",
+		"Basketball",
+		"Darts",
+		"Cricket",
+		"Ice Hockey",
+		"Snooker",
+		"Boxing"
+	],
+	"profession" : "Visual Designer"
+}
 ```
 {% endtab %}
 
@@ -141,6 +192,97 @@ db.users.updateMany(
     { $and: [{ salary: { $gt: 1200} }, {salary: { $lt: 3500} }] },
     { $set: { salary: 4000  } }
 )
+```
+{% endtab %}
+
+{% tab title="Sample data" %}
+```javascript
+{
+	"_id" : ObjectId("5e89b1db4cd4d45b2039f401"),
+	"gender" : 1,
+	"firstName" : "Jo",
+	"lastName" : "Goyette",
+	"userName" : "Jo.Goyette",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/colgruv/128.jpg",
+	"email" : "Jo.Goyette32@yahoo.com",
+	"dateOfBirth" : ISODate("1995-09-13T17:24:30.390+03:00"),
+	"address" : {
+		"street" : "658 Batz Parks",
+		"suite" : "Suite 166",
+		"city" : "Lake Veronica",
+		"state" : "New Mexico",
+		"zipCode" : "09760-2248",
+		"geo" : {
+			"lat" : 41.4404,
+			"lng" : 110.3882
+		}
+	},
+	"phone" : "488-973-7447",
+	"website" : "kavon.org",
+	"company" : {
+		"name" : "Rodriguez, Cormier and West",
+		"catchPhrase" : "Focused interactive frame",
+		"bs" : "visualize clicks-and-mortar ROI"
+	},
+	"salary" : 4043,
+	"monthlyExpenses" : 2428,
+	"favoriteSports" : [
+		"Moto GP",
+		"Water Polo",
+		"MMA",
+		"Baseball",
+		"Formula 1",
+		"Basketball",
+		"Darts",
+		"Cricket",
+		"Ice Hockey",
+		"Snooker",
+		"Boxing"
+	],
+	"profession" : "Visual Designer"
+},
+
+/* 2 createdAt:4/5/2020, 1:24:27 PM*/
+{
+	"_id" : ObjectId("5e89b1db4cd4d45b2039f400"),
+	"gender" : 1,
+	"firstName" : "Krista",
+	"lastName" : "Terry",
+	"userName" : "Krista2",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/thatonetommy/128.jpg",
+	"email" : "Krista56@gmail.com",
+	"dateOfBirth" : ISODate("1962-01-01T08:33:16.332+02:00"),
+	"address" : {
+		"street" : "2129 Littel Ranch",
+		"suite" : "Apt. 754",
+		"city" : "Lake Mekhiland",
+		"state" : "Maine",
+		"zipCode" : "82783-2819",
+		"geo" : {
+			"lat" : 80.7146,
+			"lng" : -160.1533
+		}
+	},
+	"phone" : "1-900-550-1115 x68908",
+	"website" : "burley.biz",
+	"company" : {
+		"name" : "Toy LLC",
+		"catchPhrase" : "Cloned encompassing emulation",
+		"bs" : "architect 24/365 networks"
+	},
+	"salary" : 4514,
+	"monthlyExpenses" : 6098,
+	"favoriteSports" : [
+		"Basketball",
+		"Volleyball",
+		"Formula 1",
+		"Darts",
+		"Baseball",
+		"Table Tennis",
+		"Ice Hockey"
+	],
+	"profession" : "Founder / Entrepreneur"
+}
 ```
 {% endtab %}
 

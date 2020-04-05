@@ -146,6 +146,15 @@ db.users.insertOne({
 })
 ```
 {% endtab %}
+
+{% tab title="Sample result" %}
+```javascript
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("5e8a39059c819d22e031c4f4")
+}
+```
+{% endtab %}
 {% endtabs %}
 
 {% hint style="danger" %}
@@ -156,6 +165,8 @@ db.users.insertOne({
 
 To add multiple documents at once, you can use the `InsertMany` collection method.
 
+{% tabs %}
+{% tab title="Typed" %}
 {% code title="InsertDocuments.cs" %}
 ```csharp
 // generate 10 users
@@ -165,4 +176,22 @@ var persons = RandomData.GenerateUsers(10);
 await personsCollection.InsertManyAsync(persons);
 ```
 {% endcode %}
+{% endtab %}
+
+{% tab title="Sample result" %}
+```javascript
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("5e8a393f9c819d22e031c4f5"),
+		ObjectId("5e8a393f9c819d22e031c4f6")
+	]
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="success" %}
+Notice that insert operations return the **inserted** _Id\(s_\) as part of the result. This way, the driver automatically updates the _Id_ field on the argument\(s\) passed on the update operation
+{% endhint %}
 
