@@ -21,8 +21,9 @@ var personsCollection = usersDatabase.GetCollection<User>("users");
 var filter = Builders<User>.Filter
     .Eq(person => person.Id, appPerson.Id);
 
-// Create a Set update definition    
-var update = Builders<User>.Update.Set(person => person.Phone, "123-456-789");
+// Create an update definition using the Set operator    
+var update = Builders<User>.Update
+    .Set(person => person.Phone, "123-456-789");
 
 // Update the document
 var personUpdateResult = await personsCollection.UpdateOneAsync(filter, update);
@@ -80,14 +81,79 @@ db.users.updateOne({ _id: Object("") }, { $set: {  phone: "123-456-789" } })
 Remember that if the document already has the same value that you want to update to, `modifiedCount` will be 0
 {% endhint %}
 
-Once you're strong enough, save the world:
+## Update multiple documents
 
-{% code title="hello.sh" %}
-```bash
-# Ain't no code for that yet, sorry
-echo 'You got to trust me on this, I saved the world'
+To update many documents at once, follow the same process but this time use the `UpdateMany` method.
+
+The following example filters user documents having _salary_ greater than 1200 and less than 3500 and set the _salary_ value to 4000.
+
+{% tabs %}
+{% tab title="Typed" %}
+{% code title="UpdateDocuments.cs" %}
+```csharp
+// Create a filter by combining a Greater & Less than filters
+var salaryFilter = Builders<User>.Filter
+    .And(
+        Builders<User>.Filter.Gt(person => person.Salary, 1200),
+        Builders<User>.Filter.Lt(person => person.Salary, 3500)
+        );
+
+// This is just for demonstration - validate the update result
+var totalPersons = await personsCollection
+    .Find(salaryFilter).CountDocumentsAsync();
+
+// Create an update definition using the Set operator 
+var updateDefinition = Builders<User>.Update
+    .Set(person => person.Salary, 4000);
+
+var updateResult = await personsCollection
+    .UpdateManyAsync(salaryFilter, updateDefinition);
+
+if (updateResult.MatchedCount.Equals(totalPersons))
+{
+    Utils.Log($"Salary has been updated for {totalPersons}");
+}
 ```
 {% endcode %}
+{% endtab %}
+
+{% tab title="BsonDocument" %}
+```csharp
+// Create a filter by combining a Greater & Less than filters
+var bsonSalaryFilter = Builders<BsonDocument>.Filter
+    .And(
+        Builders<BsonDocument>.Filter.Gt("salary", 1200),
+        Builders<BsonDocument>.Filter.Lt("salary", 3500)
+    );
+
+// Create an update definition using the Set operator 
+var bsonUpdateDefinition =
+    Builders<BsonDocument>.Update.Set("salary", 4000);
+
+var bsonUpdateResult = await bsonPersonCollection
+    .UpdateManyAsync(bsonSalaryFilter, bsonUpdateDefinition);
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.users.updateMany(
+    { $and: [{ salary: { $gt: 1200} }, {salary: { $lt: 3500} }] },
+    { $set: { salary: 4000  } }
+)
+```
+{% endtab %}
+
+{% tab title="Sample result" %}
+```javascript
+{
+	"acknowledged" : true,
+	"matchedCount" : 20,
+	"modifiedCount" : 20
+}
+```
+{% endtab %}
+{% endtabs %}
 
 
 
