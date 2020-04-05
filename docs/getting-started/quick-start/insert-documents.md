@@ -166,5 +166,3 @@ await personsCollection.InsertManyAsync(persons);
 ```
 {% endcode %}
 
-## The Id member
-
