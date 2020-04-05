@@ -9,7 +9,7 @@ To update a document in MongoDB you need to configure 2 basic things:
 
 After configuring the above two, you use the `UpdateOne` method on an `IMongoCollection<T>` reference.
 
-The following example updates the phone number of a user's document filter by its id.
+The following example updates the phone number of a user's document filter by its _id_.
 
 {% tabs %}
 {% tab title="Typed" %}
@@ -116,7 +116,11 @@ db.users.updateOne(
 
 {% tab title="Result" %}
 ```javascript
-
+{
+	"acknowledged" : true,
+	"matchedCount" : 1,
+	"modifiedCount" : 1
+}
 ```
 {% endtab %}
 {% endtabs %}
