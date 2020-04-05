@@ -49,9 +49,9 @@ namespace MongoDb.Csharp.Samples.QuickStart
             var filter = Builders<User>.Filter.Eq(person => person.Id, appPerson.Id);
 
             // update person
-            var update = Builders<User>.Update.Set(person => person.Phone, "12345");
+            var update = Builders<User>.Update.Set(person => person.Phone, "123-456-789");
             var personUpdateResult = await personsCollection.UpdateOneAsync(filter, update);
-            if (personUpdateResult.MatchedCount == 1)
+            if (personUpdateResult.MatchedCount == 1 && personUpdateResult.ModifiedCount == 1)
             {
                 Utils.Log( $"Document {appPerson.Id} Updated");
             }
@@ -68,7 +68,9 @@ namespace MongoDb.Csharp.Samples.QuickStart
 
             var updateDefinition =
                 Builders<User>.Update.Set(person => person.Salary, 4000);
+
             var updateResult = await personsCollection.UpdateManyAsync(salaryFilter, updateDefinition);
+
             if (updateResult.MatchedCount.Equals(totalPersons))
             {
                 Utils.Log($"Salary has been updated for {totalPersons}");
@@ -83,11 +85,22 @@ namespace MongoDb.Csharp.Samples.QuickStart
             var bsonSingleFilter = Builders<BsonDocument>.Filter.Eq("_id", appPerson.Id);
             var bsonUpdate = Builders<BsonDocument>.Update.Set("phone", "123-456-678");
             var bsonPersonUpdateResult = await bsonPersonCollection.UpdateOneAsync(bsonSingleFilter, bsonUpdate);
-            if (bsonPersonUpdateResult.MatchedCount == 1)
+            if (bsonPersonUpdateResult.MatchedCount == 1 && bsonPersonUpdateResult.ModifiedCount == 1)
             {
                 Utils.Log("Person updated");
             }
 
+            var bsonSalaryFilter = Builders<BsonDocument>.Filter
+                .And(
+                    Builders<BsonDocument>.Filter.Gt("salary", 1200),
+                    Builders<BsonDocument>.Filter.Lt("salary", 3500)
+                );
+
+            var bsonUpdateDefinition =
+                Builders<BsonDocument>.Update.Set("salary", 4000);
+
+            var bsonUpdateResult = await bsonPersonCollection.UpdateManyAsync(bsonSalaryFilter, bsonUpdateDefinition);
+                        
             #endregion
 
             #region Shell commands
