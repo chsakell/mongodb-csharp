@@ -15,7 +15,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Core.Databases.Persons);
+            Utils.DropDatabase(Client, Databases.Persons);
         }
 
         public async Task Run()
@@ -35,7 +35,6 @@ namespace MongoDb.Csharp.Samples.QuickStart
             // Insert one document
             await personsCollection.InsertOneAsync(appPerson);
 
-
             // Insert multiple documents
             var persons = RandomData.GenerateUsers(30);
 
@@ -45,27 +44,33 @@ namespace MongoDb.Csharp.Samples.QuickStart
             #region Typed classes commands
 
             // Find a person using a class filter
-            var classSingleFilter = Builders<User>.Filter.Eq(person => person.Id, appPerson.Id);
-            var personInserted = await personsCollection.Find(classSingleFilter).FirstOrDefaultAsync();
-            Utils.Log(personInserted.ToBsonDocument(), "Document Find with filter");
+            var personFilter = Builders<User>.Filter.Eq(person => person.Id, appPerson.Id);
+            var personFindResult = await personsCollection.Find(personFilter).FirstOrDefaultAsync();
+            Utils.Log(personFindResult.ToBsonDocument(), "Document Find with filter");
 
             // Find multiple documents using a filter
 
-            var classFemaleGenderFilter = Builders<User>.Filter.Eq(person => person.Gender, Gender.Female);
-            var females = await personsCollection.Find(classFemaleGenderFilter).ToListAsync();
+            var femaleGenderFilter = Builders<User>.Filter.Eq(person => person.Gender, Gender.Female);
+            var females = await personsCollection.Find(femaleGenderFilter).ToListAsync();
             Utils.Log($"Found {females.Count} female persons");
 
             #endregion
 
             #region BsonDocument commands
-
-            // Find a person using a class filter
-            var bsonSingleFilter = Builders<BsonDocument>.Filter.Eq("_id", appPerson.Id);
             // we need to get the BsonDocument schema based collection
             var bsonPersonCollection = usersDatabase.GetCollection<BsonDocument>("users");
-            var bsonPersonInserted = await bsonPersonCollection.Find(bsonSingleFilter).FirstOrDefaultAsync();
-            bsonPersonInserted = await bsonPersonCollection.Find(new BsonDocument("_id", personInserted.Id)).FirstOrDefaultAsync();
-            Utils.Log(bsonPersonInserted);
+
+            // Create a bson filter
+            var bsonPersonFilter = Builders<BsonDocument>.Filter.Eq("_id", appPerson.Id);
+
+            // Find a person using a class filter
+            var bsonPersonFindResult = await bsonPersonCollection.Find(bsonPersonFilter).FirstOrDefaultAsync();
+            bsonPersonFindResult = await bsonPersonCollection.Find(new BsonDocument("_id", appPerson.Id)).FirstOrDefaultAsync();
+            Utils.Log(bsonPersonFindResult);
+
+            var bsonFemaleGenderFilter = Builders<BsonDocument>.Filter.Eq("gender", Gender.Female);
+            var bsonFemales = await bsonPersonCollection.Find(bsonFemaleGenderFilter).ToListAsync();
+
             #endregion
 
             #region Shell commands
@@ -82,7 +87,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
             // find multiple documents
             db.users.find(
             {
-                "Gender": 0
+                "gender": 1
             })
              */
 
