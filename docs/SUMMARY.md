@@ -17,8 +17,7 @@
 ## 📑 CRUD Basics
 
 * [➕ Create](create-documents/README.md)
-  * [InsertOne](create-documents/insert-one.md)
-  * [InsertMany](create-documents/insert-many.md)
+  * [Id Member](create-documents/id-member.md)
   * [Ordered insert](create-documents/ordered-insert.md)
 * [🔎 Read](read-documents/README.md)
   * [Basics](read-documents/basics.md)
