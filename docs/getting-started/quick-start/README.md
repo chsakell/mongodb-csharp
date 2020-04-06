@@ -6,7 +6,7 @@ description: Run Forrest run!
 
 ## Do you like shortcuts?
 
-If the answer is yes then you are on the right page. Quick start section can help you get your hands dirty right on, having samples with the most used CRUD ➕➖📝 ❌ operations when dealing with any database. You will learn step by step how to:
+If the answer is yes then you are on the right page. Quick start section can help you get your hands dirty right on as it contains samples with the most common CRUD ➕➖📝 ❌ operations when dealing with any database. You will learn step by step how to:
 
 1. Connect to a MongoDB instance
 2. List all databases exist in the instance
@@ -17,7 +17,7 @@ If the answer is yes then you are on the right page. Quick start section can hel
 7. Delete one or more document in a collection
 
 {% hint style="info" %}
-Quick start is recommended for those who are have never used the MongoDB .NET driver 
+Quick start is recommended for those who have never used the `MongoDB .NET` driver 
 {% endhint %}
 
 ## Install Nuget packages
