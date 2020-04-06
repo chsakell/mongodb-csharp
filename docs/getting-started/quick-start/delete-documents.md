@@ -57,7 +57,8 @@ db.users.deleteOne({ _id : ObjectId("5e5ff25170dc588dd0870073")})
 {% endtabs %}
 
 {% hint style="warning" %}
- When your filter criteria matches more the one document, the first document that matches the filter will be removed. 
+*  When your filter criteria matches more the one document, the first document that matches the filter will be removed
+*  Use a field that is [unique](https://docs.mongodb.com/manual/reference/glossary/#term-unique-index) across a single collection to be more precise
 {% endhint %}
 
 ## Delete the first document in the collection
