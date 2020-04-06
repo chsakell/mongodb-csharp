@@ -100,7 +100,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
                 Builders<BsonDocument>.Update.Set("salary", 4000);
 
             var bsonUpdateResult = await bsonPersonCollection.UpdateManyAsync(bsonSalaryFilter, bsonUpdateDefinition);
-                        
+
             #endregion
 
             #region Shell commands
@@ -109,7 +109,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
             use Persons
 
             // update a single document
-            db.users.updateOne({}, { $set: {  phone: "123-456-678" } })
+            db.users.updateOne({ _id: ObjectId("5e8a35e2cc20587f34f0cc48") }, { $set: {  phone: "123-456-789" } })
 
             // update multiple documents
             db.users.updateMany(

@@ -15,7 +15,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Core.Databases.Persons);
+            Utils.DropDatabase(Client, Databases.Persons);
         }
 
         public async Task Run()
@@ -53,6 +53,13 @@ namespace MongoDb.Csharp.Samples.QuickStart
                 Utils.Log($"Document {appPerson.Id} deleted");
             }
 
+            // Delete the first document
+
+            var emptyFilter = Builders<User>.Filter.Empty;
+
+            // delete person
+            var firstPersonDeleteResult = await personsCollection.DeleteOneAsync(emptyFilter);
+            
             // Find multiple documents having 1200 < salary < 3500 
 
             var salaryFilter = Builders<User>.Filter
@@ -82,6 +89,11 @@ namespace MongoDb.Csharp.Samples.QuickStart
             {
                 Utils.Log("Person deleted");
             }
+
+            var bsonEmptyFilter = Builders<BsonDocument>.Filter.Empty;
+
+            // delete person
+            var bsonFirstPersonDeleteResult = await bsonPersonCollection.DeleteOneAsync(bsonEmptyFilter);
 
             // delete many documents
             var bsonPersonsDeleteResult = await bsonPersonCollection.DeleteManyAsync(bsonSingleFilter);
