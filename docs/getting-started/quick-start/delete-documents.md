@@ -108,7 +108,7 @@ db.users.deleteOne({})
 
 To remove more that one documents at the same time, create a filter definition to match the documents you wish to delete and use the `DeleteMany` method on an `IMongoCollection`. 
 
-The following example shows how to delete user documents that have _salary_ greater than 1200 and less than 3500.
+The following example shows how to delete user documents based on the _salary_ field .
 
 {% tabs %}
 {% tab title="Typed" %}
