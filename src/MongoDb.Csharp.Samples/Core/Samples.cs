@@ -16,6 +16,7 @@ namespace MongoDb.Csharp.Samples.Core
 
         #region CRUD
 
+        Crud_Insert_IdMember,
         Crud_Insert_OrderedInsert,
         Crud_Insert_WriteConcern,
 

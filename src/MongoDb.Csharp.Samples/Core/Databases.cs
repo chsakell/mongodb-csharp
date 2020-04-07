@@ -6,5 +6,6 @@
         public const string Betting = "Betting";
         public const string Orders = "Orders";
         public const string Trips = "Trips";
+        public const string Chat = "Chat";
     }
 }
