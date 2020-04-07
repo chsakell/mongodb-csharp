@@ -1,20 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDb.Csharp.Samples.Core;
-using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 using Utils = MongoDb.Csharp.Samples.Core.Utils;
 
-namespace MongoDb.Csharp.Samples.QuickStart
+namespace MongoDb.Csharp.Samples.Crud.Insert
 {
     public class IdMember : RunnableSample, IRunnableSample
     {
         public override Core.Samples Sample => Core.Samples.Crud_Insert_IdMember;
+
         protected override void Init()
         {
             // Create a mongodb client
@@ -26,6 +23,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
         {
             await IdMemberSamples();
         }
+
         private async Task IdMemberSamples()
         {
             var chatDatabase = Client.GetDatabase(Databases.Chat);
@@ -38,69 +36,78 @@ namespace MongoDb.Csharp.Samples.QuickStart
             #endregion
 
             #region Typed classes commands
-          
 
-            var message = new Message { Text = "hello world" };
+
+            var message = new Message {Text = "hello world"};
             await messagesCollection.InsertOneAsync(message);
             Utils.Log(message.ToBsonDocument());
 
             #endregion
-
-            #region BsonDocument commands
-
-            #endregion
-
-            #region Shell commands
-
-            #endregion
         }
-    }
 
-    // Sample 1
-    // MongoDB.Driver.MongoWriteException: A write operation resulted in an error.
-    // E11000 duplicate key error collection: Chat.messages index: _id_ dup key: { _id: null }
-    //public class Message
-    //{
-    //    public string Id { get; set; }
-    //    public string Text { get; set; }
-    //}
+        // Sample 1
+        // MongoDB.Driver.MongoWriteException: A write operation resulted in an error.
+        // E11000 duplicate key error collection: Chat.messages index: _id_ dup key: { _id: null }
+        //public class Message
+        //{
+        //    public string Id { get; set; }
+        //    public string Text { get; set; }
+        //}
 
-    // Sample 2
-    // Requires the attribute
-    //public class Message
-    //{
-    //[BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
-    //public string Id { get; set; }
-    //public string Text { get; set; }
-    //}
+        // Sample 2
+        // Requires the attribute
+        //public class Message
+        //{
+        //[BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
+        //public string Id { get; set; }
+        //public string Text { get; set; }
+        //}
 
-    // Sample 3_1
-    // Works without attributes
-    //public class Message
-    //{
-    //    public Guid Id { get; set; }
-    //    public string Text { get; set; }
-    //}
+        // Sample 3_1
+        // Works without attributes
+        //public class Message
+        //{
+        //    public Guid Id { get; set; }
+        //    public string Text { get; set; }
+        //}
 
-    // Sample 3_2
-    //public class Message
-    //{
-    //    [BsonId(IdGenerator = typeof(GuidGenerator))]
-    //    public Guid MyCustomId { get; set; }
-    //    public string Text { get; set; }
-    //}
+        // Sample 3_2
+        //public class Message
+        //{
+        //    [BsonId(IdGenerator = typeof(GuidGenerator))]
+        //    public Guid MyCustomId { get; set; }
+        //    public string Text { get; set; }
+        //}
 
-    // Sample 4
-    //public class Message
-    //{
-    //    public BsonObjectId Id { get; set; }
-    //    public string Text { get; set; }
-    //}
+        // Sample 3_3
+        //public class Message
+        //{
+        //    [BsonId(IdGenerator = typeof(CombGuidGenerator))]
+        //    public Guid MyCustomId { get; set; }
+        //    public string Text { get; set; }
+        //}
 
-    public class Message
-    {
-        [BsonId]
-        public BsonObjectId MyCustomId { get; set; }
-        public string Text { get; set; }
+        // Sample 4_1
+        //public class Message
+        //{
+        //    public BsonObjectId Id { get; set; }
+        //    public string Text { get; set; }
+        //}
+
+        // Sample 4_2
+        //public class Message
+        //{
+        //    [BsonId] public BsonObjectId MyCustomId { get; set; }
+        //    public string Text { get; set; }
+        //}
+
+        // Sample 5
+        // Throws exception System.InvalidOperationException: Id cannot be null.
+        public class Message
+        {
+            [BsonId(IdGenerator = typeof(NullIdChecker))]
+            public object Id { get; set; }
+            public string Text { get; set; }
+        }
     }
 }
