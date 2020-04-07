@@ -5,7 +5,8 @@
 In order to read/write data from/to a database collection, first you need to get a reference to that collection. The collection doesn't have to exist already and if it doesn't, the very first time you run a read or write operation, it will be created automatically for you.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="Typed" %}
+{% code title="AccessCollections.cs" %}
 ```csharp
 // Get a reference to the database
 var usersDatabase = Client.GetDatabase(Databases.Persons);
@@ -13,6 +14,7 @@ var usersDatabase = Client.GetDatabase(Databases.Persons);
 // Get a reference to a database's collection named 'users'
 var personsTypedCollection = usersDatabase.GetCollection<User>("users");
 ```
+{% endcode %}
 {% endtab %}
 
 {% tab title="User" %}
@@ -116,10 +118,12 @@ You can create a collection using the `CreateCollection` method on a `IMongoData
 
 {% tabs %}
 {% tab title="C\#" %}
+{% code title="AccessCollections.cs" %}
 ```csharp
 var loginsCollectionName = "logins";
 await usersDatabase.CreateCollectionAsync(loginsCollectionName);
 ```
+{% endcode %}
 {% endtab %}
 
 {% tab title="Shell" %}
@@ -138,7 +142,8 @@ Remember that in case you set the `MaxDocuments` you are required to set the `Ma
 {% endhint %}
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="Typed" %}
+{% code title="AccessCollections.cs" %}
 ```csharp
 var travelersCollectionName = "travelers";
 await tripsDatabase
@@ -149,6 +154,7 @@ await tripsDatabase
         });
         var travelers = RandomData.GenerateTravelers(3);
 ```
+{% endcode %}
 {% endtab %}
 
 {% tab title="Example" %}
@@ -193,13 +199,15 @@ db.createCollection("myCollection", {
 You can get all available collections in a database by using the `ListCollections` method on an `IMongoDatabase` reference.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="Typed" %}
+{% code title="AccessCollections.cs" %}
 ```csharp
 var usersDatabase = Client.GetDatabase(Databases.Persons);
 
 // Get all collections
 var collections = (await usersDatabase.ListCollectionsAsync()).ToList();
 ```
+{% endcode %}
 {% endtab %}
 
 {% tab title="Collection properties" %}

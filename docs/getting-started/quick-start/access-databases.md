@@ -5,7 +5,8 @@
 To get information about all databases exist in a MongoDB server, use the `ListDatabases` method on a `MongoDB` client.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="Typed" %}
+{% code title="AccessDatabases.cs" %}
 ```csharp
 var client = new MongoClient(Utils.DefaultConnectionString);
 var databases = await Client.ListDatabasesAsync();
@@ -18,6 +19,7 @@ while (databases.MoveNext())
     Utils.Log(currentBatch.AsEnumerable(), "List databases");
 }
 ```
+{% endcode %}
 {% endtab %}
 
 {% tab title="Shell" %}
@@ -64,7 +66,8 @@ foreach (var database in databases)
 When listing databases you can use options to **filter** the returned results by passing an instance of `ListDatabasesOptions` on the `ListDatabases` method.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="Typed" %}
+{% code title="AccessDatabases.cs" %}
 ```csharp
 // Search only for the 'admin' database
 // Return only the name
@@ -75,6 +78,7 @@ var adminDatabase = (await Client.ListDatabasesAsync(
     NameOnly = true
 })).FirstOrDefault();
 ```
+{% endcode %}
 {% endtab %}
 
 {% tab title="Check if database exists" %}
@@ -93,6 +97,7 @@ var fictionDbExists = (await Client
 
 An example of common filter would be to search all databases that exceeded a certain size on disk. The following query does exactly this.
 
+{% code title="AccessDatabases.cs" %}
 ```csharp
 // Search for all databases tha exceeded 60000 bytes
 var highSizeDatabases = await Client.ListDatabases(new ListDatabasesOptions
@@ -100,6 +105,7 @@ var highSizeDatabases = await Client.ListDatabases(new ListDatabasesOptions
     Filter = Builders<BsonDocument>.Filter.Gte("sizeOnDisk", 60000),
 }).ToListAsync();
 ```
+{% endcode %}
 
 {% hint style="warning" %}
 The above query won't work if you set **`NameOnly = true`** in the **`ListDatabasesOptions`**

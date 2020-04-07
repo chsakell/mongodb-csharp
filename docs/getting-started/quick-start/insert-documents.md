@@ -1,11 +1,12 @@
 # Insert documents
 
-## Insert one
+## Insert one document
 
 You can insert a document using the `InsertOne` method on a collection reference. Depending on the collection type you can pass either your own class type or a `BsonDocument`. You can build the `BsonDocument` either manually or using the `BsonDocument.Parse` method.
 
 {% tabs %}
 {% tab title="Typed" %}
+{% code title="InsertDocuments.cs" %}
 ```csharp
 var personsCollection = usersDatabase.GetCollection<User>("users");
 
@@ -14,6 +15,7 @@ User appPerson = RandomData.GenerateUsers(1).First();
 // Insert one document
 await personsCollection.InsertOneAsync(appPerson);
 ```
+{% endcode %}
 {% endtab %}
 
 {% tab title="BsonDocument" %}
@@ -161,7 +163,7 @@ db.users.insertOne({
  Notice how overwhelming querying using `BsonDocument` can be. And it's not only that you have to carefully type all these in curly brackets, it is also dangerous that you might end up having wrong **type of data** in the database because MongoDB will use default data types for values that their type haven't explicitly defined. 
 {% endhint %}
 
-## Insert many
+## Insert many documents
 
 To add multiple documents at once, you can use the `InsertMany` collection method.
 
