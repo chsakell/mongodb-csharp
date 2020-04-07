@@ -112,7 +112,7 @@ var bsonPersonsCollection = usersDatabase.GetCollection<BsonDocument>("users");
 Using a `IMongoCollection<BsonDocument>`collection reference,  you can build pretty much all MongoDB queries you write in the shell, even the complex ones. The downside though is that you end up writing ugly code that is hard to maintain when models change.  Luckily, these docs' goal is to learn you how to build **typed** MongoDB queries
 {% endhint %}
 
-## Create collection
+## Create collections
 
 You can create a collection using the `CreateCollection` method on a `IMongoDatabase` reference.
 
@@ -194,7 +194,7 @@ db.createCollection("myCollection", {
 [Reference](https://docs.mongodb.com/manual/core/capped-collections/)
 {% endhint %}
 
-## List collection
+## List collections
 
 You can get all available collections in a database by using the `ListCollections` method on an `IMongoDatabase` reference.
 
@@ -233,7 +233,7 @@ var collections = (await usersDatabase.ListCollectionsAsync()).ToList();
 {% endtab %}
 {% endtabs %}
 
-## Drop collection
+## Drop collections
 
 Delete a collection using the `DropCollection` method. The collection along with its data will be entirely removed.
 
