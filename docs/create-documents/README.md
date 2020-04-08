@@ -2,7 +2,7 @@
 
 ## 🆕 New documents
 
-Inserting new documents is quite easy as explained in the Quick Start [Insert Documents](../getting-started/quick-start/insert-documents.md) section. You can use the `InsertOne` and `InsertMany` methods to add one or multiple documents respectively. Other than the basics, it's certain you will face some more advanced scenarios, such as inserting nested documents or pushing items to nested array fields and this is what this section is all about.
+Inserting new documents is quite easy as explained in the Quick Start [Insert Documents](../getting-started/quick-start/insert-documents.md) section. You can use the `InsertOne` and `InsertMany` methods to add one or multiple documents respectively. Other than the basics, it's certain you will face some more advanced scenarios, such as inserting nested documents or pushing items to nested array fields. You might think this is an insert operation but for MongoDB are considered update operations and they will be described on the related sections.
 
 ## 🛠 Configuration
 
