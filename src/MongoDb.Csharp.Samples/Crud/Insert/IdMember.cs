@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
@@ -58,9 +59,9 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
         // Requires the attribute
         //public class Message
         //{
-        //[BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
-        //public string Id { get; set; }
-        //public string Text { get; set; }
+        //    [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
+        //    public string Id { get; set; }
+        //    public string Text { get; set; }
         //}
 
         // Sample 3_1
@@ -97,17 +98,41 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
         // Sample 4_2
         //public class Message
         //{
-        //    [BsonId] public BsonObjectId MyCustomId { get; set; }
+        //    [BsonId]
+        //    public BsonObjectId MyCustomId { get; set; }
         //    public string Text { get; set; }
         //}
 
-        // Sample 5
-        // Throws exception System.InvalidOperationException: Id cannot be null.
+        // Sample 4_3
+        //public class Message
+        //{
+        //    [BsonId(IdGenerator = typeof(BsonObjectIdGenerator))]
+        //    public BsonObjectId MyCustomId { get; set; }
+        //    public string Text { get; set; }
+        //}
+
+        // Sample 5_1
+        //public class Message
+        //{
+        //    public ObjectId Id { get; set; }
+        //    public string Text { get; set; }
+        //}
+
+        // Sample 5_2
         public class Message
         {
-            [BsonId(IdGenerator = typeof(NullIdChecker))]
-            public object Id { get; set; }
+            [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
+            public ObjectId CustomId { get; set; }
             public string Text { get; set; }
         }
+
+        // Sample 6
+        // Throws exception System.InvalidOperationException: Id cannot be null.
+        //public class Message
+        //{
+        //    [BsonId(IdGenerator = typeof(NullIdChecker))]
+        //    public object Id { get; set; }
+        //    public string Text { get; set; }
+        //}
     }
 }
