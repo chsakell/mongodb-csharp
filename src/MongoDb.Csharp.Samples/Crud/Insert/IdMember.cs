@@ -37,8 +37,7 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
             #endregion
 
             #region Typed classes commands
-
-
+            
             var message = new Message {Text = "hello world"};
             await messagesCollection.InsertOneAsync(message);
             Utils.Log(message.ToBsonDocument());
@@ -119,20 +118,28 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
         //}
 
         // Sample 5_2
-        public class Message
-        {
-            [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
-            public ObjectId CustomId { get; set; }
-            public string Text { get; set; }
-        }
+        //public class Message
+        //{
+        //    [BsonId]
+        //    public ObjectId CustomId { get; set; }
+        //    public string Text { get; set; }
+        //}
+
+        // Sample 5_3
+        //public class Message
+        //{
+        //    [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
+        //    public ObjectId CustomId { get; set; }
+        //    public string Text { get; set; }
+        //}
 
         // Sample 6
         // Throws exception System.InvalidOperationException: Id cannot be null.
-        //public class Message
-        //{
-        //    [BsonId(IdGenerator = typeof(NullIdChecker))]
-        //    public object Id { get; set; }
-        //    public string Text { get; set; }
-        //}
+        public class Message
+        {
+            [BsonId(IdGenerator = typeof(NullIdChecker))]
+            public object Id { get; set; }
+            public string Text { get; set; }
+        }
     }
 }
