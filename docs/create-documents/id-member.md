@@ -214,7 +214,7 @@ public class Message
 {% endtab %}
 {% endtabs %}
 
-## BsonObjectId
+### BsonObjectId
 
 Everything applies for the `ObjectId` type applies for `BsonObjectId` as well.
 
@@ -269,7 +269,7 @@ public class Message
 {% endtab %}
 {% endtabs %}
 
-## _NullIdChecker_ Generator
+### _NullIdChecker_ Generator
 
 In case you want to ensure that the identifier field has been assigned a value before sending the query to MongoDB, you can use the NullIdChecker generator.
 
