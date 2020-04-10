@@ -5,7 +5,7 @@
 You can insert a document using the `InsertOne` method on a collection reference. Depending on the collection type you can pass either your own class type or a `BsonDocument`. You can build the `BsonDocument` either manually or using the `BsonDocument.Parse` method.
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="InsertDocuments.cs" %}
 ```csharp
 var personsCollection = usersDatabase.GetCollection<User>("users");
@@ -168,7 +168,7 @@ db.users.insertOne({
 To add multiple documents at once, you can use the `InsertMany` collection method.
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="InsertDocuments.cs" %}
 ```csharp
 // generate 10 users

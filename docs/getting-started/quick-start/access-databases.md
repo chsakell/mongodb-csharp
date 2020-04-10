@@ -5,7 +5,7 @@
 To get information about all databases exist in a MongoDB server, use the `ListDatabases` method on a `MongoDB` client.
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="AccessDatabases.cs" %}
 ```csharp
 var client = new MongoClient(Utils.DefaultConnectionString);
@@ -66,7 +66,7 @@ foreach (var database in databases)
 When listing databases you can use options to **filter** the returned results by passing an instance of `ListDatabasesOptions` on the `ListDatabases` method.
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="AccessDatabases.cs" %}
 ```csharp
 // Search only for the 'admin' database

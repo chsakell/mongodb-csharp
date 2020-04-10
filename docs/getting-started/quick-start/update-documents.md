@@ -12,7 +12,7 @@ After configuring the above two, you use the `UpdateOne` method on an `IMongoCol
 The following example updates the phone number of a user's document filter by its _id_.
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="UpdateDocuments.cs" %}
 ```csharp
 var personsCollection = usersDatabase.GetCollection<User>("users");
@@ -143,7 +143,7 @@ To update many documents at once, follow the same process but this time use the 
 The following example filters user documents having _salary_ greater than 1200 and less than 3500 and set the _salary_ value to 4000.
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="UpdateDocuments.cs" %}
 ```csharp
 // Create a filter by combining a Greater & Less than filters

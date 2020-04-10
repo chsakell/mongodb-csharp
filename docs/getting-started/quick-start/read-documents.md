@@ -7,7 +7,7 @@ To search for a document in MongoDB you use the `Find` method on a `IMongoCollec
 Filters can be created using the `Builders<T>.Filter` definition builder which contain multiple filters. The following example finds a user document based on its Id. It does this using the **equality filter** `Eq<T>` on the id field.
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="ReadDocuments.cs" %}
 ```csharp
 // Get the collection
@@ -108,7 +108,7 @@ db.users.findOne(
 To search for multiple documents follow the same process but this time use the `ToList` method. The following example finds all documents with female gender.
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="ReadDocuments.cs" %}
 ```csharp
 // Get the collection

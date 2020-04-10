@@ -17,7 +17,7 @@ You can use the following types for your Id identifier type:
 Let's assume that you have a Message class with a string Id public member:
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="IdMember.cs" %}
 ```csharp
 var message = new Message {Text = "hello world"};

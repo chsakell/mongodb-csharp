@@ -25,7 +25,7 @@ On the other hand, in case you already have some experience with the driver and 
 All pages contain some introductory theory to get the reader on the right context. For all samples the solutions are presented in 3 different ways:
 
 * Using the C\# driver in typed manner
-* Using the C\# driver with _BsonDocument_ which is a schema-less way to build MongoDB queries
+* Using the C\# driver with `BsonDocument` which is a schema-less way to build MongoDB queries
 * Using the pure MongoDB shell commands
 
 This way you can always compare the shell commands with the .NET code used.
@@ -37,7 +37,7 @@ The main goal of the docs is to learn you how to use the C\# driver in a **typed
 The code for solving a specific case will look like this:
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 ```csharp
 var travelersQueryableCollection = tripsDatabase
     .GetCollection<Traveler>(travelersCollectionName).AsQueryable();
@@ -91,6 +91,10 @@ db.travelers
 {% endtabs %}
 
 As you can see, the solution is presented in 3 different ways. If any other code snippet is required it will be added through a new tab.
+
+{% hint style="success" %}
+The **C\#** tab will always contain the typed way of querying MongoDB
+{% endhint %}
 
 ### Repository
 

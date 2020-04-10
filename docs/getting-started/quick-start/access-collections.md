@@ -5,7 +5,7 @@
 In order to read/write data from/to a database collection, first you need to get a reference to that collection. The collection doesn't have to exist already and if it doesn't, the very first time you run a read or write operation, it will be created automatically for you.
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="AccessCollections.cs" %}
 ```csharp
 // Get a reference to the database
@@ -142,7 +142,7 @@ Remember that in case you set the `MaxDocuments` you are required to set the `Ma
 {% endhint %}
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="AccessCollections.cs" %}
 ```csharp
 var travelersCollectionName = "travelers";
@@ -199,7 +199,7 @@ db.createCollection("myCollection", {
 You can get all available collections in a database by using the `ListCollections` method on an `IMongoDatabase` reference.
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="AccessCollections.cs" %}
 ```csharp
 var usersDatabase = Client.GetDatabase(Databases.Persons);

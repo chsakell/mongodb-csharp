@@ -5,7 +5,7 @@
 To delete a single document, create a filter definition that matches the document you want to remove and call the `DeleteOne` method on a `IMongoCollectio`n reference.
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="DeleteDocuments.cs" %}
 ```csharp
 // get a collection reference
@@ -66,7 +66,7 @@ db.users.deleteOne({ _id : ObjectId("5e5ff25170dc588dd0870073")})
 To delete the first document in the collection, simply use an empty filter definition.
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="DeleteDocuments.cs" %}
 ```csharp
 // get a collection reference
@@ -112,7 +112,7 @@ To remove more that one documents at the same time, create a filter definition t
 The following example shows how to delete user documents based on the _salary_ field .
 
 {% tabs %}
-{% tab title="Typed" %}
+{% tab title="C\#" %}
 {% code title="DeleteDocuments.cs" %}
 ```csharp
 
