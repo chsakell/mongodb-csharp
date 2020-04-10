@@ -1,4 +1,4 @@
-# Access databases
+# Databases
 
 ## List databases
 

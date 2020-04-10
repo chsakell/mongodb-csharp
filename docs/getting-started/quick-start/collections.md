@@ -1,4 +1,4 @@
-# Access collections
+# Collections
 
 ## Get a collection reference
 
