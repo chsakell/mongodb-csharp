@@ -48,11 +48,11 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
         // Sample 1
         // MongoDB.Driver.MongoWriteException: A write operation resulted in an error.
         // E11000 duplicate key error collection: Chat.messages index: _id_ dup key: { _id: null }
-        //public class Message
-        //{
-        //    public string Id { get; set; }
-        //    public string Text { get; set; }
-        //}
+        public class Message
+        {
+            public string Id { get; set; }
+            public string Text { get; set; }
+        }
 
         // Sample 2
         // Requires the attribute
@@ -135,11 +135,11 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 
         // Sample 6
         // Throws exception System.InvalidOperationException: Id cannot be null.
-        public class Message
-        {
-            [BsonId(IdGenerator = typeof(NullIdChecker))]
-            public object Id { get; set; }
-            public string Text { get; set; }
-        }
+        //public class Message
+        //{
+        //    [BsonId(IdGenerator = typeof(NullIdChecker))]
+        //    public object Id { get; set; }
+        //    public string Text { get; set; }
+        //}
     }
 }

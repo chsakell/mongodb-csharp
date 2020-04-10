@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization;
 using MongoDb.Csharp.Samples.Core;
+using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 
 namespace MongoDb.Csharp.Samples.Crud.Insert
@@ -31,9 +32,9 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 
             var sports = new List<Sport>
             {
-                new Sport(1, "Soccer", 100),
-                new Sport(2, "Basketball", 56),
-                new Sport(3, "Tennis", 15)
+                new Sport { Title = "Soccer", TotalEvents = 100 },
+                new Sport { Title = "Basketball", TotalEvents = 50 },
+                new Sport { Title = "Tennis", TotalEvents = 60 },
             };
 
             await sportsCollection.InsertManyAsync(sports);
@@ -44,9 +45,9 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 
             var sportsToAdd = new List<Sport>
             {
-                new Sport(4, "Volleyball", 12),
-                new Sport(2, "Baseball", 44), // This should cause an error
-                new Sport(5, "Formula 1", 67)
+                new Sport { Title = "Volleyball", TotalEvents = 12 },
+                new Sport { Title = "Basketball", TotalEvents = 44 }, // This should cause an error
+                new Sport { Title = "Formula 1", TotalEvents = 67 },
             };
 
             try
@@ -61,12 +62,18 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 
             try
             {
+                // clean the collection
+                await sportsCollection.DeleteManyAsync(Builders<Sport>.Filter.Empty);
+
+                await sportsCollection.InsertManyAsync(sports);
+
                 var sportsToAddWithRollback = new List<Sport>
                 {
-                    new Sport(5, "Volleyball", 12),
-                    new Sport(6, "Baseball", 44), 
-                    new Sport(1, "Formula 1", 67), // This should cause an error
-                    new Sport(7, "Moto GP", 12) // But this will be inserted as well
+                    new Sport { Title = "Volleyball", TotalEvents = 12 },
+                    new Sport { Title = "Basketball", TotalEvents = 11 }, // This should cause an error
+                    new Sport { Title = "Baseball", TotalEvents = 44 }, // But this will be inserted as well
+                    new Sport { Title = "Tennis", TotalEvents = 67 }, // This should cause an error
+                    new Sport { Title = "Moto GP", TotalEvents = 12 } // But this will be inserted as well
                 };
 
                 await sportsCollection.InsertManyAsync(sportsToAddWithRollback, 
