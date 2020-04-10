@@ -10,8 +10,10 @@ MongoDB has been evolved dramatically over the years 💪 resulting more develop
 
 These MongoDB C\# driver docs have been created for one purpose and one purpose only - to **bridge the gap between MongoDB and C\# developers** 👏. You will find numerous samples solving problems all developers facing on a daily basis.
 
-{% hint style="warning" %}
-These docs cannot replace the official MongoDB documentation but instead act as a complementary reference, especially for C\# developers 
+![MongoDB for C\# developers](.gitbook/assets/main.png)
+
+{% hint style="success" %}
+These docs don't intend to replace the official MongoDB documentation but instead act as a complementary reference, especially for C\# developers 
 {% endhint %}
 
 ## ❓ How to read the docs
