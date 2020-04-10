@@ -133,7 +133,7 @@ db.createCollection("myCollection")
 {% endtab %}
 {% endtabs %}
 
-### Create a Capped collection
+### Capped collection
 
 A Capped collection in MongoDB is a special **fixed-size** collection where when its allocated sized is filled, the oldest documents inserted are automatically removed to make room for the new ones. You can define a collection as capped only during its creation by using the `CreateCollectionOptions` and setting the values for either \(_or both_\) the **max documents** and the **max size**. If any max documents or max size exceeds, the latest document will be removed to make room for the next one inserted.
 
