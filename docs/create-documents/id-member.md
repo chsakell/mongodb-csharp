@@ -151,23 +151,76 @@ public class Message
 ```
 {% endcode %}
 
-### BsonObject
+### ObjectId
 
 MongoDB loves `ObjectId` ♥ which is a 12-byte special type for MongoDB which is fast to generate and contains:
 
 * A **timestamp** value representing the _ObjectId'_s creations _\(4-byte\)_
-* An auto-incrementing counter _\(3-byte\)_
-* A random value _\(5-byte\)_
+* An auto-incrementing **counter** _\(3-byte\)_
+* A **random value** _\(5-byte\)_
 
 {% hint style="info" %}
 In fact, if you try to insert a document in MongoDB in the shell and don't provide any value for the `_id` field, it will be saved as an `ObjectId` type
 {% endhint %}
 
-Convention based names with `BsonObjectId` type don't require the `[BsonId]` attribute.
+Convention based names with `ObjectId` type don't require the `[BsonId]` attribute.
 
 {% tabs %}
 {% tab title="Message" %}
-{% code title="" %}
+{% code title="IdMember.cs" %}
+```csharp
+public class Message
+{
+    public ObjectId Id { get; set; }
+    public string Text { get; set; }
+}
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Result" %}
+```javascript
+{
+  "_id": "5e903c0012193c8ba86bc780",
+  "text": "hello world"
+}
+```
+{% endtab %}
+{% endtabs %}
+
+If you want to use a custom identifier name, just add the `[BsonId`\] attribute. Defining the `ObjectIdGenerator` is optional.
+
+{% tabs %}
+{% tab title="\[BsonId\]" %}
+```csharp
+public class Message
+{
+    [BsonId]
+    public ObjectId CustomId { get; set; }
+    public string Text { get; set; }
+}
+```
+{% endtab %}
+
+{% tab title="ObjectIdGenerator" %}
+```csharp
+public class Message
+{
+    [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
+    public ObjectId CustomId { get; set; }
+    public string Text { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+## BsonObjectId
+
+Everything applies for the `ObjectId` type applies for `BsonObjectId` as well.
+
+{% tabs %}
+{% tab title="Message" %}
+{% code title="IdMember.cs" %}
 ```csharp
 public class Message
 {
@@ -193,7 +246,7 @@ public class Message
 If you want to use a custom identifier name, just add the `[BsonId`\] attribute. Defining the `BsonObjectIdGenerator` is optional.
 
 {% tabs %}
-{% tab title="\[Bson\]" %}
+{% tab title="\[BsonId\]" %}
 ```csharp
 public class Message
 {
@@ -216,5 +269,32 @@ public class Message
 {% endtab %}
 {% endtabs %}
 
-### ObjectId
+## _NullIdChecker_ Generator
+
+In case you want to ensure that the identifier field has been assigned a value before sending the query to MongoDB, you can use the NullIdChecker generator.
+
+{% tabs %}
+{% tab title="Message" %}
+```csharp
+public class Message
+{
+    [BsonId(IdGenerator = typeof(NullIdChecker))]
+    public object Id { get; set; }
+    public string Text { get; set; }
+}
+```
+{% endtab %}
+
+{% tab title="Exception" %}
+```csharp
+// The following will throw System.InvalidOperationException: Id cannot be null.
+var message = new Message {Text = "hello world"};
+await messagesCollection.InsertOneAsync(message);
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="warning" %}
+Trying to insert a document without assigning a value first for an identifier field with NullIdChecker generator will throw  **`System.InvalidOperationException: <field> cannot be null.`**
+{% endhint %}
 
