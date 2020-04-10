@@ -31,13 +31,13 @@ All pages contain some introductory theory to get the reader on the right contex
 This way you can always compare the shell commands with the .NET code used.
 
 {% hint style="info" %}
-The main goal of the docs is to always use the C\# driver in a **typed class manner**. While you can easily build any MongoDB query you want with the schema-less way, it's way too ugly plus you will face problems when changing/renaming your model properties, thus it's not recommended.
+The main goal of the docs is to learn you how to use the C\# driver in a **typed** way using your C\# class models and avoiding the generic `BsonDocument`. While you can easily build any MongoDB query you want with the schema-less way, it's way too ugly plus you will face problems when changing/renaming your model properties, thus it's not recommended.
 {% endhint %}
 
 The code for solving a specific case will look like this:
 
 {% tabs %}
-{% tab title="LINQ" %}
+{% tab title="Typed" %}
 ```csharp
 var travelersQueryableCollection = tripsDatabase
     .GetCollection<Traveler>(travelersCollectionName).AsQueryable();
