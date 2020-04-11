@@ -116,10 +116,138 @@ public class User
 
 {% tab title="Shell" %}
 ```javascript
+// find all doctors
+db.users.find({ profession: "Doctor"})
+
+// find a user document with specific email address
+db.users.findOne({ email: "sample@example.com" })
 
 ```
 {% endtab %}
 {% endtabs %}
 
+{% hint style="warning" %}
+Equality filter is **case sensitive**, so always make sure to use it properly!
+{% endhint %}
 
+## Equality filter on a nested field
+
+You can use the equality filter to match your documents based on an embedded document field. In the following example the _address_ field is an **embedded** field on the user document and contains a _city_ string field.  The sample show how to filter documents based on the _city_ field.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="Crud.Read.Basics.cs" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+// create the filter on the address.city field
+var athensCityFilter = Builders<User>
+    .Filter.Eq(u => u.Address.City, "Athens");
+    
+var athensUsers = await collection
+    .Find(athensCityFilter).ToListAsync();
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="BsonDocument" %}
+```csharp
+var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+
+var bsonAthensCityFilter = Builders<BsonDocument>
+    .Filter.Eq("address.city", "Athens");
+    
+var bsonAthensUsers = await bsonCollection
+    .Find(bsonAthensCityFilter).ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.users.find({"address.city": { $eq: "Athens"}})
+db.users.find({"address.city": "Athens"})
+```
+{% endtab %}
+
+{% tab title="Sample result" %}
+```javascript
+{
+	"_id" : ObjectId("5e919356139fe1568028900d"),
+	"gender" : 1,
+	"firstName" : "Lana",
+	"lastName" : "Price",
+	"userName" : "Lana_Price",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/adhiardana/128.jpg",
+	"email" : "Lana.Price@hotmail.com",
+	"dateOfBirth" : ISODate("1951-11-17T06:47:46.404+02:00"),
+	"address" : {
+		"street" : "8901 Korbin Fords",
+		"suite" : "Apt. 810",
+		"city" : "Athens", // matched document
+		"state" : "Maine",
+		"zipCode" : "28939-3112",
+		"geo" : {
+			"lat" : 62.7547,
+			"lng" : -171.0489
+		}
+	},
+	"phone" : "351.573.6992 x6949",
+	"website" : "sabryna.com",
+	"company" : {
+		"name" : "O'Connell Group",
+		"catchPhrase" : "Profound value-added hardware",
+		"bs" : "reinvent back-end channels"
+	},
+	"salary" : 4879,
+	"monthlyExpenses" : 4378,
+	"favoriteSports" : [
+		"Tennis",
+		"Water Polo",
+		"Baseball",
+		"Cricket",
+		"MMA",
+		"Cycling",
+		"Snooker",
+		"Beach Volleyball",
+		"Darts",
+		"Motor Sport",
+		"Table Tennis"
+	],
+	"profession" : "Model"
+},
+```
+{% endtab %}
+
+{% tab title="User" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+Remember, the filter might be on an embedded document field, but the result will be always the entire document\(s\) that matched the criteria
+{% endhint %}
 
