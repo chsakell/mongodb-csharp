@@ -245,9 +245,242 @@ public class User
 }
 ```
 {% endtab %}
+
+{% tab title="AddressCard" %}
+```csharp
+public class AddressCard
+{
+    public string Street {get; set; }
+    public string Suite {get; set; }
+    public string City {get; set; }
+    public string State {get; set; }
+    public string ZipCode {get; set; }
+    public AppCardGeo Geo {get; set; }
+
+    public class AppCardGeo
+    {
+        public double Lat {get; set; }
+        public double Lng {get; set; }
+    }
+}
+```
+{% endtab %}
 {% endtabs %}
 
 {% hint style="info" %}
 Remember, the filter might be on an embedded document field, but the result will be always the entire document\(s\) that matched the criteria
 {% endhint %}
+
+## Equality filter on a array field
+
+Assuming your document contains an array field with **string** values, you want to get all documents that their array field **contains** a specific value. The sample that follows works for other types as well \(_e.g. bool, int, decimal, float\)_.
+
+The example retrieves all user documents that their _FavoriteSports_ array field contains a specific sport. It does that by using an **equality filter for an array field** called `AnyEq`.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="Crud.Read.Basics.cs" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+// create an equality filter on an array field
+// find all user documents that contains 'Basketball' on their sports array
+var basketballFilter = Builders<User>.Filter
+    .AnyEq(u => u.FavoriteSports, "Basketball");
+
+// the matched documents might have other sports
+// in the favoriteSports array
+var usersHaveBasketball = await collection
+    .Find(basketballFilter).ToListAsync();
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="BsonDocument" %}
+```csharp
+var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+
+var bsonBasketballFilter = Builders<BsonDocument>.Filter
+    .AnyEq("favoriteSports", "Basketball");
+    
+var bsonUsersHaveBasketball = await bsonCollection
+    .Find(bsonBasketballFilter).ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+// MongoDB understands that favoriteSports field is an array
+// and makes the right search on it
+db.users.find({"favoriteSports": "Basketball"})
+```
+{% endtab %}
+
+{% tab title="Sample Result" %}
+```javascript
+{
+	"_id" : ObjectId("5e91e3ba3c1ba62570a67b98"),
+	"gender" : 0,
+	"firstName" : "Spencer",
+	"lastName" : "Swift",
+	"userName" : "Spencer.Swift",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/daykiine/128.jpg",
+	"email" : "Spencer61@hotmail.com",
+	"dateOfBirth" : ISODate("1955-01-08T04:19:35.543+02:00"),
+	"address" : {
+		"street" : "9336 Walker Crest",
+		"suite" : "Suite 144",
+		"city" : "South Tate",
+		"state" : "South Carolina",
+		"zipCode" : "46603",
+		"geo" : {
+			"lat" : 39.9979,
+			"lng" : -117.9544
+		}
+	},
+	"phone" : "1-377-659-2465 x7862",
+	"website" : "barbara.com",
+	"company" : {
+		"name" : "Wisoky, Lynch and Torphy",
+		"catchPhrase" : "Diverse dedicated customer loyalty",
+		"bs" : "scale sexy technologies"
+	},
+	"salary" : 4325,
+	"monthlyExpenses" : 3023,
+	"favoriteSports" : [
+		"Basketball", // matched document
+		"Table Tennis",
+		"Moto GP",
+		"Tennis",
+		"Boxing",
+		"Motor Sport",
+		"Ice Hockey",
+		"Baseball",
+		"American Football",
+		"Water Polo",
+		"Volleyball",
+		"Golf",
+		"Cycling",
+		"Formula 1",
+		"Cricket"
+	],
+	"profession" : "Pilot"
+},
+```
+{% endtab %}
+
+{% tab title="User" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+When the search term used in `AnyEq` is a simple value, then you are running a search for that term in the array field, meaning that there might be other values contained as well
+{% endhint %}
+
+## Equality filter on a array field - Exact match
+
+In case you want to run an exact match on the array field then you must use an array argument in the `AnyEq` filter. This will try match the entire array field rather than just searching inside the array.
+
+The following example finds the documents that their _FavoriteSports_ array field **contains only** the Soccer term.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="Crud.Read.Basics.cs" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+// create an equality filter on an array field
+// find all user documents that have only 'Soccer' on their sports array
+var onlySoccerFilter = Builders<User>.Filter
+    .Eq(u => u.FavoriteSports, new List<string> { "Soccer" });
+
+// the matched documents contain only Soccer in the favoriteSports
+var soccerUsers = await collection
+    .Find(onlySoccerFilter).ToListAsync();
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="BsonDocument" %}
+```csharp
+var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+
+var bsonOnlySoccerFilter = Builders<BsonDocument>.Filter
+            .Eq("favoriteSports", new List<string>() { "Soccer" });
+
+var bsonSoccerUsers = await bsonCollection
+            .Find(bsonOnlySoccerFilter).ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.users.find({"favoriteSports": ["Soccer"]})
+```
+{% endtab %}
+
+{% tab title="Sample result" %}
+```javascript
+{
+	"_id" : ObjectId("5e91e3ba3c1ba62570a67e08"),
+	"gender" : 1,
+	"firstName" : "June",
+	"lastName" : "Dach",
+	"userName" : "June.Dach23",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/d33pthought/128.jpg",
+	"email" : "June64@gmail.com",
+	"dateOfBirth" : ISODate("1970-02-26T04:13:22.471+02:00"),
+	"address" : {
+		"street" : "0942 Prosacco Extension",
+		"suite" : "Apt. 518",
+		"city" : "Aubreytown",
+		"state" : "Louisiana",
+		"zipCode" : "39912",
+		"geo" : {
+			"lat" : 43.4411,
+			"lng" : -73.1164
+		}
+	},
+	"phone" : "1-832-666-1307 x6427",
+	"website" : "wilfrid.biz",
+	"company" : {
+		"name" : "Feest LLC",
+		"catchPhrase" : "Reduced national project",
+		"bs" : "incentivize plug-and-play action-items"
+	},
+	"salary" : 3871,
+	"monthlyExpenses" : 2241,
+	"favoriteSports" : [
+		"Soccer" // matched document
+	],
+	"profession" : "Engineer"
+}
+```
+{% endtab %}
+{% endtabs %}
 
