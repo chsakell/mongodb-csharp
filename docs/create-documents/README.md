@@ -12,5 +12,7 @@ Each top level document in MongoDB contains an `_id` field which is either passe
 
 Another concept covered in this section is the [Ordered Insert](ordered-insert.md), which explains how MongoDB behaves when facing unique ids conflicts during multiple documents insertions.
 
+![Create documents](../.gitbook/assets/create.png)
+
 
 

@@ -16,9 +16,11 @@ If the answer is yes then you are on the right page. Quick start section can hel
 6. Update one or more documents in a collection
 7. Delete one or more document in a collection
 
-{% hint style="info" %}
-Quick start is recommended for those who have never used the `MongoDB .NET` driver 
+{% hint style="success" %}
+Quick start is recommended for those who have never used the `MongoDB .NET` driver
 {% endhint %}
+
+![Quick Start with MongoDB .NET driver](../../.gitbook/assets/quick-start.png)
 
 ## Install Nuget packages
 
