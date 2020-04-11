@@ -52,8 +52,14 @@ namespace MongoDb.Csharp.Samples.Crud.Read
 
             #region Typed classes commands
 
-            // Get the very first document
-            var firstUser = await collection.Find(Builders<User>.Filter.Empty).FirstOrDefaultAsync();
+            // empty filter
+            var emptyFilter = Builders<User>.Filter.Empty;
+
+            // first user
+            var firstUser = await collection.Find(emptyFilter).FirstOrDefaultAsync();
+
+            // all users
+            var allUsers = await collection.Find(emptyFilter).ToListAsync();
 
             // Get the first document with equality filter on a simple property
             var sampleUserFilter = Builders<User>.Filter.Eq(u => u.Email, sampleUser.Email);
@@ -93,7 +99,10 @@ namespace MongoDb.Csharp.Samples.Crud.Read
 
             #region BsonDocument commands
 
+            var bsonEmptyDocument = Builders<BsonDocument>.Filter.Empty;
+
             var bsonFirstUser = await bsonCollection.Find(new BsonDocument()).FirstOrDefaultAsync();
+            var bsonAllUsers = await bsonCollection.Find(bsonEmptyDocument).ToListAsync();
 
             var sampleBsonUserFilter = Builders<BsonDocument>.Filter.Eq("email", sampleUser.Email);
             var dbBsonSampleUser = await bsonCollection.Find(sampleBsonUserFilter).FirstOrDefaultAsync();
@@ -119,7 +128,7 @@ namespace MongoDb.Csharp.Samples.Crud.Read
             db.users.findOne({})
             db.users.findOne({ email: "sample@example.com" })
             db.users.find({ profession: "Doctor"})
-            db.users.find({"address.city": { $eq: "Athens"}}
+            db.users.find({"address.city": { $eq: "Athens"}})
             db.users.find({"favoriteSports": "Basketball"})
             db.users.find({"favoriteSports": ["Basketball"]})
             db.users.find({"favoriteSports": ["Soccer"]})
