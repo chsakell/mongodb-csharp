@@ -11,7 +11,7 @@ Logical operators allow you to match documents based on the **boolean result** â
 * **AND** operator
 * **NOT** operator
 * **OR** operator
-* **XOR** operator
+* **NOR** operator
 
 ![Logical operators](../.gitbook/assets/logical.png)
 
@@ -447,5 +447,297 @@ public class User
 {% endtab %}
 {% endtabs %}
 
+## _OR_ operator
 
+The _OR_ operator performs a logical OR on an **set of expressions** and match documents that **satisfy** at least on of the expressions. 
+
+> **Syntax**: `Builders<T>.Filter.Or(FilterDefinition<T>[] filters)`
+
+The idea is that you create as many **filter definitions** you want and pass them as an argument to the `Or` `FilterDefinitionBuilder` method. The filters passed as parameters can be as complex as you want.
+
+The sample uses an _Or_ operator to find all documents having _salary,_ either too low _\(less than 1500\)_ or too high _\( greater than 4000\)._
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="LogicalOperators.cs" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+// users with salary either < 1500 (too low) or > 4000 (too high)
+var orSalaryFilter = Builders<User>.Filter.Or(
+    Builders<User>.Filter.Lt(u => u.Salary, 1500), // 1st expression
+    Builders<User>.Filter.Gt(u => u.Salary, 4000)  // 2nd expression
+);
+
+var lowOrHighSalaryUsers = await collection
+    .Find(orSalaryFilter).ToListAsync();
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="BsonDocument" %}
+```csharp
+var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+
+var bsonOrSalaryFilter = Builders<BsonDocument>.Filter.Or(
+    Builders<BsonDocument>.Filter.Lt("salary", 1500),
+    Builders<BsonDocument>.Filter.Gt("salary", 4000)
+);
+
+var bsonLowOrHighSalaryUsers = await bsonCollection
+    .Find(bsonOrSalaryFilter).ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.users.find( { $or: [ 
+    { salary: { $lt: 1500 } }, 
+    { salary: { $gt: 4000 }}
+]})
+```
+{% endtab %}
+
+{% tab title="Result" %}
+```javascript
+// sample matched document
+{
+	"_id" : ObjectId("5e9335512013741d0cb6454a"),
+	"gender" : 0,
+	"firstName" : "Carlton",
+	"lastName" : "Bergstrom",
+	"userName" : "Carlton_Bergstrom",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/joe_black/128.jpg",
+	"email" : "Carlton28@yahoo.com",
+	"dateOfBirth" : ISODate("1952-09-18T11:22:04.592+03:00"),
+	"address" : {
+		"street" : "0021 Sheila Corners",
+		"suite" : "Apt. 199",
+		"city" : "Schmidtfort",
+		"state" : "Rhode Island",
+		"zipCode" : "09682",
+		"geo" : {
+			"lat" : 11.8535,
+			"lng" : 102.024
+		}
+	},
+	"phone" : "1-300-468-9739 x188",
+	"website" : "weldon.name",
+	"company" : {
+		"name" : "Dooley, Schmitt and Wiegand",
+		"catchPhrase" : "Robust coherent migration",
+		"bs" : "empower front-end vortals"
+	},
+	"salary" : 4005, // matched here (too high)
+	"monthlyExpenses" : 3483,
+	"favoriteSports" : [
+		"Formula 1",
+		"Volleyball"
+	],
+	"profession" : "Personal Trainer"
+}
+```
+{% endtab %}
+
+{% tab title="User" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+## _NOR_ operator
+
+The _NOR_ operator performs a logical NOR on an **set of expressions** and match documents that **fail to satisfy** all the expressions. Despite the fact that MongoDB supports the [$nor](https://docs.mongodb.com/manual/reference/operator/query/nor/) operator, you won't find any method on the C\# driver. That's totally fine though because you can built it using the AND operator and negating the internal filters. 
+
+The idea is that you create as many filter definitions you want **to fail** and pass them as an argument to the `And` `FilterDefinitionBuilder` method. The filters passed as parameters can be as complex as you want.
+
+The sample finds documents that **fail** to satisfy the following criteria:
+
+1. Have _profession_ equal to "Doctor"
+2. Have _salary_ less than 4500
+
+Since the matched documents needs to fail the above criteria, you should use their negates with an AND operator.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="LogicalOperators.cs" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+var norFilter = Builders<User>.Filter.And(
+    Builders<User>.Filter // negate 1st filter
+        .Not(Builders<User>.Filter.Eq(u => u.Profession, "Doctor")),    
+    Builders<User>.Filter // negate 2nd filter
+        .Not(Builders<User>.Filter.Lt(u => u.Salary, 4500))
+);
+
+var norUsers = await collection
+    .Find(norFilter).ToListAsync();
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="BsonDocument" %}
+```csharp
+var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+
+var bsonNorFilter = Builders<BsonDocument>.Filter.And(
+    Builders<BsonDocument>.Filter
+        .Not(Builders<BsonDocument>.Filter.Eq("profession", "Doctor")),
+    Builders<BsonDocument>.Filter
+        .Not(Builders<BsonDocument>.Filter.Lt("salary", 4500)));
+
+var bsonNorUsers = await bsonCollection
+    .Find(bsonNorFilter).ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.users.find(
+{ $nor: [ { profession: { $eq: "Doctor" } }, 
+          { salary: { $lt: 4500 }}
+        ]})
+```
+{% endtab %}
+
+{% tab title="Result" %}
+```javascript
+// sample matched document
+{
+	"_id" : ObjectId("5e9335512013741d0cb6454e"),
+	"gender" : 0,
+	"firstName" : "Richard",
+	"lastName" : "Hirthe",
+	"userName" : "Richard.Hirthe52",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/ruzinav/128.jpg",
+	"email" : "Richard_Hirthe@gmail.com",
+	"dateOfBirth" : ISODate("1999-09-11T11:24:04.010+03:00"),
+	"address" : {
+		"street" : "785 Adams Dale",
+		"suite" : "Suite 379",
+		"city" : "Labadiestad",
+		"state" : "Texas",
+		"zipCode" : "45075",
+		"geo" : {
+			"lat" : 34.7933,
+			"lng" : 70.5508
+		}
+	},
+	"phone" : "977.924.7118",
+	"website" : "charlie.net",
+	"company" : {
+		"name" : "O'Keefe LLC",
+		"catchPhrase" : "Triple-buffered maximized database",
+		"bs" : "synergize next-generation architectures"
+	},
+	"salary" : 4603, // matched here
+	"monthlyExpenses" : 3355,
+	"favoriteSports" : [
+		"Snooker",
+		"Water Polo",
+		"Table Tennis",
+		"Ice Hockey",
+		"Volleyball",
+		"Soccer",
+		"Handball",
+		"American Football",
+		"Golf",
+		"Boxing",
+		"Beach Volleyball",
+		"Formula 1",
+		"Tennis",
+		"Motor Sport",
+		"Baseball"
+	],
+	"profession" : "Lawyer" // matched here
+}
+```
+{% endtab %}
+
+{% tab title="User" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+ðŸ’¡ Of course you can build a simple extension method that does this for you and makes things a little bit easier.
+
+{% tabs %}
+{% tab title="C\#" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+var firstFilterToFail = Builders<User>.Filter
+    .Eq(u => u.Profession, "Doctor");
+    
+var secondFilterToFail = Builders<User>.Filter
+    .Lt(u => u.Salary, 4500);
+    
+var extensionNorFilter = Builders<User>.Filter
+    .Nor(firstFilterToFail, secondFilterToFail);
+```
+{% endtab %}
+
+{% tab title="Extensions" %}
+{% code title="Extensions.cs" %}
+```csharp
+public static FilterDefinition<T> Nor<T>(
+    this FilterDefinitionBuilder<T> builder, 
+    params FilterDefinition<T>[] filters)
+{
+    return builder.And(
+        filters.Select(builder.Not)
+    );
+}
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
