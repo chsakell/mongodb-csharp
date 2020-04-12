@@ -39,6 +39,20 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             #region Typed classes commands
 
+            var totalUsers = await collection.CountDocumentsAsync(Builders<User>.Filter.Empty);
+
+            // Equal
+            // Case sensitive matters!
+            var equalPilotsFilter = Builders<User>.Filter.Eq(u => u.Profession, "Pilot");
+            var pilots = await collection.Find(equalPilotsFilter).ToListAsync();
+            Utils.Log($"Among {totalUsers} users, {pilots.Count} are pilots");
+
+            // Not equal
+            // Case sensitive matters!
+            var notEqualDoctorsFilter = Builders<User>.Filter.Ne(u => u.Profession, "Doctor");
+            var notDoctors = await collection.Find(notEqualDoctorsFilter).ToListAsync();
+            Utils.Log($"Among {totalUsers} users, {notDoctors.Count} aren't doctors");
+
             // Greater than
             var filterGreaterThan = Builders<User>.Filter.Gt(u => u.Salary, 3500);
             var greaterThan3500 = await collection.Find(filterGreaterThan).ToListAsync();
@@ -60,20 +74,6 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
                       $"Salary Less than 2500 total: {lessThan2500.Count}{Environment.NewLine}" +
                       $"Salary Less than or equal to 1500 total: {lessThanOrEqual1500.Count}{Environment.NewLine}");
 
-            var totalUsers = await collection.CountDocumentsAsync(Builders<User>.Filter.Empty);
-
-            // Equal
-            // Case sensitive matters!
-            var equalPilotsFilter = Builders<User>.Filter.Eq(u => u.Profession, "Pilot");
-            var pilots = await collection.Find(equalPilotsFilter).ToListAsync();
-            Utils.Log($"Among {totalUsers} users, {pilots.Count} are pilots");
-
-            // Not equal
-            // Case sensitive matters!
-            var notEqualDoctorsFilter = Builders<User>.Filter.Ne(u => u.Profession, "Doctor");
-            var notDoctors = await collection.Find(notEqualDoctorsFilter).ToListAsync();
-            Utils.Log($"Among {totalUsers} users, {notDoctors.Count} aren't doctors");
-
             // In
             var medicalProfessionsFilter = Builders<User>.Filter.In(u => u.Profession,
                 new[] { "Dentist", "Pharmacist", "Nurse" });
@@ -90,6 +90,15 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             #region BsonDocument commands
 
+            // Equal
+            // Case sensitive matters!
+            var bsonEqualPilotsFilter = Builders<BsonDocument>.Filter.Eq("profession", "Pilot");
+            var bsonPilots = await bsonCollection.Find(bsonEqualPilotsFilter).ToListAsync();
+
+            // Not equal
+            var bsonNotEqualDoctorsFilter = Builders<BsonDocument>.Filter.Ne("profession", "Doctor");
+            var bsonNotDoctors = await bsonCollection.Find(bsonNotEqualDoctorsFilter).ToListAsync();
+
             // Greater than
             var bsonFilterGreaterThan = Builders<BsonDocument>.Filter.Gt("salary", 3500);
             var bsonGreaterThan3500 = await bsonCollection.Find(bsonFilterGreaterThan).ToListAsync();
@@ -105,15 +114,6 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             // Greater or equal than
             var bsonFilterLessOrEqualThan = Builders<BsonDocument>.Filter.Lte("salary", 1500);
             var bsonLessThanOrEqual1500 = await bsonCollection.Find(bsonFilterLessOrEqualThan).ToListAsync();
-
-            // Equal
-            // Case sensitive matters!
-            var bsonEqualPilotsFilter = Builders<BsonDocument>.Filter.Eq("profession", "Pilot");
-            var bsonPilots = await bsonCollection.Find(bsonEqualPilotsFilter).ToListAsync();
-
-            // Not equal
-            var bsonNotEqualDoctorsFilter = Builders<BsonDocument>.Filter.Ne("profession", "Doctor");
-            var bsonNotDoctors = await bsonCollection.Find(bsonNotEqualDoctorsFilter).ToListAsync();
 
             // In
             var bsonMedicalProfessionsFilter = Builders<BsonDocument>.Filter.In("profession",

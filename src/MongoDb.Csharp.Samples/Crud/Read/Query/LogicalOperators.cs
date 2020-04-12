@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
