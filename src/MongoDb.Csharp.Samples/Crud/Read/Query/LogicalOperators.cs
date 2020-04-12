@@ -67,14 +67,14 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             #region not
 
-            // all users that are males, hence not females
+            // all users that are females, hence not males
 
-            var notFemaleFilter = Builders<User>.Filter.Not(
-                Builders<User>.Filter.Eq(u => u.Gender, Gender.Female)
+            var notMaleFilter = Builders<User>.Filter.Not(
+                Builders<User>.Filter.Eq(u => u.Gender, Gender.Male)
             );
 
-            var notFemaleUsers = await collection.Find(notFemaleFilter).ToListAsync();
-            Utils.Log($"{notFemaleUsers.Count} users have male gender");
+            var femaleUsers = await collection.Find(notMaleFilter).ToListAsync();
+            Utils.Log($"{femaleUsers.Count} users have female gender");
 
             #endregion
 
@@ -87,11 +87,14 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             var lowOrHighSalaryUsers = await collection.Find(orSalaryFilter).ToListAsync();
             Utils.Log($"{lowOrHighSalaryUsers.Count} users have salary either too low or too high");
+            
+            #endregion
 
             #region nor
 
             // users with profession other than Doctor, salary other than < 4500
             // should fail all conditions
+
             var norFilter = Builders<User>.Filter.And(
                 Builders<User>.Filter.Not(Builders<User>.Filter.Eq(u => u.Profession, "Doctor")),
                 Builders<User>.Filter.Not(Builders<User>.Filter.Lt(u => u.Salary, 4500)));
@@ -99,7 +102,11 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             var norUsers = await collection.Find(norFilter).ToListAsync();
             Utils.Log($"{norUsers.Count} users aren't doctors and have salary greater than 4500");
 
-            #endregion
+            var firstFilterToFail = Builders<User>.Filter.Eq(u => u.Profession, "Doctor");
+            var secondFilterToFail = Builders<User>.Filter.Lt(u => u.Salary, 4500);
+            var extensionNorFilter = Builders<User>.Filter.Nor(firstFilterToFail, secondFilterToFail);
+
+            var extensionUsers = await collection.Find(norFilter).ToListAsync();
 
             #endregion
 
@@ -130,13 +137,13 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             #region not
 
-            // all users that are males, hence not females
+            // all users that are females, hence not females
 
-            var bsonNotFemaleFilter = Builders<BsonDocument>.Filter.Not(
-                Builders<BsonDocument>.Filter.Eq("gender", Gender.Female)
+            var bsonNotMaleFilter = Builders<BsonDocument>.Filter.Not(
+                Builders<BsonDocument>.Filter.Eq("gender", Gender.Male)
             );
 
-            var bsonNotFemaleUsers = await bsonCollection.Find(bsonNotFemaleFilter).ToListAsync();
+            var bsonFemaleUsers = await bsonCollection.Find(bsonNotMaleFilter).ToListAsync();
 
             #endregion
 
@@ -168,12 +175,12 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             db.users.find({ $and: [{ profession: { $eq: "Doctor"} }, {gender: { $eq: 0} }] })
 
             db.users.find( { $and: [
-                                    { "gender" : 1 },
-                                    { profession: { $in: ["Teacher", "Nurse", "Dentist"]}},
-                                    { $and : [ 
-                                                { salary: { $gte: 2000 } }, 
-                                                { salary: { $lte: 3200 }} ] } 
-                                    ] })
+                        { "gender" : 1 },
+                        { profession: { $in: ["Teacher", "Nurse", "Dentist"]}},
+                        { $and : [ 
+                                    { salary: { $gte: 2000 } }, 
+                                    { salary: { $lte: 3200 }} ] } 
+                        ] })
             
             db.users.find( { gender: { $not: { $eq: 0   } }} ) |  db.users.find( { gender: { $ne: 1 }} )
             db.users.find( { $or: [ { salary: { $lt: 1500 } }, { salary: { $gt: 4000 }}]})
