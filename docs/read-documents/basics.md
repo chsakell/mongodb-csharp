@@ -30,7 +30,7 @@ var allUsers = await collection.Find(emptyFilter).ToListAsync();
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonEmptyDocument = Builders<BsonDocument>.Filter.Empty;
 
@@ -78,7 +78,7 @@ var doctors = await collection.Find(doctorsFilter).ToListAsync();
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 

@@ -39,7 +39,7 @@ var pilots = await collection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -164,7 +164,7 @@ var notDoctors = await collection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -285,7 +285,7 @@ var greaterThan3500 = await collection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -410,7 +410,7 @@ var greaterOrEqualThan4500 = await collection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -535,7 +535,7 @@ var lessThan2500 = await collection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -651,7 +651,7 @@ var lessThanOrEqual1500 = await collection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -771,7 +771,7 @@ var medicalUsers = await collection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -885,7 +885,7 @@ var nonMedicalUsers = await collection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
