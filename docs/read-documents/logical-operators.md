@@ -161,6 +161,166 @@ public class User
 The _Gender_ property on the `User` class is an `Enum` type and the driver is smart enough 🧙♂ 🦉 to translate it properly when sending the query to MongoDB
 {% endhint %}
 
+You can combine as many filters as you want to an AND operator. The following sample finds all documents that match the following criteria:
+
+1. They have gender _Female_ 👩⚕ 
+2. They are either _"Teacher", Nurse" or "Dentist"_  🏫 __🏥 
+3. Their salary is between 2000 AND 3200 💰 
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="LogicalOperators.cs" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+// female filter - condition 1
+var femaleFilter = Builders<User>.Filter.Eq(u => u.Gender, Gender.Female);
+
+// profession filter - condition 2
+var teacherOrNurseFilter = Builders<User>.Filter
+  .In(u => u.Profession, new[] { "Teacher", "Nurse", "Dentist" });
+    
+// salary filter - condition 3
+var salaryFilter = Builders<User>.Filter.And(
+                Builders<User>.Filter.Gte(u => u.Salary, 2000),
+                Builders<User>.Filter.Lte(u => u.Salary, 3200));
+
+// combined filter
+var combinedFilter = Builders<User>.Filter
+                .And(femaleFilter, teacherOrNurseFilter, salaryFilter);
+    
+var matchedUsers = await collection.Find(combinedFilter).ToListAsync();
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="BsonDocument" %}
+```csharp
+var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+
+// female filter - condition 1
+var bsonFemaleFilter = Builders<BsonDocument>.Filter
+    .Eq("gender", Gender.Female);
+
+// profession filter - condition 2
+var bsonTeacherOrNurseFilter = Builders<BsonDocument>.Filter
+    .In("profession", new[] { "Teacher", "Nurse", "Dentist" });
+    
+// salary filter - condition 3
+var bsonSalaryFilter = Builders<BsonDocument>.Filter.And(
+    Builders<BsonDocument>.Filter.Gte("salary", 2000),
+    Builders<BsonDocument>.Filter.Lte("salary", 3200)
+);
+
+// combined filter
+var bsonCombinedFilter = Builders<BsonDocument>.Filter
+    .And(bsonFemaleFilter, bsonTeacherOrNurseFilter, bsonSalaryFilter);
+    
+var bsonMatchedUsers = await bsonCollection
+    .Find(bsonCombinedFilter).ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.users.find( 
+{ $and: [
+             { "gender" : 1 },
+             { profession: { $in: ["Teacher", "Nurse", "Dentist"]}},
+             { $and : [ 
+                         { salary: { $gte: 2000 } }, 
+                         { salary: { $lte: 3200 }} 
+             ] } 
+        ]})
+```
+{% endtab %}
+
+{% tab title="Result" %}
+```javascript
+// sample matched document
+{
+	"_id" : ObjectId("5e9335512013741d0cb64570"),
+	"gender" : 1, // matched here
+	"firstName" : "Silvia",
+	"lastName" : "Rice",
+	"userName" : "Silvia6",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/solid_color/128.jpg",
+	"email" : "Silvia_Rice86@hotmail.com",
+	"dateOfBirth" : ISODate("1999-05-20T05:09:46.133+03:00"),
+	"address" : {
+		"street" : "53815 Flo Creek",
+		"suite" : "Apt. 845",
+		"city" : "Gibsonburgh",
+		"state" : "Vermont",
+		"zipCode" : "90988",
+		"geo" : {
+			"lat" : -11.4545,
+			"lng" : 87.8866
+		}
+	},
+	"phone" : "(389) 267-5524",
+	"company" : {
+		"name" : "Klein, Jacobi and Cormier",
+		"catchPhrase" : "Open-architected methodical alliance",
+		"bs" : "implement dynamic e-markets"
+	},
+	"salary" : 2935, // matched here
+	"monthlyExpenses" : 3826,
+	"favoriteSports" : [
+		"Darts",
+		"Table Tennis",
+		"Baseball",
+		"Volleyball",
+		"Basketball",
+		"Snooker",
+		"Tennis",
+		"Moto GP",
+		"Motor Sport",
+		"Boxing",
+		"Water Polo",
+		"Handball",
+		"MMA",
+		"Soccer",
+		"Cycling"
+	],
+	"profession" : "Dentist" // matched here
+}
+```
+{% endtab %}
+
+{% tab title="User" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="success" %}
+The inner filter definitions passed as arguments in the **`And`** method can be as complex as you want to.
+{% endhint %}
+
 ## _NOT_ operator
 
 The NOT _operator_ performs a logical NOT on an expression and match documents that **don't satisfy** the expression. 
