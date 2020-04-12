@@ -8,6 +8,8 @@ description: "Meet the builder \U0001F91D"
 
 To create a filter query for an `IMongoCollection<T>` collection, you need to build a `FilterDefinition<T>` filter. You can do this using the `Builders<T>.Filter` filter definition builder which contains several filters such as the equality or element filters. This section will give you an overview on how to create and use the filter definition builder.
 
+> **Syntax**: `Builders<T>.Filter.<operator>`
+
 ##  The `Empty` filter
 
 Use the `Empty` filter when you want to get either the 1st document or all of its documents.
@@ -58,6 +60,8 @@ db.users.find({})
 ## Equality filter on a top level field
 
 The equality filter is one of the most used filters you are gonna use when querying MongoDB. The following examples filter user documents on top level **string** fields, _profession_ and _email_.
+
+> **Syntax**: `Builders<T>.Filter.Eq(doc => doc.<field>, <value>)`
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -133,6 +137,12 @@ Equality filter is **case sensitive**, so always make sure to use it properly!
 ## Equality filter on a nested field
 
 You can use the equality filter to match your documents based on an embedded document field. In the following example the _address_ field is an **embedded** field on the user document and contains a _city_ string field.  The sample show how to filter documents based on the _city_ field.
+
+> **Syntax**: `Builders<T>.Filter.Eq(doc => doc.<field1>..<fieldN>.<embedded-field>, <value>)`
+
+{% hint style="warning" %}
+The hierarchy from _`<field1>`_ to the _`<embedded-field>`_ **cannot** contain an array field
+{% endhint %}
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -275,6 +285,8 @@ Remember, the filter might be on an embedded document field, but the result will
 
 Assuming your document contains an array field with **string** values, you want to get all documents that their array field **contains** a specific value. The sample that follows works for other types as well \(_e.g. bool, int, decimal, float\)_.
 
+> **Syntax**: `Builders<T>.Filter.Eq(doc => doc.<array-field>, <value>)`
+
 The example retrieves all user documents that their _FavoriteSports_ array field contains a specific sport. It does that by using an **equality filter for an array field** called `AnyEq`.
 
 {% tabs %}
@@ -405,6 +417,8 @@ When the search term used in `AnyEq` is a simple value, then you are running a s
 ## Equality filter on a array field - Exact match
 
 In case you want to run an exact match on the array field then you must use an array argument in the `AnyEq` filter. This will try match the entire array field rather than just searching inside the array.
+
+> **Syntax**: `Builders<T>.Filter.Eq(doc => doc.<array-field>, <array-values>)`
 
 The following example finds the documents that their _FavoriteSports_ array field **contains only** the Soccer term.
 
