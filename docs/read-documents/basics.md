@@ -160,7 +160,7 @@ var athensUsers = await collection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -179,7 +179,7 @@ db.users.find({"address.city": "Athens"})
 ```
 {% endtab %}
 
-{% tab title="Sample result" %}
+{% tab title="Result" %}
 ```javascript
 {
 	"_id" : ObjectId("5e919356139fe1568028900d"),
@@ -228,7 +228,7 @@ db.users.find({"address.city": "Athens"})
 ```
 {% endtab %}
 
-{% tab title="User" %}
+{% tab title="Models" %}
 ```csharp
 public class User
 {
@@ -253,11 +253,7 @@ public class User
     public List<string> FavoriteSports { get; set; }
     public string Profession { get; set; }
 }
-```
-{% endtab %}
 
-{% tab title="AddressCard" %}
-```csharp
 public class AddressCard
 {
     public string Street {get; set; }
@@ -308,7 +304,7 @@ var usersHaveBasketball = await collection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -328,8 +324,9 @@ db.users.find({"favoriteSports": "Basketball"})
 ```
 {% endtab %}
 
-{% tab title="Sample Result" %}
+{% tab title="Result" %}
 ```javascript
+// sample result
 {
 	"_id" : ObjectId("5e91e3ba3c1ba62570a67b98"),
 	"gender" : 0,
@@ -440,7 +437,7 @@ var soccerUsers = await collection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -458,8 +455,9 @@ db.users.find({"favoriteSports": ["Soccer"]})
 ```
 {% endtab %}
 
-{% tab title="Sample result" %}
+{% tab title="Result" %}
 ```javascript
+// sample result
 {
 	"_id" : ObjectId("5e91e3ba3c1ba62570a67e08"),
 	"gender" : 1,
