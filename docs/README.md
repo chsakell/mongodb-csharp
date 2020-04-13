@@ -55,7 +55,7 @@ var sliceQueryResults = await sliceQuery.ToListAsync();
 ```
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonSlicePipeline = new[]
 {
@@ -95,7 +95,11 @@ db.travelers
 As you can see, the solution is presented in 3 different ways. If any other code snippet is required it will be added through a new tab.
 
 {% hint style="success" %}
-The **C\#** tab will always contain the typed way of querying MongoDB
+* The **C\#** tab will always contain the typed way of querying MongoDB
+* The **Bson** tab contains the code using `BsonDocument`
+* The **Shell** contains the code you would write directly in a MongoDB shell
+
+> Other than these tabs, samples might also contain result documents or the C\# class models used in the queries
 {% endhint %}
 
 ### Repository

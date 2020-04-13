@@ -45,8 +45,9 @@ public class User
 ```
 {% endtab %}
 
-{% tab title="Sample database document" %}
+{% tab title="Document" %}
 ```javascript
+// sample doc
 {
 	"_id" : ObjectId("5e8897d94d749f71d8240a3c"),
 	"gender" : 1,
