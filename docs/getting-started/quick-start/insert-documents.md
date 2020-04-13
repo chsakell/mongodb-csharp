@@ -18,7 +18,7 @@ await personsCollection.InsertOneAsync(appPerson);
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var personsBsonCollection = usersDatabase.GetCollection<BsonDocument>("users");
 
@@ -65,7 +65,7 @@ var bsonPerson = new BsonDocument
 ```
 {% endtab %}
 
-{% tab title="BsonDocument.Parse" %}
+{% tab title="Parse" %}
 ```csharp
 var personsBsonCollection = usersDatabase.GetCollection<BsonDocument>("users");
 var bsonUser = BsonDocument.Parse(@"{
@@ -149,8 +149,9 @@ db.users.insertOne({
 ```
 {% endtab %}
 
-{% tab title="Sample result" %}
+{% tab title="Result" %}
 ```javascript
+// sample result
 {
 	"acknowledged" : true,
 	"insertedId" : ObjectId("5e8a39059c819d22e031c4f4")

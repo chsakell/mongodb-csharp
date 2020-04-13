@@ -24,7 +24,7 @@ var personFindResult = await personsCollection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 // Get the collection
 var bsonPersonCollection = usersDatabase.GetCollection<BsonDocument>("users");
@@ -53,7 +53,7 @@ db.users.findOne(
 ```
 {% endtab %}
 
-{% tab title="Sample document" %}
+{% tab title="Document" %}
 ```javascript
 {
 	"_id" : ObjectId("5e5d11fe152a428290f30245"),
@@ -125,7 +125,7 @@ var females = await personsCollection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 // Get the collection
 var bsonPersonCollection = usersDatabase.GetCollection<BsonDocument>("users");
@@ -149,8 +149,9 @@ db.users.find(
 ```
 {% endtab %}
 
-{% tab title="Sample documents" %}
+{% tab title="Result" %}
 ```javascript
+// sample document
 {
 	"_id" : ObjectId("5e8a35e2cc20587f34f0cc2a"),
 	"gender" : 1,

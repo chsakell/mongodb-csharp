@@ -35,7 +35,7 @@ if (personUpdateResult.MatchedCount == 1 && personUpdateResult.ModifiedCount == 
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 // Get a collection reference
 var bsonPersonCollection = usersDatabase.GetCollection<BsonDocument>("users");
@@ -65,7 +65,7 @@ db.users.updateOne(
 ```
 {% endtab %}
 
-{% tab title="Sample document" %}
+{% tab title="Doc" %}
 ```javascript
 {
 	"_id" : ObjectId("5e89b1db4cd4d45b2039f401"),
@@ -172,7 +172,7 @@ if (updateResult.MatchedCount.Equals(totalPersons))
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 // Create a filter by combining a Greater & Less than filters
 var bsonSalaryFilter = Builders<BsonDocument>.Filter
@@ -199,8 +199,9 @@ db.users.updateMany(
 ```
 {% endtab %}
 
-{% tab title="Sample data" %}
+{% tab title="Data" %}
 ```javascript
+// sample data
 {
 	"_id" : ObjectId("5e89b1db4cd4d45b2039f401"),
 	"gender" : 1,
@@ -290,8 +291,9 @@ db.users.updateMany(
 ```
 {% endtab %}
 
-{% tab title="Sample result" %}
+{% tab title="Result" %}
 ```javascript
+// sample result
 {
 	"acknowledged" : true,
 	"matchedCount" : 20,

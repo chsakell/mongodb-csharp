@@ -24,7 +24,7 @@ if (personDeleteResult.DeletedCount == 1)
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 // get a collection reference
 var bsonPersonCollection = usersDatabase
@@ -82,7 +82,7 @@ var firstPersonDeleteResult = await personsCollection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 // get a collection reference
 var bsonPersonCollection = usersDatabase
@@ -138,7 +138,7 @@ if (personsDeleteResult.DeletedCount.Equals(totalPersons))
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonPersonCollection = usersDatabase
     .GetCollection<BsonDocument>("users");
