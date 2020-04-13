@@ -70,12 +70,11 @@ var bsonMaleDoctors = await bsonCollection
 ```javascript
 db.users.find({ $and: [
     { profession: { $eq: "Doctor"} }, 
-    {gender: { $eq: 0} }] })
-```
-{% endtab %}
+    {gender: { $eq: 0} }
+]})
 
-{% tab title="Result" %}
-```javascript
+--------------------------- 
+        
 // sample matched document
 {
 	"_id" : ObjectId("5e91e3ba3c1ba62570a67bdd"),
@@ -232,11 +231,9 @@ db.users.find(
                          { salary: { $lte: 3200 }} 
              ] } 
         ]})
-```
-{% endtab %}
-
-{% tab title="Result" %}
-```javascript
+        
+---------------------------  
+     
 // sample matched document
 {
 	"_id" : ObjectId("5e9335512013741d0cb64570"),
@@ -364,12 +361,10 @@ var bsonFemaleUsers = await bsonCollection
 
 {% tab title="Shell" %}
 ```javascript
-db.users.find( { gender: { $ne: 0 }}).
-```
-{% endtab %}
+db.users.find( { gender: { $ne: 0 }})
 
-{% tab title="Result" %}
-```javascript
+--------------------------- 
+
 // sample matched document
 {
 	"_id" : ObjectId("5e9335512013741d0cb64552"),
@@ -377,7 +372,7 @@ db.users.find( { gender: { $ne: 0 }}).
 	"firstName" : "Rosie",
 	"lastName" : "Okuneva",
 	"userName" : "Rosie55",
-	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/stefanotirloni/128.jpg",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/joe_black/128.jpg",
 	"email" : "Rosie6@gmail.com",
 	"dateOfBirth" : ISODate("1984-11-29T12:38:37.812+02:00"),
 	"address" : {
@@ -495,11 +490,9 @@ db.users.find( { $or: [
     { salary: { $lt: 1500 } }, 
     { salary: { $gt: 4000 }}
 ]})
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+-------------------------
+
 // sample matched document
 {
 	"_id" : ObjectId("5e9335512013741d0cb6454a"),
@@ -621,11 +614,9 @@ db.users.find(
 { $nor: [ { profession: { $eq: "Doctor" } }, 
           { salary: { $lt: 4500 }}
         ]})
-```
-{% endtab %}
+        
+----------------------
 
-{% tab title="Result" %}
-```javascript
 // sample matched document
 {
 	"_id" : ObjectId("5e9335512013741d0cb6454e"),
