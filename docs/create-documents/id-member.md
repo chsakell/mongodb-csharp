@@ -72,7 +72,7 @@ public class Message
 {% endcode %}
 {% endtab %}
 
-{% tab title="Message with custom identifier name" %}
+{% tab title="Custom Id" %}
 ```csharp
 public class Message
 {
@@ -115,7 +115,7 @@ public class Message
 {% endcode %}
 {% endtab %}
 
-{% tab title="Message with custom identifier name" %}
+{% tab title="Custom Id" %}
 ```csharp
 public class Message
 {
