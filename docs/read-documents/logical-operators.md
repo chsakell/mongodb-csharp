@@ -48,7 +48,7 @@ var maleDoctors = await collection.Find(maleDoctorsFilter).ToListAsync();
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -194,7 +194,7 @@ var matchedUsers = await collection.Find(combinedFilter).ToListAsync();
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -348,7 +348,7 @@ var femaleUsers = await collection.Find(notMaleFilter).ToListAsync();
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -475,7 +475,7 @@ var lowOrHighSalaryUsers = await collection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
@@ -600,7 +600,7 @@ var norUsers = await collection
 {% endcode %}
 {% endtab %}
 
-{% tab title="BsonDocument" %}
+{% tab title="Bson" %}
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
