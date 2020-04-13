@@ -13,33 +13,127 @@ MongoDB providers two element query operators that helps you find documents base
 
 ## _Exists_ operator - $exists
 
-The _$exists_ operator matches the documents that contain the field, event its value is _null_. 
+The _$exists_ operator matches the documents that contain the field, even its value is _null_. 
 
 > **Syntax**: `Builders<T>.Filter.Exists(doc => doc.<field>, <true || false>)`
 
 The filter definition being created with the `Exists`method on a specific field, matches the documents which contain the field event if its value is _null_.
 
-The sample uses an _And_ operator to find all documents that have male _gender_ **AND** have the _profession_ field equal to "_Doctor_".
+The sample uses the _Exists_ operator to find `Order` documents that have assigned a _lot number_. The _LotNumber_ is a nullable int property in the `Order`class.
 
 {% tabs %}
 {% tab title="C\#" %}
-{% code title="LogicalOperators.cs" %}
+{% code title="ElementOperators.cs" %}
+```csharp
+var collection = database.GetCollection<Order>(collectionName);
+
+// find all orders having a lotnumber
+var lotNumberFilter = Builders<Order>.Filter
+            .Exists(o => o.LotNumber, exists:true);
+
+var ordersWithLotNumber = await collection
+            .Find(lotNumberFilter).ToListAsync();
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+
+var bsonLotNumberFilter = Builders<BsonDocument>.Filter
+    .Exists("lotNumber", exists: true);
+
+var bsonOrdersWithLotNumber = await collection
+    .Find(lotNumberFilter).ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.invoices.find({ lotNumber: { $exists: true } })
+
+--------------------------- 
+        
+// sample matched document
+{
+	"_id" : 8,
+	"item" : "Ergonomic Frozen Pants",
+	"quantity" : 8,
+	"lotNumber" : 54, // matched here
+	"shipmentDetails" : {
+		"shipAddress" : "018 Ortiz Green, Kennytown, Pitcairn Islands",
+		"city" : "Abshireville",
+		"country" : "Suriname",
+		"contactName" : "Jonas Kertzmann",
+		"contactPhone" : "(310) 890-1795"
+	}
+}
+```
+{% endtab %}
+
+{% tab title="Order" %}
+```csharp
+public class Order
+{
+    [BsonId]
+    public int OrderId { get; set; }
+    public string Item { get; set; }
+    public int Quantity { get; set; }
+
+    [BsonIgnoreIfDefault]
+    public int? LotNumber { get; set; }
+
+    public ShipmentDetails ShipmentDetails { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+_LotNumber_ property has the `[BsonIgnoreIfDefault]` attribute assigned. This ensures that when a document having null _LotNumber_ is inserted in the collection, this field will be totally ignored, meaning the document will not contain a _lotNumber_ field.
+
+On the contrary, if you omit this attribute and try to insert a document with null LotNumber, the field will be added with a _null_ value as follow.
+
+```javascript
+{
+	"_id" : 0,
+	"item" : "Handcrafted Steel Salad",
+	"quantity" : 9,
+	"lotNumber" : null, // nullable not ignored
+	"shipmentDetails" : {
+		"shipAddress" : "323 Edna Mission",
+		"city" : "Jaquelineberg",
+		"country" : "Moldova",
+		"contactName" : "Eve Legros",
+		"contactPhone" : "420.498.4974 x12459"
+	}
+}
+```
+{% endhint %}
+
+## Type operator - $type
+
+The _Type_ _operator_ matches documents where the field's value is an instance of a [BSON](https://docs.mongodb.com/manual/reference/glossary/#term-bson) [type](https://docs.mongodb.com/manual/reference/bson-types/).
+
+> **Syntax**: `Builders<T>.Filter.Type(doc => doc.<field>, BsonType)`
+
+Use this operator when you need to ensure that a document's field has \(or hasn't\) been assigned with a specific value type.
+
+The sample uses the _Type_ operator to find all orders that have been shipped by checking that the `ShippedDate`property has been assigned with a `DateTime` value.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="ElementOperators.cs" %}
 ```csharp
 var collection = database.GetCollection<User>(collectionName);
 
-// create an equality filter on the gender for 'male' (0)
-var maleFilter = Builders<User>.Filter
-    .Eq(u => u.Gender, Gender.Male);
-    
-// create an equality filter on profession for 'Doctor'
-var doctorFilter = Builders<User>.Filter
-    .Eq(u => u.Profession, "Doctor");
-    
-// compine the filters with AND operator
-var maleDoctorsFilter = Builders<User>.Filter
-    .And(maleFilter, doctorFilter);
+// find documents with shippedDate assigned a DateTime value
+var typeFilter = Builders<Order>.Filter
+    .Type(o => o.ShipmentDetails.ShippedDate, BsonType.DateTime);
 
-var maleDoctors = await collection.Find(maleDoctorsFilter).ToListAsync();
+var shippedOrders = await collection
+    .Find(typeFilter).ToListAsync();
 ```
 {% endcode %}
 {% endtab %}
@@ -64,129 +158,79 @@ var bsonMaleDoctors = await bsonCollection
 
 {% tab title="Shell" %}
 ```javascript
-db.users.find({ $and: [
-    { profession: { $eq: "Doctor"} }, 
-    {gender: { $eq: 0} }
-]})
+db.invoices
+	.find({"shipmentDetails.shippedDate" : { $type: 9 }})
 
+db.invoices.find({"shipmentDetails.shippedDate" : { $type: "date" }})
+// type 9 is the integer identifier for Date types
+// https://docs.mongodb.com/manual/reference/bson-types/
 --------------------------- 
         
 // sample matched document
 {
-	"_id" : ObjectId("5e91e3ba3c1ba62570a67bdd"),
-	"gender" : 0, // matched here
-	"firstName" : "Ralph",
-	"lastName" : "Emard",
-	"userName" : "Ralph78",
-	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/xripunov/128.jpg",
-	"email" : "Ralph62@yahoo.com",
-	"dateOfBirth" : ISODate("1967-02-18T00:07:22.546+02:00"),
-	"address" : {
-		"street" : "3046 Orn Locks",
-		"suite" : "Apt. 046",
-		"city" : "North Nestorview",
-		"state" : "Wyoming",
-		"zipCode" : "03620-0321",
-		"geo" : {
-			"lat" : 54.3724,
-			"lng" : 127.4216
-		}
-	},
-	"phone" : "422-441-7773",
-	"website" : "neva.name",
-	"company" : {
-		"name" : "Kilback LLC",
-		"catchPhrase" : "Configurable 6th generation encoding",
-		"bs" : "transition seamless initiatives"
-	},
-	"salary" : 4787,
-	"monthlyExpenses" : 4546,
-	"favoriteSports" : [
-		"Darts",
-		"American Football",
-		"Basketball",
-		"Cricket",
-		"Boxing",
-		"Golf",
-		"Beach Volleyball",
-		"Ice Hockey",
-		"Water Polo",
-		"Table Tennis",
-		"Tennis",
-		"Snooker",
-		"Cycling",
-		"MMA",
-		"Handball"
-	],
-	"profession" : "Doctor" // matched here
+	"_id" : 0,
+	"item" : "Generic Metal Cheese",
+	"quantity" : 9,
+	"shipmentDetails" : {
+		"shippedDate" : ISODate("2019-07-06T01:53:49.804+03:00"), // matched here
+		"shipAddress" : "7870 Shannon Mills, West Theodoreview, Palau",
+		"city" : "Swaniawskimouth",
+		"country" : "Guadeloupe",
+		"contactName" : "Hermina Boyer",
+		"contactPhone" : "495-231-3113"
+	}
 }
 ```
 {% endtab %}
 
-{% tab title="User" %}
+{% tab title="Models" %}
 ```csharp
-public class User
+public class Order
 {
     [BsonId]
-    [BsonIgnoreIfDefault] // required for replace documents 
-    public ObjectId Id { get; set; }
-    public Gender Gender { get; set; }
-    public string FirstName {get; set; }
-    public string LastName {get; set; }
-    public string UserName {get; set; }
-    public string Avatar {get; set; }
-    public string Email {get; set; }
-    public DateTime DateOfBirth {get; set; }
-    public AddressCard Address {get; set; }
-    public string Phone {get; set; }
-    
+    public int OrderId { get; set; }
+    public string Item { get; set; }
+    public int Quantity { get; set; }
+
     [BsonIgnoreIfDefault]
-    public string Website {get; set; }
-    public CompanyCard Company {get; set; }
-    public decimal Salary { get; set; }
-    public int MonthlyExpenses { get; set; }
-    public List<string> FavoriteSports { get; set; }
-    public string Profession { get; set; }
+    public int? LotNumber { get; set; }
+
+    public ShipmentDetails ShipmentDetails { get; set; }
+}
+
+public class ShipmentDetails
+{
+    [BsonIgnoreIfDefault]
+    public DateTime? ShippedDate { get; set; }
+    public string ShipAddress { get; set; }
+    public string City { get; set; }
+    public string Country { get; set; }
+    public string ContactName { get; set; }
+    public string ContactPhone { get; set; }
 }
 ```
 {% endtab %}
 {% endtabs %}
 
-{% hint style="success" %}
-The _Gender_ property on the `User` class is an `Enum` type and the driver is smart enough 🧙♂ 🦉 to translate it properly when sending the query to MongoDB
-{% endhint %}
+### Query for NULL values
 
+Assuming you have a property that might get assigned with `NULL`value, you can find these documents by applying a filter on `BsonType.Null` types on that property.
 
-
-## Type operator
-
-The AND _operator_ performs a logical AND on a set of expressions and match documents that satisfy all of them. 
-
-> **Syntax**: `Builders<T>.Filter.And(FilterDefinition<T>[] filters)`
-
-The idea is that you create as many **filter definitions** you want and pass them as an argument to the `And` `FilterDefinitionBuilder` method. 
-
-The sample uses an _And_ operator to find all documents that have male _gender_ **AND** have the _profession_ field equal to "_Doctor_".
+The sample finds all documents with `NULL` shipment's contact phone number.
 
 {% tabs %}
 {% tab title="C\#" %}
-{% code title="LogicalOperators.cs" %}
+{% code title="ElementOperators.cs" %}
 ```csharp
 var collection = database.GetCollection<User>(collectionName);
 
-// create an equality filter on the gender for 'male' (0)
-var maleFilter = Builders<User>.Filter
-    .Eq(u => u.Gender, Gender.Male);
-    
-// create an equality filter on profession for 'Doctor'
-var doctorFilter = Builders<User>.Filter
-    .Eq(u => u.Profession, "Doctor");
-    
-// compine the filters with AND operator
-var maleDoctorsFilter = Builders<User>.Filter
-    .And(maleFilter, doctorFilter);
-
-var maleDoctors = await collection.Find(maleDoctorsFilter).ToListAsync();
+// search for null contact phone numbers
+// the field does exists, but has null value
+var nullContactPhoneFilter = Builders<Order>.Filter
+     .Type(o => o.ShipmentDetails.ContactPhone, BsonType.Null);
+            
+var nullContactPhoneOrders = await collection
+     .Find(nullContactPhoneFilter).ToListAsync();
 ```
 {% endcode %}
 {% endtab %}
@@ -195,111 +239,69 @@ var maleDoctors = await collection.Find(maleDoctorsFilter).ToListAsync();
 ```csharp
 var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
 
-var bsonMaleFilter = Builders<BsonDocument>.Filter
-    .Eq("gender", Gender.Male);
-    
-var bsonDoctorFilter = Builders<BsonDocument>.Filter
-    .Eq("profession", "Doctor");
-    
-var bsonMaleDoctorsFilter = Builders<BsonDocument>.Filter
-    .And(bsonMaleFilter, bsonDoctorFilter);
-    
-var bsonMaleDoctors = await bsonCollection
-    .Find(bsonMaleDoctorsFilter).ToListAsync();
+var bsonNullContactPhoneFilter = Builders<BsonDocument>.Filter
+      .Type("shipmentDetails.contactPhone", BsonType.Null);
+
+var bsonNullContactPhoneOrders = await bsonCollection
+      .Find(bsonNullContactPhoneFilter).ToListAsync();
 ```
 {% endtab %}
 
 {% tab title="Shell" %}
 ```javascript
-db.users.find({ $and: [
-    { profession: { $eq: "Doctor"} }, 
-    {gender: { $eq: 0} }
-]})
+db.invoices.find({"shipmentDetails.contactPhone" : { $type: 10 }})
 
+db.invoices.find({"shipmentDetails.contactPhone" : { $type: "null" }})
+// type 10 is the integer identifier for null types
+// https://docs.mongodb.com/manual/reference/bson-types/
 --------------------------- 
         
 // sample matched document
 {
-	"_id" : ObjectId("5e91e3ba3c1ba62570a67bdd"),
-	"gender" : 0, // matched here
-	"firstName" : "Ralph",
-	"lastName" : "Emard",
-	"userName" : "Ralph78",
-	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/xripunov/128.jpg",
-	"email" : "Ralph62@yahoo.com",
-	"dateOfBirth" : ISODate("1967-02-18T00:07:22.546+02:00"),
-	"address" : {
-		"street" : "3046 Orn Locks",
-		"suite" : "Apt. 046",
-		"city" : "North Nestorview",
-		"state" : "Wyoming",
-		"zipCode" : "03620-0321",
-		"geo" : {
-			"lat" : 54.3724,
-			"lng" : 127.4216
-		}
-	},
-	"phone" : "422-441-7773",
-	"website" : "neva.name",
-	"company" : {
-		"name" : "Kilback LLC",
-		"catchPhrase" : "Configurable 6th generation encoding",
-		"bs" : "transition seamless initiatives"
-	},
-	"salary" : 4787,
-	"monthlyExpenses" : 4546,
-	"favoriteSports" : [
-		"Darts",
-		"American Football",
-		"Basketball",
-		"Cricket",
-		"Boxing",
-		"Golf",
-		"Beach Volleyball",
-		"Ice Hockey",
-		"Water Polo",
-		"Table Tennis",
-		"Tennis",
-		"Snooker",
-		"Cycling",
-		"MMA",
-		"Handball"
-	],
-	"profession" : "Doctor" // matched here
+	"_id" : 7,
+	"item" : "Small Steel Bacon",
+	"quantity" : 9,
+	"lotNumber" : 32,
+	"shipmentDetails" : {
+		"shippedDate" : ISODate("2019-10-16T17:39:46.584+03:00"),
+		"shipAddress" : "15900 Pouros Turnpike",
+		"city" : "Beckerfort",
+		"country" : "Israel",
+		"contactName" : "Shayna Steuber",
+		"contactPhone" : null // matched here
+	}
 }
 ```
 {% endtab %}
 
-{% tab title="User" %}
+{% tab title="Models" %}
 ```csharp
-public class User
+public class Order
 {
     [BsonId]
-    [BsonIgnoreIfDefault] // required for replace documents 
-    public ObjectId Id { get; set; }
-    public Gender Gender { get; set; }
-    public string FirstName {get; set; }
-    public string LastName {get; set; }
-    public string UserName {get; set; }
-    public string Avatar {get; set; }
-    public string Email {get; set; }
-    public DateTime DateOfBirth {get; set; }
-    public AddressCard Address {get; set; }
-    public string Phone {get; set; }
-    
+    public int OrderId { get; set; }
+    public string Item { get; set; }
+    public int Quantity { get; set; }
+
     [BsonIgnoreIfDefault]
-    public string Website {get; set; }
-    public CompanyCard Company {get; set; }
-    public decimal Salary { get; set; }
-    public int MonthlyExpenses { get; set; }
-    public List<string> FavoriteSports { get; set; }
-    public string Profession { get; set; }
+    public int? LotNumber { get; set; }
+
+    public ShipmentDetails ShipmentDetails { get; set; }
+}
+
+public class ShipmentDetails
+{
+    [BsonIgnoreIfDefault]
+    public DateTime? ShippedDate { get; set; }
+    public string ShipAddress { get; set; }
+    public string City { get; set; }
+    public string Country { get; set; }
+    public string ContactName { get; set; }
+    public string ContactPhone { get; set; }
 }
 ```
 {% endtab %}
 {% endtabs %}
 
-{% hint style="success" %}
-The _Gender_ property on the `User` class is an `Enum` type and the driver is smart enough 🧙♂ 🦉 to translate it properly when sending the query to MongoDB
-{% endhint %}
+### 
 
