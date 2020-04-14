@@ -146,11 +146,9 @@ db.users.find(
 {
    "gender": 1
 })
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+----------------
+
 // sample document
 {
 	"_id" : ObjectId("5e8a35e2cc20587f34f0cc2a"),
@@ -230,7 +228,7 @@ db.users.find(
 		"Beach Volleyball"
 	],
 	"profession" : "Pilot"
-},
+}
 ```
 {% endtab %}
 {% endtabs %}

@@ -43,11 +43,9 @@ var bsonPersonDeleteResult = await bsonPersonCollection
 ```javascript
 // delete a single document
 db.users.deleteOne({ _id : ObjectId("5e5ff25170dc588dd0870073")})
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+----------------------
+// sample result
 {
 	"acknowledged" : true,
 	"deletedCount" : 1
@@ -158,11 +156,9 @@ var bsonPersonsDeleteResult = await bsonPersonCollection
 db.users.deleteMany(
     { $and: [{ salary: { $gt: 1200} }, {salary: { $lt: 3500} }] }
 )
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+-----------------------
+
 // sample result
 {
 	"acknowledged" : true,

@@ -62,6 +62,14 @@ if (bsonPersonUpdateResult.MatchedCount == 1 &&
 db.users.updateOne(
 {_id: ObjectId("5e8a35e2cc20587f34f0cc48") }, 
 { $set: {  phone: "123-456-789" }})
+
+--------------------
+
+{
+	"acknowledged" : true,
+	"matchedCount" : 1,
+	"modifiedCount" : 1
+}
 ```
 {% endtab %}
 
@@ -110,16 +118,6 @@ db.users.updateOne(
 		"Boxing"
 	],
 	"profession" : "Visual Designer"
-}
-```
-{% endtab %}
-
-{% tab title="Result" %}
-```javascript
-{
-	"acknowledged" : true,
-	"matchedCount" : 1,
-	"modifiedCount" : 1
 }
 ```
 {% endtab %}
@@ -196,6 +194,15 @@ db.users.updateMany(
     { $and: [{ salary: { $gt: 1200} }, {salary: { $lt: 3500} }] },
     { $set: { salary: 4000  } }
 )
+
+--------------------
+
+// sample result
+{
+	"acknowledged" : true,
+	"matchedCount" : 20,
+	"modifiedCount" : 20
+}
 ```
 {% endtab %}
 
@@ -287,17 +294,6 @@ db.users.updateMany(
 		"Ice Hockey"
 	],
 	"profession" : "Founder / Entrepreneur"
-}
-```
-{% endtab %}
-
-{% tab title="Result" %}
-```javascript
-// sample result
-{
-	"acknowledged" : true,
-	"matchedCount" : 20,
-	"modifiedCount" : 20
 }
 ```
 {% endtab %}
