@@ -80,7 +80,7 @@ namespace MongoDb.Csharp.Samples.Core
         {
             var shipmentDetails = new Faker<ShipmentDetails>(locale)
                 .RuleFor(u => u.ContactName, (f, u) => f.Name.FullName())
-                .RuleFor(u => u.ContactPhone, (f, u) => f.Phone.PhoneNumber())
+                .RuleFor(u => u.ContactPhone, (f, u) => f.Phone.PhoneNumber().OrNull(f, .3f))
                 .RuleFor(u => u.City, (f, u) => f.Address.City())
                 .RuleFor(u => u.ShipAddress, (f, u) => f.Address.FullAddress())
                 .RuleFor(u => u.Country, f => f.Address.Country())

@@ -46,6 +46,17 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             var shippedOrdersFilter = Builders<Order>.Filter.Exists(o => o.ShipmentDetails.ShippedDate);
             var shippedOrders = await collection.Find(shippedOrdersFilter).ToListAsync();
             Utils.Log($"{shippedOrders.Count} orders have been already shipped");
+
+            var typeFilter = Builders<Order>.Filter.Type(o => o.ShipmentDetails.ShippedDate, BsonType.DateTime);
+            shippedOrders = await collection.Find(typeFilter).ToListAsync();
+
+            var nullContactPhoneFilter = Builders<Order>.Filter
+                    .Type(o => o.ShipmentDetails.ContactPhone, BsonType.Null);
+            
+            var nullContactPhoneOrders = await collection
+                    .Find(nullContactPhoneFilter).ToListAsync();
+            Utils.Log($"{nullContactPhoneOrders.Count} orders don't contain Contact Phone number");
+
             #endregion
 
             #region BsonDocument commands
@@ -53,9 +64,19 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             var bsonLotNumberFilter = Builders<BsonDocument>.Filter.Exists("lotNumber", exists: true);
             var bsonOrdersWithLotNumber = await collection.Find(lotNumberFilter).ToListAsync();
 
-
-            var bsonShippedOrdersFilter = Builders<BsonDocument>.Filter.Exists("shipmentDetails.shippedDate");
+            var bsonShippedOrdersFilter = Builders<BsonDocument>.Filter
+                    .Exists("shipmentDetails.shippedDate");
             var bsonShippedOrders = await bsonCollection.Find(bsonShippedOrdersFilter).ToListAsync();
+
+            var bsonTypeFilter = Builders<BsonDocument>.Filter.Type("shipmentDetails.shippedDate", BsonType.DateTime);
+            bsonShippedOrders = await bsonCollection.Find(bsonTypeFilter).ToListAsync();
+
+            var bsonNullContactPhoneFilter = Builders<BsonDocument>.Filter
+                .Type("shipmentDetails.contactPhone", BsonType.Null);
+
+            var bsonNullContactPhoneOrders = await bsonCollection
+                    .Find(bsonNullContactPhoneFilter).ToListAsync();
+
             #endregion
 
             #region Shell commands
@@ -63,6 +84,12 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 #if false
             db.invoices.find({ lotNumber: { $exists: true } })
             db.invoices.find({"shipmentDetails.shippedDate" : { $exists: true }})
+
+            db.invoices.find({"shipmentDetails.shippedDate" : { $type: 9 }})
+            db.invoices.find({"shipmentDetails.shippedDate" : { $type: "date" }})
+
+            db.invoices.find({"shipmentDetails.contactPhone" : { $type: 10 }})
+            db.invoices.find({"shipmentDetails.contactPhone" : { $type: "null" }})
 #endif
 
             #endregion
