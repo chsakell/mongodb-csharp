@@ -170,6 +170,6 @@ db.travelers
 	.find({ "visitedCountries.10" : { "$exists" : true } })
 ```
 
-🧙♂ This uses the `<array>.<index>` notation to check if the array contains an element at 11th position, which would also mean that has more than 10 documents
+🧙♂ This uses the `<array>.<index>` notation to check if the array contains an element at _11th_ position, which would also mean that has more than 10 documents
 {% endhint %}
 
