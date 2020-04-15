@@ -430,6 +430,126 @@ public class GeoLocation
 {% endtab %}
 {% endtabs %}
 
+### _Enumerable.Any - AnyEq_
+
+To check if an array field contains a specific value you can use the `Enumerable.Any` or the `FilterDefinitionBuilder<T>.AnyEq` methods.
+
+The sample finds the `Traveler` documents where _"Greece"_ is contained in the _VisitedCountries_ array field.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="ArrayOperators.cs" %}
+```csharp
+var collection = database.GetCollection<Traveler>(collectionName);
+
+var greeceTravelers = await collection
+    .Find(t => t.VisitedCountries
+        .Any(c => c.Name == "Greece")).ToListAsync();
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+
+var bsonGreeceVisitedFilter = Builders<BsonDocument>.Filter
+            .AnyEq("visitedCountries.name", "Greece");
+            
+var bsonGreeceTravelers = await bsonCollection
+            .Find(bsonGreeceVisitedFilter).ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Traveler" %}
+```csharp
+public class Traveler
+{
+    [BsonId]
+    public ObjectId Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public List<string> Activities { get; set; }
+    public List<VisitedCountry> VisitedCountries { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+You can go further, and add an **\|\|** __operator in the `Any` method. This will combine $el_emMatch_ and $in operators to build the query.
+
+{% tabs %}
+{% tab title="C\#" %}
+```csharp
+var collection = database.GetCollection<Traveler>(collectionName);
+
+var greeceItalyTravelers = await collection
+  .Find(t => t.VisitedCountries
+      .Any(c => c.Name == "Greece" || c.Name == "Italy")).ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.travelers.find(
+{
+    visitedCountries: {
+        $elemMatch: {
+            name : { $in: [ "Greece", "Italy" ] }
+        }
+    }
+}).count()
+
+---------------------
+
+// sample matched result
+{
+	"_id" : ObjectId("5e973a0beaaccd581ce6c752"),
+	"name" : "Gregg Wyman",
+	"age" : 55,
+	"activities" : [
+		"Orienteering",
+		"Baking"
+	],
+	"visitedCountries" : [
+		{
+			"name" : "Italy", // matched here
+			"timesVisited" : 10,
+			"lastDateVisited" : ISODate("2019-06-03T13:09:08.540+03:00"),
+			"coordinates" : {
+				"latitude" : 56.967,
+				"longitude" : -156.941
+			}
+		},
+		{
+			"name" : "Thailand",
+			"timesVisited" : 7,
+			"lastDateVisited" : ISODate("2018-02-05T13:53:00.552+02:00"),
+			"coordinates" : {
+				"latitude" : -38.2652,
+				"longitude" : -159.6134
+			}
+		}
+	]
+}
+```
+{% endtab %}
+
+{% tab title="Traveler" %}
+```csharp
+public class Traveler
+{
+    [BsonId]
+    public ObjectId Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public List<string> Activities { get; set; }
+    public List<VisitedCountry> VisitedCountries { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
 ## _All_ operator - _$all_
 
 The _$all_ operator is applied on array fields and matches documents when the array field **contains all** the items specified. You use the _All_ operator when you want to ensure that an array contains _\(or doesn't\)_ a list of values.
@@ -524,106 +644,6 @@ public class Traveler
 {% endtabs %}
 
 {% hint style="info" %}
-The order of the array values passed in the _All_ method doesn't matter, in the same way it doesn't matter when writing the query in the shell with the _$all_ operator
+The order of the array values passed in the **`All`** __method doesn't matter, in the same way it doesn't matter when writing the query in the shell with the _$all_ operator
 {% endhint %}
-
-## _Enumerable.Any - AnyEq_
-
-To check if an array field contains a specific value you can use the `Enumerable.Any` or the `FilterDefinitionBuilder<T>.AnyEq` methods.
-
-The sample find the `Traveler` documents where _"Greece"_ is contained in the _VisitedCountries_ array field.
-
-{% tabs %}
-{% tab title="C\#" %}
-{% code title="ArrayOperators.cs" %}
-```csharp
-var collection = database.GetCollection<Traveler>(collectionName);
-
-var greeceTravelers = await collection
-    .Find(t => t.VisitedCountries
-        .Any(c => c.Name == "Greece")).ToListAsync();
-```
-{% endcode %}
-{% endtab %}
-
-{% tab title="Bson" %}
-```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
-
-var bsonGreeceVisitedFilter = Builders<BsonDocument>.Filter
-            .AnyEq("visitedCountries.name", "Greece");
-            
-var bsonGreeceTravelers = await bsonCollection
-            .Find(bsonGreeceVisitedFilter).ToListAsync();
-```
-{% endtab %}
-
-{% tab title="Shell" %}
-```javascript
-db.travelers.find({ "visitedCountries.name" : "Greece" })
-
-------------------------
-
-// sample result
-{
-	"_id" : ObjectId("5e9733b056412635045cada9"),
-	"name" : "Raquel O'Conner",
-	"age" : 26,
-	"activities" : [
-		"Golf",
-		"Wildlife watching",
-		"Photography",
-		"Geocaching",
-		"Reading",
-		"Baking",
-		"Scuba diving",
-		"Backpacking"
-	],
-	"visitedCountries" : [
-		{
-			"name" : "Saudi Arabia",
-			"timesVisited" : 2,
-			"lastDateVisited" : ISODate("2015-12-04T08:30:56.850+02:00"),
-			"coordinates" : {
-				"latitude" : 88.2459,
-				"longitude" : 29.8898
-			}
-		},
-		{
-			"name" : "Greece", // matched here
-			"timesVisited" : 7,
-			"lastDateVisited" : ISODate("2015-09-09T03:51:37.750+03:00"),
-			"coordinates" : {
-				"latitude" : 23.8362,
-				"longitude" : -174.3166
-			}
-		},
-		{
-			"name" : "Singapore",
-			"timesVisited" : 7,
-			"lastDateVisited" : ISODate("2016-12-05T00:56:52.782+02:00"),
-			"coordinates" : {
-				"latitude" : 71.6124,
-				"longitude" : -144.0707
-			}
-		}
-	]
-}
-```
-{% endtab %}
-
-{% tab title="Traveler" %}
-```csharp
-public class Traveler
-{
-    [BsonId]
-    public ObjectId Id { get; set; }
-    public string Name { get; set; }
-    public int Age { get; set; }
-    public List<string> Activities { get; set; }
-    public List<VisitedCountry> VisitedCountries { get; set; }
-}
-```
-{% endtab %}
-{% endtabs %}
 
