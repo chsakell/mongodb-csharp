@@ -312,5 +312,119 @@ db.travelers.find({$and: [
 This is **wrong** because it doesn't apply the criteria on each array element at a time but in all elements. This means that it might match documents that indeed  contain a visited country with name "_Greece_" which hasn't _TimesVisited = 3_, but a document matched because it also contains another visited country, _e.g. Italy_ with _TimesVisited = 3_.
 {% endhint %}
 
+The following sample filters `Traveler` documents that their _VisitedCountries_ array field contain a `VisitedCountry` element _TimesVisited = 3_ but this time, the country's name can be either _Greece_ or _Italy_. 
 
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="ArrayOperators.cs" %}
+```csharp
+var collection = database.GetCollection<Traveler>(collectionName);
+
+// filter on country name
+var countryNameFilter = Builders<VisitedCountry>.Filter
+    .In(c => c.Name, new[] {"Greece", "Italy"});
+
+// filter on times visited  
+var countryTimesVisitedFilter = Builders<VisitedCountry>.Filter
+    .Eq(c => c.TimesVisited, 3);
+
+var visitedGreeceOrItalyExactly3Times = Builders<Traveler>.Filter
+    .ElemMatch(t => t.VisitedCountries,
+            Builders<VisitedCountry>.Filter
+            .And(countryNameFilter, countryTimesVisitedFilter));
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+
+var bsonVisitedGreeceOrItalyExactly3Times = Builders<BsonDocument>.Filter
+    .ElemMatch<BsonValue>("visitedCountries", new BsonDocument
+    {
+        { "name", new BsonDocument("$in", 
+            new BsonArray { "Greece", "Italy" }) }, 
+        { "timesVisited", 3 }
+    });
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.travelers.find(
+            {
+                visitedCountries: {
+                    $elemMatch: {
+                        name : { $in: [ "Greece", "Italy" ] },
+                        timesVisited: 3
+                    }
+                }
+            })
+    
+---------------------------
+// sample result
+
+{
+	"_id" : ObjectId("5e96dd21e8f8181a3cc1675b"),
+	"name" : "Chyna Haag",
+	"age" : 27,
+	"activities" : [
+		"Canyoning",
+		"Wildlife watching",
+		"Hacking",
+		"Horseback riding"
+	],
+	"visitedCountries" : [
+		{
+			"name" : "Greece",
+			"timesVisited" : 5,
+			"lastDateVisited" : ISODate("2019-04-07T18:10:31.513+03:00"),
+			"coordinates" : {
+				"latitude" : 49.2476,
+				"longitude" : 82.7277
+			}
+		},
+		{
+			"name" : "Italy", // matched here
+			"timesVisited" : 3, // matched here
+			"lastDateVisited" : ISODate("2015-07-30T23:26:05.754+03:00"),
+			"coordinates" : {
+				"latitude" : -70.8608,
+				"longitude" : -128.5726
+			}
+		}
+	]
+}
+```
+{% endtab %}
+
+{% tab title="Models" %}
+```csharp
+public class Traveler
+{
+    [BsonId]
+    public ObjectId Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public List<string> Activities { get; set; }
+    public List<VisitedCountry> VisitedCountries { get; set; }
+}
+
+public class VisitedCountry
+{
+    public string Name { get; set; }
+    public int TimesVisited { get; set; }
+    public DateTime LastDateVisited { get; set; }
+    public GeoLocation Coordinates { get; set; }
+}
+
+public class GeoLocation
+{
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
 
