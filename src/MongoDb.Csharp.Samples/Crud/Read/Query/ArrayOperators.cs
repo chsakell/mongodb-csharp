@@ -34,7 +34,7 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             #region Prepare data
 
-            var travelers = RandomData.GenerateTravelers(1000);
+            var travelers = RandomData.GenerateTravelers(500);
             await collection.InsertManyAsync(travelers);
 
             // ElemMatch
@@ -68,12 +68,24 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             // Get all travelers that have visited Greece
 
             //same results
-            var greeceTravelers = await collection.Find(t => t.VisitedCountries.Any(c => c.Name == "Greece")).ToListAsync();
+            var greeceTravelers = await collection.Find(t => t.VisitedCountries.
+                Any(c => c.Name == "Greece")).ToListAsync();
 
+            var italyTravelers = await collection.Find(t => t.VisitedCountries
+                .Any(c => c.Name == "Italy")).ToListAsync();
+
+            var greeceItalyTravelers = await collection.Find(t => t.VisitedCountries
+                .Any(c => c.Name == "Greece" || c.Name == "Italy")).ToListAsync();
             // using filter - same results
-            var stringGreeceVisitedFilter = Builders<Traveler>.Filter.AnyEq("visitedCountries.name", "Greece");
-            greeceTravelers = await collection.Find(stringGreeceVisitedFilter).ToListAsync();
+            var greeceVisitedFilter = Builders<Traveler>.Filter.AnyEq("visitedCountries.name", "Greece");
+
+            greeceTravelers = await collection.Find(greeceVisitedFilter).ToListAsync();
             Utils.Log($"{greeceTravelers.Count} total travelers have visited Greece");
+
+            var visitedTimesFilter = Builders<Traveler>.Filter.AnyEq("visitedCountries.timesVisited", 3);
+
+            var combinedFilter = Builders<Traveler>.Filter.And(greeceVisitedFilter, visitedTimesFilter);
+            var wrongResult = await collection.Find(combinedFilter).ToListAsync();
 
             #region size
 
@@ -126,6 +138,24 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             var bsonGreeceVisitedFilter = Builders<BsonDocument>.Filter.AnyEq("visitedCountries.name", "Greece");
             var bsonGreeceTravelers = await bsonCollection.Find(bsonGreeceVisitedFilter).ToListAsync();
 
+            #region size
+
+            var bsonFiveVisitedCountriesFilter = await bsonCollection.Find(
+                new BsonDocument
+                { 
+                    {"visitedCountries", new BsonDocument {{ "$size", 5 } }}
+                }).ToListAsync();
+
+            var bsonMoreThan10VisitedCountries = await bsonCollection
+                .Find(new BsonDocument
+                {
+                    {"visitedCountries.10", new BsonDocument {{ "$exists", true } }}
+                }).ToListAsync();
+
+            Utils.Log($"{moreThan10VisitedCountries.Count} total travelers have visited more than 10 countries");
+
+            #endregion
+
             #region elemmMatch
 
             var bsonVisitedGreeceExactly3Times = Builders<BsonDocument>.Filter
@@ -164,6 +194,7 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 #if false
             db.travelers.find({ "visitedCountries.name" : "Greece" })
             db.travelers.find({ visitedCountries : { $size: 5 } }).count()
+            db.travelers.find({ "visitedCountries.10" : { "$exists" : true } })
             db.travelers.find({ activities: { $all : [ "Climbing", "Backpacking" ] } }
             db.travelers.find({
                 visitedCountries: {
