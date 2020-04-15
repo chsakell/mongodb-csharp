@@ -12,6 +12,8 @@ There are many times when you want to match documents based on array field value
 These operators may seem simple at first 😇 , but when combined with other MongoDB features such as **projection** or **unwind**, you will see that you can build quite complex queries! 💪 
 {% endhint %}
 
+> Other than the operators themselves, you can create array field base queries using lambda expressions and the methods provided by `Enumerable`, such as `Enumerable.Any`
+
 ![Array operators](../.gitbook/assets/arrays.png)
 
 
@@ -524,4 +526,104 @@ public class Traveler
 {% hint style="info" %}
 The order of the array values passed in the _All_ method doesn't matter, in the same way it doesn't matter when writing the query in the shell with the _$all_ operator
 {% endhint %}
+
+## _Enumerable.Any - AnyEq_
+
+To check if an array field contains a specific value you can use the `Enumerable.Any` or the `FilterDefinitionBuilder<T>.AnyEq` methods.
+
+The sample find the `Traveler` documents where _"Greece"_ is contained in the _VisitedCountries_ array field.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="ArrayOperators.cs" %}
+```csharp
+var collection = database.GetCollection<Traveler>(collectionName);
+
+var greeceTravelers = await collection
+    .Find(t => t.VisitedCountries
+        .Any(c => c.Name == "Greece")).ToListAsync();
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+
+var bsonGreeceVisitedFilter = Builders<BsonDocument>.Filter
+            .AnyEq("visitedCountries.name", "Greece");
+            
+var bsonGreeceTravelers = await bsonCollection
+            .Find(bsonGreeceVisitedFilter).ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.travelers.find({ "visitedCountries.name" : "Greece" })
+
+------------------------
+
+// sample result
+{
+	"_id" : ObjectId("5e9733b056412635045cada9"),
+	"name" : "Raquel O'Conner",
+	"age" : 26,
+	"activities" : [
+		"Golf",
+		"Wildlife watching",
+		"Photography",
+		"Geocaching",
+		"Reading",
+		"Baking",
+		"Scuba diving",
+		"Backpacking"
+	],
+	"visitedCountries" : [
+		{
+			"name" : "Saudi Arabia",
+			"timesVisited" : 2,
+			"lastDateVisited" : ISODate("2015-12-04T08:30:56.850+02:00"),
+			"coordinates" : {
+				"latitude" : 88.2459,
+				"longitude" : 29.8898
+			}
+		},
+		{
+			"name" : "Greece", // matched here
+			"timesVisited" : 7,
+			"lastDateVisited" : ISODate("2015-09-09T03:51:37.750+03:00"),
+			"coordinates" : {
+				"latitude" : 23.8362,
+				"longitude" : -174.3166
+			}
+		},
+		{
+			"name" : "Singapore",
+			"timesVisited" : 7,
+			"lastDateVisited" : ISODate("2016-12-05T00:56:52.782+02:00"),
+			"coordinates" : {
+				"latitude" : 71.6124,
+				"longitude" : -144.0707
+			}
+		}
+	]
+}
+```
+{% endtab %}
+
+{% tab title="Traveler" %}
+```csharp
+public class Traveler
+{
+    [BsonId]
+    public ObjectId Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public List<string> Activities { get; set; }
+    public List<VisitedCountry> VisitedCountries { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
 
