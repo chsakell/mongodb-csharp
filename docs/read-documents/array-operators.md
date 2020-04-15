@@ -428,3 +428,100 @@ public class GeoLocation
 {% endtab %}
 {% endtabs %}
 
+## _All_ operator - _$all_
+
+The _$all_ operator is applied on array fields and matches documents when the array field **contains all** the items specified. You use the _All_ operator when you want to ensure that an array contains _\(or doesn't\)_ a list of values.
+
+> **Syntax**: `Builders<T>.Filter.All(doc => doc.<array-field>,<values>[])`
+
+The sample finds all `Traveler` documents having _"Backpacking"_ and _"Climbing"_ values on their _Activities_ list. _Activities_ is an array of string values.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="ArrayOperators.cs" %}
+```csharp
+var collection = database.GetCollection<Traveler>(collectionName);
+
+var climbingAndBackpackingFilter = Builders<Traveler>.Filter
+    .All(t => t.Activities, 
+        new List<string> { "Backpacking", "Climbing" });
+
+var climbingAndBackpackingTravelers = await collection
+    .Find(climbingAndBackpackingFilter).ToListAsync();
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+
+var bsonClimbingAndBackpackingFilter = Builders<BsonDocument>.Filter
+    .All("activities", new List<string> { "Backpacking", "Climbing" });
+
+var bsonClimbingAndBackpackingTravelers = await bsonCollection
+    .Find(bsonClimbingAndBackpackingFilter).ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.travelers.find({ activities: 
+    { $all : [ "Climbing", "Backpacking" ] } }
+
+------------------------
+
+// sample result
+{
+	"_id" : ObjectId("5e9733b056412635045cad72"),
+	"name" : "Marcella Thiel",
+	"age" : 61,
+	"activities" : [
+		"Scuba diving",
+		"Canyoning",
+		"Wine tourism",
+		"Hacking",
+		"Orienteering",
+		"Blogging",
+		"Backpacking", // matche
+		"Climbing", // match
+		"Reading",
+		"Running",
+		"Bowling",
+		"Collecting",
+		"Horseback riding"
+	],
+	"visitedCountries" : [
+		{
+			"name" : "Netherlands",
+			"timesVisited" : 10,
+			"lastDateVisited" : ISODate("2018-04-13T07:14:40.942+03:00"),
+			"coordinates" : {
+				"latitude" : 11.9843,
+				"longitude" : 79.5859
+			}
+		}
+	]
+}
+```
+{% endtab %}
+
+{% tab title="Traveler" %}
+```csharp
+public class Traveler
+{
+    [BsonId]
+    public ObjectId Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public List<string> Activities { get; set; }
+    public List<VisitedCountry> VisitedCountries { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+The order of the array values passed in the _All_ method doesn't matter, in the same way it doesn't matter when writing the query in the shell with the _$all_ operator
+{% endhint %}
+
