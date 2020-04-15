@@ -1,5 +1,5 @@
 ---
-description: '♥ Welcome to the MongoDB C# driver docs!'
+description: '♥ Welcome to the MongoDB C# driver docs! ♥'
 ---
 
 # Introduction
@@ -85,7 +85,7 @@ db.travelers
             name: 1, 
             visitedCountries : 
             { 
-                       $slice: ["$visitedCountries", 1] 
+               $slice: ["$visitedCountries", 1] 
             }})
  .pretty()
 ```
@@ -97,7 +97,7 @@ As you can see, the solution is presented in 3 different ways. If any other code
 {% hint style="success" %}
 * The **C\#** tab will always contain the typed way of querying MongoDB
 * The **Bson** tab contains the code using `BsonDocument`
-* The **Shell** contains the code you would write directly in a MongoDB shell
+* The **Shell** contains the code you would write directly in a MongoDB shell, following with sample results 
 
 > Other than these tabs, samples might also contain result documents or the C\# class models used in the queries
 {% endhint %}
@@ -145,13 +145,13 @@ All samples of the docs are part of the [mongodb-csharp](https://github.com/chsa
 According to the above configuration when the app fires, the samples that will run are inside the _Slice.cs_ file in the _**Expressions**_ folder.
 
 {% hint style="warning" %}
-Avoid running multiple samples simultaneously. Each sample usually starts with dropping the database to be used and adding a banch of documents _\(sometimes 1000 documents\)_ to a collection.
+Avoid running multiple samples simultaneously 🚫 . Each sample usually starts with dropping the database to be used and adding a banch of documents _\(sometimes 1000 documents\)_ to a collection.
 {% endhint %}
 
-## How to contribute
+## 👨💻 How to contribute
 
 Contribution on the docs is of course highly welcomed as long as it fulfills the following criteria:
 
 * **Request a new sample**: You can open a new issue at the repository's [issues](https://github.com/chsakell/mongodb-csharp/issues) page, as long as there isn't a related one already. Make sure you have done your search either in the docs or the source code before opening the issue. Last but not least, add some sample data to explain exactly what you are looking for.
-* **Fix a sample's code**: Fork the repository, create and send a pull request.
+* **Fix a sample's code**: Fork the repository 🍴 , create and send a pull request.
 
