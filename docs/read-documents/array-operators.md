@@ -173,3 +173,144 @@ db.travelers
 🧙♂ This uses the `<array>.<index>` notation to check if the array contains an element at _11th_ position, which would also mean that has more than 10 documents
 {% endhint %}
 
+
+
+## _ElemMatch_ operator - _$elemMatch_
+
+The _$elemMatch_ operator is used to match elements inside array fields based on one or more criteria.
+
+> **Syntax**: `Builders<T>.Filter.ElemMatch(doc => doc.<array-field>,<expressions>[])`
+
+The sample filters `Traveler` documents that their _VisitedCountries_ array field contain a `VisitedCountry` element with name _Greece_ and _TimesVisited = 3_. 
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="ArrayOperators.cs" %}
+```csharp
+var collection = database.GetCollection<Traveler>(collectionName);
+
+var visitedGreeceExactly3Times = Builders<Traveler>.Filter
+    .ElemMatch(t => t.VisitedCountries,
+    country => country.Name == "Greece" 
+        && country.TimesVisited == 3);
+
+var visitedGreeceExactly3TimesTravelers = await collection
+    .Find(visitedGreeceExactly3Times).ToListAsync();
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+
+var bsonVisitedGreeceExactly3Times = Builders<BsonDocument>.Filter
+    .ElemMatch<BsonValue>("visitedCountries", 
+        new BsonDocument { { "name", "Greece" }, 
+                            { "timesVisited", 3 } });
+
+var bsonVisitedGreeceExactly3TimesTravelers = await bsonCollection
+    .Find(bsonVisitedGreeceExactly3Times).ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.travelers.find({
+    visitedCountries: {
+        $elemMatch: {
+            name : "Greece",
+            timesVisited: 3
+        }
+    }})
+    
+---------------------------
+// sample result
+
+{
+	"_id" : ObjectId("5e96c32ad9d34468c0a772b2"),
+	"name" : "Ari Hessel",
+	"age" : 30,
+	"activities" : [
+		"Wine tourism",
+		"Blogging",
+		"Scuba diving",
+		"Golf",
+		"Photography"
+	],
+	"visitedCountries" : [
+		{
+			"name" : "Greece", // match here
+			"timesVisited" : 3, // match here
+			"lastDateVisited" : ISODate("2020-02-20T08:18:31.292+02:00"),
+			"coordinates" : {
+				"latitude" : 61.2458,
+				"longitude" : -131.4814
+			}
+		},
+		{
+			"name" : "Italy",
+			"timesVisited" : 1,
+			"lastDateVisited" : ISODate("2018-11-26T02:42:05.395+02:00"),
+			"coordinates" : {
+				"latitude" : -17.3031,
+				"longitude" : -171.7654
+			}
+		}
+	]
+}
+```
+{% endtab %}
+
+{% tab title="Models" %}
+```csharp
+public class Traveler
+{
+    [BsonId]
+    public ObjectId Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public List<string> Activities { get; set; }
+    public List<VisitedCountry> VisitedCountries { get; set; }
+}
+
+public class VisitedCountry
+{
+    public string Name { get; set; }
+    public int TimesVisited { get; set; }
+    public DateTime LastDateVisited { get; set; }
+    public GeoLocation Coordinates { get; set; }
+}
+
+public class GeoLocation
+{
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="danger" %}
+You might be temped to match array elements using the **$and** operator as follow:
+
+{% code title="ArrayOperators.cs" %}
+```csharp
+var greeceVisitedFilter = Builders<Traveler>.Filter
+    .AnyEq("visitedCountries.name", "Greece");
+
+var visitedTimesFilter = Builders<Traveler>.Filter
+    .AnyEq("visitedCountries.timesVisited", 3);
+
+// shell
+db.travelers.find({$and: [ 
+    {"visitedCountries.name" : "Greece"}, 
+    {"visitedCountries.timesVisited":3}])
+```
+{% endcode %}
+
+This is **wrong** because it doesn't apply the criteria on each array element at a time but in all elements. This means that it might match documents that indeed  contain a visited country with name "_Greece_" which hasn't _TimesVisited = 3_, but a document matched because it also contains another visited country, _e.g. Italy_ with _TimesVisited = 3_.
+{% endhint %}
+
+
+
