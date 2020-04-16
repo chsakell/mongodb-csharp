@@ -15,7 +15,7 @@ Comparison operators are probably the most used operators when querying any type
 
 ![Comparison Operators](../.gitbook/assets/compare.png)
 
-## _Equal_ operator
+## _Equal_ operator - _$eq_
 
 The _equal operator_ is used to match documents having a field value equal to a specific value. You can use it for both top level and embedded documents.
 
@@ -141,7 +141,7 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-## _Not Equal_ operator
+## _Not Equal_ operator - _$ne_
 
 When you want to match all document that certain field\(s\) values **are not equal** to a specific value then you use the `Not Equal` operator. 
 
@@ -262,7 +262,7 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-## _Greater Than_ operator
+## _Greater Than_ operator - _$gt_
 
 The _greater than_ operator is used to find all documents that the field value is **greater than** a specific value.
 
@@ -386,7 +386,7 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-## _Greater Than or Equal_ operator
+## _Greater Than or Equal_ operator - _$gte_
 
 The _greater than or equal_ operator is used to find all documents that the field value is **greater than or equal** a specific value.
 
@@ -512,7 +512,7 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-## _Less Than_ operator
+## _Less Than_ operator - _$lt_
 
 The _less than_ operator is used to find all documents that the field value is **less than** a specific value.
 
@@ -627,7 +627,7 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-## _Less Than or Equal_ operator
+## _Less Than or Equal_ operator - _$lte_
 
 The _less than or equal_ operator is used to find all documents that the field value is **less than or equal** a specific value.
 
@@ -747,7 +747,7 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-## _In_ operator
+## _In_ operator - _$in_
 
 The _In_ operator finds documents having a field value **contained** in a specified array of values.
 
@@ -861,7 +861,7 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-## _Not In_ operator
+## _Not In_ operator - _$nin_
 
 The _Not In_ operator finds documents having a field value **not contained** in a specified array of values.
 
