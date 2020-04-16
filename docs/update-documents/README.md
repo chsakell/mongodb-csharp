@@ -4,12 +4,12 @@
 
 MongoDB provides a set of update operators to help you update values on your collections' documents. This section contains several samples showing how to use these operators to update:
 
-* top level fields
-* embedded fields
-* array fields
+* Top level fields
+* Embedded fields
+* Array fields 
 
-{% hint style="info" %}
-Complex update operations such as updating embedded fields, adding or removing items in embedded array fields might be straight forward when building the queries in the Shell but not so much when using the MongoDB C\# driver
+{% hint style="warning" %}
+Complex update operations such as updating embedded fields, adding or removing items in embedded array fields might be straight forward when building the queries in the _Shell_ but not so much when using the MongoDB C\# driver
 {% endhint %}
 
 The section contains samples for the following operators:
@@ -35,7 +35,7 @@ To create update operations using the MongoDB C\# driver you need to create one 
 > **Syntax**: `Builders<T>.Update.<Operator>(<field>,<value>)`
 
 {% hint style="success" %}
-🧙 An update definition can be the result of more than 1 update definitions on the same document which means you can build a query that will update multiple fields using different operator.
+🧙 An update definition can be the result of more than 1 update definitions on the same document which means you can build a query that updates multiple fields using different operators.
 
 Here's' an example: 
 
