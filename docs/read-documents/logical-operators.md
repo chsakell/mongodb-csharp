@@ -8,14 +8,16 @@ description: To be or not to be..
 
 Logical operators allow you to match documents based on the **boolean result** ✅ ❌ coming from a set of expressions. The logical expressions are evaluated for each document in your filter and if their boolean result matches the expected one _\(true or false\)_ are included or excluded respectively in the returned result. The section contains samples for the following operators:
 
-* **AND** operator
-* **NOT** operator
-* **OR** operator
-* **NOR** operator
+| Operator | Description |
+| :--- | :--- |
+| **AND** | Matches documents that fulfills all specified conditions |
+| **NOT** | Matches documents that don't fulfills the specified expression |
+| **OR** | Matches documents that fulfills at least one of a set of conditions |
+| **NOR** | Matches documents that fails to fulfill both conditions |
 
 ![Logical operators](../.gitbook/assets/logical.png)
 
-## _AND_ operator
+## _AND_ operator - _$and_
 
 The AND _operator_ performs a logical AND on a set of expressions and match documents that satisfy all of them. 
 
@@ -318,7 +320,7 @@ public class User
 The inner filter definitions passed as arguments in the **`And`** method can be as complex as you want to.
 {% endhint %}
 
-## _NOT_ operator
+## _NOT_ operator - _$ne_
 
 The NOT _operator_ performs a logical NOT on an expression and match documents that **don't satisfy** the expression. 
 
@@ -442,7 +444,7 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-## _OR_ operator
+## _OR_ operator - _$or_
 
 The _OR_ operator performs a logical OR on an **set of expressions** and match documents that **satisfy** at least on of the expressions. 
 
@@ -561,7 +563,7 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-## _NOR_ operator
+## _NOR_ operator - _$nor_
 
 The _NOR_ operator performs a logical NOR on an **set of expressions** and match documents that **fail to satisfy** all the expressions. Despite the fact that MongoDB supports the [$nor](https://docs.mongodb.com/manual/reference/operator/query/nor/) operator, you won't find any method on the C\# driver. That's totally fine though because you can built it using the AND operator and negating the internal filters. 
 

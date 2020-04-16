@@ -4,14 +4,16 @@
 
 MongoDB providers two element query operators that helps you find documents based on a field's existence or type. In other words, you can match documents based on whether a field **exists** or in case it does exist, based on its **type**. The two element operators presented on this section are:
 
-* **Exists** operator
-* **Type** operator
+| Operator | Description |
+| :--- | :--- |
+| **Exists** | Matches documents when the specified field exists |
+| **Type** | Matches documents when a field is of the specified type |
 
 ![](../.gitbook/assets/element.png)
 
 
 
-## _Exists_ operator - $exists
+## _Exists_ operator - _$exists_
 
 The _$exists_ operator matches the documents that contain the field, even its value is _null_. 
 
@@ -112,7 +114,7 @@ On the contrary, if you omit this attribute and try to insert a document with nu
 ```
 {% endhint %}
 
-## Type operator - $type
+## Type operator - _$type_
 
 The _Type_ _operator_ matches documents where the field's value is an instance of a [BSON](https://docs.mongodb.com/manual/reference/glossary/#term-bson) [type](https://docs.mongodb.com/manual/reference/bson-types/).
 
