@@ -28,3 +28,24 @@ Other than the update operations there are also samples showing how to **replace
 
 ![](../.gitbook/assets/update.png)
 
+## Update Definition Builder 💪 
+
+To create update operations using the MongoDB C\# driver you need to create one or more **update definitions**. The syntax to create an update definition is the following:
+
+> **Syntax**: `Builders<T>.Update.<Operator>(<field>,<value>)`
+
+{% hint style="success" %}
+🧙 An update definition can be the result of more than 1 update definitions on the same document which means you can build a query that will update multiple fields using different operator.
+
+Here's' an example: 
+
+> ```csharp
+> var multiUpdateDefinition = Builders<User>.Update
+>     .Set(u => u.Phone, "123-456-789") // update 1
+>     .Inc(u => u.Salary, 300) // update 2
+>     .Set(u => u.FavoriteSports, 
+>         new List<string> 
+>         { "Soccer", "Basketball" }); // update 3
+> ```
+{% endhint %}
+
