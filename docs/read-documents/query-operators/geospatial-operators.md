@@ -1,2 +1,0 @@
-# Geospatial Operators
-
