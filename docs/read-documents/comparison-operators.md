@@ -59,11 +59,9 @@ var bsonPilots = await bsonCollection
 db.users.find({profession: { $eq: "Pilot"}})
 // or..
 db.users.find({profession: "Pilot"})
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+--------------------
+
 // sample matched document
 {
 	"_id" : ObjectId("5e91e3ba3c1ba62570a67b97"),
@@ -181,11 +179,9 @@ var bsonNotDoctors = await bsonCollection
 {% tab title="Shell" %}
 ```javascript
 db.users.find({profession: { $ne: "Doctor"}})
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+--------------------
+
 // sample matched document
 {
 	"_id" : ObjectId("5e91e3ba3c1ba62570a67b95"),
@@ -302,11 +298,9 @@ var bsonGreaterThan3500 = await bsonCollection
 {% tab title="Shell" %}
 ```javascript
 db.users.find({salary: { $gt: 3500}})
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+-------------------
+
 // sample matched document
 {
 	"_id" : ObjectId("5e91e3ba3c1ba62570a67b98"),
@@ -427,11 +421,9 @@ var bsonGreaterOrEqualThan4500 = await bsonCollection
 {% tab title="Shell" %}
 ```javascript
 db.users.find({salary: { $gte: 4500}})
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+--------------------------
+
 // sample matched document
 {
 	"_id" : ObjectId("5e91e3ba3c1ba62570a67b9d"),
@@ -552,11 +544,9 @@ var bsonLessThan2500 = await bsonCollection
 {% tab title="Shell" %}
 ```javascript
 db.users.find({salary: { $lt: 2500}})
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+--------------------------
+
 // sample matched document
 {
 	"_id" : ObjectId("5e91e3ba3c1ba62570a67b96"),
@@ -668,11 +658,9 @@ var bsonLessThanOrEqual1500 = await bsonCollection
 {% tab title="Shell" %}
 ```javascript
 db.users.find({salary: { $lte: 1500}})
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+---------------------------
+
 // sample matched document
 {
 	"_id" : ObjectId("5e91e3ba3c1ba62570a67ba6"),
@@ -788,11 +776,9 @@ var bsonMedicalUsers = await bsonCollection
 {% tab title="Shell" %}
 ```javascript
 db.users.find({profession: { $in: ["Dentist", "Pharmacist", "Nurse"]}})
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+---------------------------
+
 // sample matched document
 {
 	"_id" : ObjectId("5e91e3ba3c1ba62570a67b9b"),
@@ -901,12 +887,14 @@ var bsonNotMedicalUsers = await bsonCollection
 
 {% tab title="Shell" %}
 ```javascript
-db.users.find({profession: { $nin: ["Dentist", "Pharmacist", "Nurse"]}})
-```
-{% endtab %}
+db.users.find({
+   profession: { 
+      $nin: ["Dentist", "Pharmacist", "Nurse"]
+}})
 
-{% tab title="Result" %}
-```javascript
+
+--------------------------
+
 // sample matched document
 {
 	"_id" : ObjectId("5e91e3ba3c1ba62570a67b95"),
