@@ -4,6 +4,8 @@
 
 To get information about all databases exist in a MongoDB server, use the `ListDatabases` method on a `MongoDB` client.
 
+> **Syntax**: `MongoClient.ListDatabases()`
+
 {% tabs %}
 {% tab title="C\#" %}
 {% code title="AccessDatabases.cs" %}
@@ -65,6 +67,8 @@ foreach (var database in databases)
 
 When listing databases you can use options to **filter** the returned results by passing an instance of `ListDatabasesOptions` on the `ListDatabases` method.
 
+> **Syntax**: `MongoClient.ListDatabases(<options>)`
+
 {% tabs %}
 {% tab title="C\#" %}
 {% code title="AccessDatabases.cs" %}
@@ -113,7 +117,9 @@ The above query won't work if you set **`NameOnly = true`** in the **`ListDataba
 
 ## Get a database reference
 
-The very first thing you need to do before accessing data in a database is to get a reference to that database using the `GetDatabase` method on a `MongoDB` client.
+The very first thing you need to do before accessing any data in MongoDB is to get a reference to a database using the `GetDatabase` method on a `MongoDB` client.
+
+> **Syntax**: `MongoClient.GetDatabase(<db-name>)`
 
 ```csharp
 IMongoDatabase adminDb = Client.GetDatabase("myDatabase");

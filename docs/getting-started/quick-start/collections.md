@@ -2,17 +2,21 @@
 
 ## Get a collection reference
 
-In order to read/write data from/to a database collection, first you need to get a reference to that collection. The collection doesn't have to exist already and if it doesn't, the very first time you run a read or write operation, it will be created automatically for you.
+In order to read/write data from/to a database collection, first you need to get a reference to that collection. The collection doesn't have to exist already and if it doesn't, it will be created automatically the very first time you run a read or write operation. Use the `GetCollection<T>` method on an `IMongoDatabase` reference to get a collection reference.
+
+> **Syntax**: `IMongoDatabase.GetCollection<T>(<collection-name>)`
 
 {% tabs %}
 {% tab title="C\#" %}
 {% code title="AccessCollections.cs" %}
 ```csharp
 // Get a reference to the database
-var usersDatabase = Client.GetDatabase(Databases.Persons);
+var usersDatabase = Client
+    .GetDatabase(Databases.Persons);
 
 // Get a reference to a database's collection named 'users'
-var personsTypedCollection = usersDatabase.GetCollection<User>("users");
+var personsTypedCollection = usersDatabase
+    .GetCollection<User>("users");
 ```
 {% endcode %}
 {% endtab %}
@@ -106,7 +110,8 @@ Notice that in the above sample the collection reference is a **typed** collecti
 This is different than getting a reference collection of type `IMongoCollection<BsonDocument>`:
 
 ```csharp
-var bsonPersonsCollection = usersDatabase.GetCollection<BsonDocument>("users");
+var bsonPersonsCollection = usersDatabase
+    .GetCollection<BsonDocument>("users");
 ```
 
 {% hint style="success" %}
@@ -117,12 +122,15 @@ Using a `IMongoCollection<BsonDocument>`collection reference,  you can build pre
 
 You can create a collection using the `CreateCollection` method on a `IMongoDatabase` reference.
 
+> **Syntax**: `IMongoDatabase.CreateCollection(<collection-name>)`
+
 {% tabs %}
 {% tab title="C\#" %}
 {% code title="AccessCollections.cs" %}
 ```csharp
 var loginsCollectionName = "logins";
-await usersDatabase.CreateCollectionAsync(loginsCollectionName);
+await usersDatabase
+    .CreateCollectionAsync(loginsCollectionName);
 ```
 {% endcode %}
 {% endtab %}
@@ -199,6 +207,8 @@ db.createCollection("myCollection", {
 
 You can get all available collections in a database by using the `ListCollections` method on an `IMongoDatabase` reference.
 
+> **Syntax**: `IMongoDatabase.ListCollections()`
+
 {% tabs %}
 {% tab title="C\#" %}
 {% code title="AccessCollections.cs" %}
@@ -206,7 +216,8 @@ You can get all available collections in a database by using the `ListCollection
 var usersDatabase = Client.GetDatabase(Databases.Persons);
 
 // Get all collections
-var collections = (await usersDatabase.ListCollectionsAsync()).ToList();
+var collections = (await usersDatabase
+    .ListCollectionsAsync()).ToList();
 ```
 {% endcode %}
 {% endtab %}
@@ -238,9 +249,12 @@ var collections = (await usersDatabase.ListCollectionsAsync()).ToList();
 
 Delete a collection using the `DropCollection` method. The collection along with its data will be entirely removed.
 
+> **Syntax**: `IMongoDatabase.DropCollection(<collection-name>)`
+
 ```csharp
 var loginsCollectionName = "logins";
-await usersDatabase.DropCollectionAsync(loginsCollectionName);
+await usersDatabase
+    .DropCollectionAsync(loginsCollectionName);
 ```
 
 
