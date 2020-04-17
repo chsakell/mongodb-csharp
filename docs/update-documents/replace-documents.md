@@ -284,8 +284,6 @@ When no match found, the update result will be the following:
 🦉 Since you set **`upsert = true`** a new document inserted with _\_id_ equal to the _upsertedId_ 
 {% endhint %}
 
-
-
 ## _FindOneAndReplaceOne_
 
 `IMongoCollection<T>` contains a `FindOneAndReplaceOne` __method that behaves exactly the same as the `ReplaceOne` except that the returned result is of type `T` instead of a `ReplaceOneResult`, in other words it returns the updated or _upserted_ document itself. This can be quite convenient when you want to keep working with the new document after replacing it. 
