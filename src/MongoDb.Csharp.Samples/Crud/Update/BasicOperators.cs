@@ -41,7 +41,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             #region set
 
             var firstUserFilter = Builders<User>.Filter.Empty;
-
+            var allusers = await collection.Find(firstUserFilter).ToListAsync();
             // update a single field
             var updateNameDefinition = Builders<User>.Update.Set(u => u.FirstName, "Chris");
             var updateNameResult = await collection.UpdateOneAsync(firstUserFilter, updateNameDefinition);
@@ -69,7 +69,8 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
             // combine inc with set
             var incWithSetUpdateDefinition = Builders<User>
-                .Update.Set(u => u.FirstName, "Chris").Inc(u => u.Salary, 450);
+                .Update.Set(u => u.FirstName, "Chris")
+                .Inc(u => u.Salary, 450);
             var incWithSetUpdateResult = await collection.UpdateOneAsync(firstUserFilter, incWithSetUpdateDefinition);
 
             #region min
@@ -115,6 +116,16 @@ namespace MongoDb.Csharp.Samples.Crud.Update
                 await collection.UpdateOneAsync(firstUserFilter, removeWebsiteDefinition);
             Utils.Log("Website field entirely removed from the first document");
 
+
+            #region caution
+
+            //var removeSalaryDefinition = Builders<User>.Update.Unset(u => u.Salary);
+            //var removeSalaryFieldUpdateResult =
+            //    await collection.UpdateOneAsync(firstUserFilter, removeSalaryDefinition);
+
+            //var firstUser = await collection.Find(firstUserFilter).FirstOrDefaultAsync();
+
+            #endregion
             #endregion
 
             #region rename
@@ -184,7 +195,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             await bsonCollection.UpdateOneAsync(bsonFirstUserFilter, Builders<BsonDocument>
                 .Update.Set("salary", 3000));
             // update only if the new value is greater than the current
-            // would not update if the new salary was < 3000
+            // would not update if the new salary was < 3500
             var bsonMaxUpdateDefinition = Builders<BsonDocument>.Update.Max("salary", 3500);
             var bsonMaxUpdateResult = await bsonCollection
                 .UpdateOneAsync(bsonFirstUserFilter, bsonMaxUpdateDefinition);
@@ -236,9 +247,9 @@ namespace MongoDb.Csharp.Samples.Crud.Update
                 website: "https://chsakell.com", 
                 favoriteSports: ["Soccer", "Basketball"]  
             }});
-            db.users.updateOne({}, { $set: { firstName: "Chris"  }, $inc: { salary: 450 }});
-            db.users.updateOne({}, { $min: { salary: 2000 } })
-            db.users.updateOne({}, { $max: { salary: 3500 } })
+            db.users.updateOne({}, { $set: { firstName: "Chris"  }, $inc: { salary: NumberDecimal("450") }});
+            db.users.updateOne({}, { $min: { salary: NumberDecimal("2000") } })
+            db.users.updateOne({}, { $inc: { salary: NumberDecimal("450.00") }});
             db.users.updateOne({}, { $mul: { salary: 2 } })
             db.users.updateOne({}, { $unset: { website: ""  }})
             db.users.updateOne({}, { $rename: { phone: "phoneNumber" } })
