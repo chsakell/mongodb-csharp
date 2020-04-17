@@ -375,8 +375,6 @@ Of course if the new value is equal to the current one, the update result will r
 ```
 {% endhint %}
 
-
-
 ## _Max_ operator - _$max_
 
 The _$max_ operator is used to update the value of a specified field **only if the new value is greater than** the current value.
@@ -473,4 +471,204 @@ public class User
 ```
 {% endtab %}
 {% endtabs %}
+
+## _Mul_ operator - _$mul_
+
+The _$mul_ operator is used to multiply the current value of a specified field by a specified value.
+
+> **Syntax**: `Builders<T<.Update.Mul(doc => doc.<field>, <value>)`
+
+The sample double the first document's _salary_ value from 1000 to 2000 using the $mul operator 💰 .
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="Update/BasicOperators.cs" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+// create an empty filter
+var firstUserFilter = Builders<User>.Filter.Empty;
+
+// preparation - set current salary to 1000
+// for demo only
+await collection.UpdateOneAsync(firstUserFilter, 
+    Builders<User>.Update.Set(u => u.Salary, 1000));
+    
+// multiply the current salary value by 2
+var mulUpdateDefinition = Builders<User>
+    .Update.Mul(u => u.Salary, 2);
+    
+var mulUpdateResult = await collection
+    .UpdateOneAsync(firstUserFilter, mulUpdateDefinition);
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+var bsonCollection = database
+            .GetCollection<BsonDocument>(collectionName);
+
+await bsonCollection.UpdateOneAsync(bsonFirstUserFilter,
+    Builders<BsonDocument>.Update
+        .Set("salary", 1000));
+
+var bsonMulUpdateDefinition = Builders<BsonDocument>
+    .Update.Mul("salary", 2);
+    
+var bsonMulUpdateResult = await bsonCollection
+    .UpdateOneAsync(bsonFirstUserFilter, 
+        bsonMulUpdateDefinition);
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.users.updateOne({}, { $mul: { salary: 2 } })
+
+--------------------------- 
+        
+// sample update result
+{
+	"acknowledged" : true,
+	"matchedCount" : 1,
+	"modifiedCount" : 1
+}
+```
+{% endtab %}
+
+{% tab title="Models" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+## _Unset_ operator - _$unset_
+
+The _$unset_ operator is used to remove a field from a document.
+
+> **Syntax**: `Builders<T<.Update.Unset(doc => doc.<field>)`
+
+The sample removes ❌ the _Website_ field from a user document.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="Update/BasicOperators.cs" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+// create an empty filter
+var firstUserFilter = Builders<User>.Filter.Empty;
+
+// remove the website field
+var removeWebsiteDefinition = Builders<User>
+    .Update.Unset(u => u.Website);
+
+var removeWebsiteFieldUpdateResult = await collection
+    .UpdateOneAsync(firstUserFilter, 
+        removeWebsiteDefinition);
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+var bsonCollection = database
+            .GetCollection<BsonDocument>(collectionName);
+
+var bsonRemoveWebsiteDefinition = Builders<BsonDocument>
+            .Update.Unset("website");
+            
+var bsonRemoveWebsiteFieldUpdateResult =
+    await bsonCollection.UpdateOneAsync(bsonFirstUserFilter, 
+                bsonRemoveWebsiteDefinition);
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.users.updateOne({}, { $unset: { website: ""  }})
+
+--------------------------- 
+        
+// sample update result
+{
+	"acknowledged" : true,
+	"matchedCount" : 1,
+	"modifiedCount" : 1
+}
+```
+{% endtab %}
+
+{% tab title="Models" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="warning" %}
+####  ​​ ⚡ Danger ​ ⚡​​ Danger ​ ⚡​​ Danger ​ ⚡
+
+Use **caution** when using the _Unset_ operator!! In case you unset a _non nullable_ property then you might end up having unexpected results. For example, if you unset the _salary_ field on a user document, which is a decimal field, then the next time you read that document, the salary will be 0, not null!
+
+```csharp
+// remove salary field - decimal property
+var removeSalaryDefinition = Builders<User>
+    .Update.Unset(u => u.Salary);
+    
+var removeSalaryFieldUpdateResult =
+    await collection.UpdateOneAsync(firstUserFilter, 
+    removeSalaryDefinition);
+
+// firstUser.Salary is equal to 0!
+var firstUser = await collection.Find(firstUserFilter)
+    .FirstOrDefaultAsync();
+```
+{% endhint %}
 
