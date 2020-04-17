@@ -655,7 +655,7 @@ public class User
 {% hint style="warning" %}
 ####  ​​ ⚡ Danger ​ ⚡​​ Danger ​ ⚡​​ Danger ​ ⚡
 
-Use **caution** when using the _Unset_ operator!! In case you unset a _non nullable_ property then you might end up having unexpected results. For example, if you unset the _salary_ field on a user document, which is a decimal field, then the next time you read that document, the salary will be 0, not null!
+Use **caution** when applying the _Unset_ operator!! In case you unset a _non nullable_ property then you might end up having unexpected results. For example, if you unset the _salary_ field on a user document, which is a decimal field, then the next time you read that document, the salary will be 0, not null!
 
 ```csharp
 // remove salary field - decimal property
@@ -670,5 +670,98 @@ var removeSalaryFieldUpdateResult =
 var firstUser = await collection.Find(firstUserFilter)
     .FirstOrDefaultAsync();
 ```
+{% endhint %}
+
+## _Rename_ operator - _$rename_
+
+The _$rename_ operator is used to rename a field. 
+
+> **Syntax**: `Builders<T<.Update.Rename(doc => doc.<field>, <new-name>)`
+
+The sample updates the _Phone_ field of the first document to _PhoneNumber_ using the _$rename_ operator.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="Update/BasicOperators.cs" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+// create an empty filter
+var firstUserFilter = Builders<User>.Filter.Empty;
+
+// rename the phone field to phoneNumber for the first user
+var renamePhoneDefinition = Builders<User>.
+    Update.Rename(u => u.Phone, "phoneNumber");
+
+// update the document
+var renamePhoneFieldUpdateResult = await collection
+    .UpdateOneAsync(firstUserFilter, 
+        renamePhoneDefinition);
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+var bsonCollection = database
+            .GetCollection<BsonDocument>(collectionName);
+
+var bsonRenamePhoneDefinition = Builders<BsonDocument>
+            .Update.Rename("phone", "phoneNumber");
+            
+var bsonRenamePhoneFieldUpdateResult = await bsonCollection
+            .UpdateOneAsync(bsonFirstUserFilter, 
+                        bsonRenamePhoneDefinition);
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.users.updateOne({}, { 
+	$rename: { phone: "phoneNumber" } 
+})
+
+--------------------------- 
+        
+// sample update result
+{
+	"acknowledged" : true,
+	"matchedCount" : 1,
+	"modifiedCount" : 1
+}
+```
+{% endtab %}
+
+{% tab title="Models" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="warning" %}
+When renaming document's fields make sure the new field names can be matched back you your C\# models.
 {% endhint %}
 
