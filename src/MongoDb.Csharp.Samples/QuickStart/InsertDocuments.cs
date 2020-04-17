@@ -133,6 +133,8 @@ namespace MongoDb.Csharp.Samples.QuickStart
 
             await personsBsonCollection.InsertOneAsync(bsonUser);
 
+            await personsBsonCollection.InsertOneAsync(appPerson.ToBsonDocument());
+
             #endregion
 
             #region Shell commands
