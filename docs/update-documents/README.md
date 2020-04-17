@@ -49,3 +49,11 @@ Here's' an example:
 > ```
 {% endhint %}
 
+## UpdateOne & UpdateMany
+
+To update one or more documents use the **`UpdateOne`** and ``**`UpdateMany`** `IMongoCollection<T>` respectively.
+
+> **Syntax**: `IMongoCollection<T>.UpdateOne(<filter>,<update-definition>)`
+
+> **Syntax**: `IMongoCollection<T>.UpdateMany(<filter>,<update-definition>)`
+
