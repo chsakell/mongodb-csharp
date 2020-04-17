@@ -762,6 +762,11 @@ public class User
 {% endtabs %}
 
 {% hint style="warning" %}
-When renaming document's fields make sure the new field names can be matched back you your C\# models.
+When renaming document fields make sure the new field names can be matched back you your C\# models. You can control the field's name in the database using the**`[BsonElement]`** attribute. In the following example, the _Phone_ property will be saved as _phoneNumber_ in the database while can be deserialized back to the _Phone_ property properly.
+
+```csharp
+[BsonElement("phoneNumber")]
+public string Phone {get; set; }
+```
 {% endhint %}
 
