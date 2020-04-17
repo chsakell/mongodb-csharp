@@ -2,7 +2,9 @@
 
 ## Delete one document
 
-To delete a single document, create a filter definition that matches the document you want to remove and call the `DeleteOne` method on a `IMongoCollectio`n reference.
+To delete a single document, create a filter definition that matches the document you want to remove and call the `DeleteOne` method on a `IMongoCollection<T>` reference.
+
+> **Syntax**: `IMongoCollection<T>.DeleteOne(<filter>)`
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -105,7 +107,9 @@ db.users.deleteOne({})
 
 ## Delete multiple documents
 
-To remove more that one documents at the same time, create a filter definition to match the documents you wish to delete and use the `DeleteMany` method on an `IMongoCollection`. 
+To remove more that one documents at the same time, create a filter definition to match the documents you wish to delete and use the `DeleteMany` method on an `IMongoCollection<T>`. 
+
+> **Syntax**: `IMongoCollection<T>.DeleteMany(<filter>)`
 
 The following example shows how to delete user documents based on the _salary_ field .
 

@@ -2,7 +2,11 @@
 
 ## Insert one document
 
-You can insert a document using the `InsertOne` method on a collection reference. Depending on the collection type you can pass either your own class type or a `BsonDocument`. You can build the `BsonDocument` either manually or using the `BsonDocument.Parse` method.
+You can insert a document using the `InsertOne` method on a `IMongoCollection<T>` reference. 
+
+> **Syntax**: `IMongoCollection<T>.InsertOne(<document>)`
+
+Depending on the collection type you can pass either your own class type or a `BsonDocument`. You can build the `BsonDocument` either manually or using the `BsonDocument.Parse` method.
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -146,11 +150,9 @@ db.users.insertOne({
 	],
 	"profession" : "Doctor"
 })
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+-----------------------------
+
 // sample result
 {
 	"acknowledged" : true,
@@ -162,11 +164,28 @@ db.users.insertOne({
 
 {% hint style="danger" %}
  Notice how overwhelming querying using `BsonDocument` can be. And it's not only that you have to carefully type all these in curly brackets, it is also dangerous that you might end up having wrong **type of data** in the database because MongoDB will use default data types for values that their type haven't explicitly defined. 
+
+> \*\*\*\*⛔ **Building the documents manually or using the `Parse` method is not recommended**
+
+Luckily, there is the **`ToBsonDocument`** helper method that builds the `BsonDocument` from your typed class automatically and saves you from all the trouble.
+
+```csharp
+var personsBsonCollection = usersDatabase
+    .GetCollection<BsonDocument>("users");
+
+User appPerson = RandomData
+    .GenerateUsers(1).First();
+
+await personsBsonCollection
+    .InsertOneAsync(appPerson.ToBsonDocument());
+```
 {% endhint %}
 
 ## Insert many documents
 
 To add multiple documents at once, you can use the `InsertMany` collection method.
+
+> **Syntax**: `IMongoCollection<T>.InsertMany(<document-array>)`
 
 {% tabs %}
 {% tab title="C\#" %}
