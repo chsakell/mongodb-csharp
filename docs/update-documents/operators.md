@@ -6,143 +6,83 @@
 
 The _$set_ operator is used to update the value of a specified field. 
 
-The following sample finds:
-
-*  `Traveler` documents having _VisitedCountries_ array with exact 5 elements 
-* `Traveler` documents having _VisitedCountries_ array with more than 10 elements 
+The sample updates the _FirstName_ field of the first document in the collection.
 
 {% tabs %}
 {% tab title="C\#" %}
-{% code title="ArrayOperators.cs" %}
+{% code title="Update/BasicOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<Traveler>(collectionName);
+var collection = database.GetCollection<User>(collectionName);
 
-var fiveVisitedCountriesFilter = await collection
-    .Find(t => t.VisitedCountries.Count == 5).ToListAsync();
-    
-var moreThan10VisitedCountries = await collection
-    .Find(t => t.VisitedCountries.Count > 10).ToListAsync();
+// create an empty filter
+var firstUserFilter = Builders<User>.Filter.Empty;
+
+// create a Set operator update definition
+var updateNameDefinition = Builders<User>.Update
+            .Set(u => u.FirstName, "Chris");
+
+// update the document
+var updateNameResult = await collection
+            .UpdateOneAsync(firstUserFilter, 
+            updateNameDefinition);
 ```
 {% endcode %}
 {% endtab %}
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+            .GetCollection<BsonDocument>(collectionName);
 
-// exactly 5
-var bsonFiveVisitedCountriesFilter = await bsonCollection.Find(
-    new BsonDocument
-    { 
-        {"visitedCountries", new BsonDocument {{ "$size", 5 } }}
-    }).ToListAsync();
+var bsonUpdateNameDefinition = Builders<BsonDocument>
+            .Update.Set("firstName", "John");
 
-// more than 10
-var bsonMoreThan10VisitedCountries = await bsonCollection
-    .Find(new BsonDocument
-    {
-        {"visitedCountries.10", new BsonDocument {{ "$exists", true } }}
-    }).ToListAsync();
+var bsonUpdateNameResult = await bsonCollection
+            .UpdateOneAsync(bsonFirstUserFilter, 
+            bsonUpdateNameDefinition);
 ```
 {% endtab %}
 
 {% tab title="Shell" %}
 ```javascript
-// exactly 5
-db.travelers.find({ visitedCountries : { $size: 5 } })
-
-// more than 10
-db.travelers
-	.find({ "visitedCountries.10" : { "$exists" : true } })
+db.users.updateOne({}, 
+	{ $set: { firstName: "Chris"  }});
 
 --------------------------- 
         
-// sample matched document (5 visited countries)
+// sample update result
 {
-	"_id" : ObjectId("5e9621f95cb0474d40845dab"),
-	"name" : "Bobbie Murazik",
-	"age" : 45,
-	"activities" : [
-		"Photography",
-		"Hacking",
-		"Wine tourism",
-		"Wildlife watching"
-	],
-	"visitedCountries" : [
-		{
-			"name" : "Chad",
-			"timesVisited" : 4,
-			"lastDateVisited" : ISODate("2016-08-17T16:52:59.566+03:00"),
-			"coordinates" : {
-				"latitude" : -34.2869,
-				"longitude" : 134.3729
-			}
-		},
-		{
-			"name" : "Syrian Arab Republic",
-			"timesVisited" : 4,
-			"lastDateVisited" : ISODate("2018-03-09T19:55:12.084+02:00"),
-			"coordinates" : {
-				"latitude" : -59.1648,
-				"longitude" : -163.6818
-			}
-		},
-		{
-			"name" : "Guadeloupe",
-			"timesVisited" : 6,
-			"lastDateVisited" : ISODate("2018-11-02T02:23:55.274+02:00"),
-			"coordinates" : {
-				"latitude" : -23.8004,
-				"longitude" : -169.4041
-			}
-		},
-		{
-			"name" : "Bhutan",
-			"timesVisited" : 10,
-			"lastDateVisited" : ISODate("2018-02-25T13:23:50.974+02:00"),
-			"coordinates" : {
-				"latitude" : 67.0804,
-				"longitude" : -125.1589
-			}
-		},
-		{
-			"name" : "Somalia",
-			"timesVisited" : 7,
-			"lastDateVisited" : ISODate("2020-01-02T15:48:37.721+02:00"),
-			"coordinates" : {
-				"latitude" : 61.3348,
-				"longitude" : -83.9703
-			}
-		}
-	]
+	"acknowledged" : true,
+	"matchedCount" : 1,
+	"modifiedCount" : 1
 }
 ```
 {% endtab %}
 
 {% tab title="Models" %}
 ```csharp
-public class Traveler
+public class User
 {
     [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
     public ObjectId Id { get; set; }
-    public string Name { get; set; }
-    public int Age { get; set; }
-    public List<string> Activities { get; set; }
-    public List<VisitedCountry> VisitedCountries { get; set; }
-}
-
-public class VisitedCountry
-{
-    public string Name { get; set; }
-    public int TimesVisited { get; set; }
-    public DateTime LastDateVisited { get; set; }
-    public GeoLocation Coordinates { get; set; }
-}
-
-public class GeoLocation
-{
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
 }
 ```
 {% endtab %}

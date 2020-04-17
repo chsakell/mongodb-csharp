@@ -57,3 +57,15 @@ To update one or more documents use the **`UpdateOne`** and ``**`UpdateMany`** `
 
 > **Syntax**: `IMongoCollection<T>.UpdateMany(<filter>,<update-definition>)`
 
+{% hint style="success" %}
+Update methods return information ℹregarding total documents matched by the filter, total documents modified and if there was acknowledgement
+
+```javascript
+{
+	"acknowledged" : true,
+	"matchedCount" : 1,
+	"modifiedCount" : 1
+}
+```
+{% endhint %}
+
