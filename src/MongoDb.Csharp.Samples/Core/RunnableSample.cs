@@ -18,7 +18,13 @@ namespace MongoDb.Csharp.Samples.Core
             }
         }
 
-        protected RunnableSample() => Init();
+        protected RunnableSample()
+        {
+            if (Enabled)
+            {
+                Init();
+            }
+        }
         protected MongoClient Client { get; set; }
         public abstract Samples Sample { get; }
 
