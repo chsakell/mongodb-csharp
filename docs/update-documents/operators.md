@@ -266,5 +266,211 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-### 
+## _Min_ operator - _$min_
+
+The _$min_ operator is used to update the value of a specified field **only if the new value is less than** the current value.
+
+> **Syntax**: `Builders<T<.Update.Min(doc => doc.<field>, <value>)`
+
+The sample decreases the first document's _salary_ value from 3000 to 2000 💰 .
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="Update/BasicOperators.cs" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+// create an empty filter
+var firstUserFilter = Builders<User>.Filter.Empty;
+
+// preparation - set current salary to 3000
+// for demo only
+await collection.UpdateOneAsync(firstUserFilter, Builders<User>
+    .Update.Set(u => u.Salary, 3000));
+    
+// update only if the new value is less than the current
+var minUpdateDefinition = Builders<User>
+    .Update.Min(u => u.Salary, 2000);
+    
+// 2000 is less than 3000 so update succeeds
+var minUpdateResult = await collection
+    .UpdateOneAsync(firstUserFilter, minUpdateDefinition);
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+var bsonCollection = database
+            .GetCollection<BsonDocument>(collectionName);
+
+await bsonCollection.UpdateOneAsync(bsonFirstUserFilter,
+    Builders<BsonDocument>.Update.Set("salary", 3000));
+
+// would not update if the new salary was > 3000
+var bsonMinUpdateDefinition = Builders<BsonDocument>
+    .Update.Min("salary", 2000);
+    
+var bsonMinUpdateResult = await bsonCollection
+    .UpdateOneAsync(bsonFirstUserFilter, 
+        bsonMinUpdateDefinition);
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.users.updateOne({}, { $min: { 
+	salary: NumberDecimal("2000") } })
+
+
+--------------------------- 
+        
+// sample update result
+{
+	"acknowledged" : true,
+	"matchedCount" : 1,
+	"modifiedCount" : 1
+}
+```
+{% endtab %}
+
+{% tab title="Models" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+Of course if the new value is equal to the current one, the update result will return that no documents updated.
+
+```javascript
+{
+	"acknowledged" : true,
+	"matchedCount" : 1,
+	"modifiedCount" : 0
+}
+```
+{% endhint %}
+
+
+
+## _Max_ operator - _$max_
+
+The _$max_ operator is used to update the value of a specified field **only if the new value is greater than** the current value.
+
+> **Syntax**: `Builders<T<.Update.Max(doc => doc.<field>, <value>)`
+
+The sample increases the first document's _salary_ value from 3000 to 3500 💰 .
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="Update/BasicOperators.cs" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+// create an empty filter
+var firstUserFilter = Builders<User>.Filter.Empty;
+
+// preparation - set current salary to 3000
+// for demo only
+await collection.UpdateOneAsync(firstUserFilter, Builders<User>
+    .Update.Set(u => u.Salary, 3000));
+    
+// update only if the new value is greater than the current
+var maxUpdateDefinition = Builders<User>
+    .Update.Max(u => u.Salary, 3500);
+    
+// 3500 is greater than 3000 so update succeeds
+var maxUpdateResult = await collection
+    .UpdateOneAsync(firstUserFilter, maxUpdateDefinition);
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+var bsonCollection = database
+            .GetCollection<BsonDocument>(collectionName);
+
+await bsonCollection.UpdateOneAsync(bsonFirstUserFilter,
+    Builders<BsonDocument>.Update.Set("salary", 3000));
+
+// would not update if the new salary was < 3500
+var bsonMaxUpdateDefinition = Builders<BsonDocument>
+    .Update.Max("salary", 3500);
+    
+var bsonMaxUpdateResult = await bsonCollection
+        .UpdateOneAsync(bsonFirstUserFilter, 
+            bsonMaxUpdateDefinition);
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.users.updateOne({}, { $max: { 
+		salary: NumberDecimal("3500") } 
+})
+
+--------------------------- 
+        
+// sample update result
+{
+	"acknowledged" : true,
+	"matchedCount" : 1,
+	"modifiedCount" : 1
+}
+```
+{% endtab %}
+
+{% tab title="Models" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
 
