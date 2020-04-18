@@ -16,7 +16,6 @@ namespace MongoDb.Csharp.Samples.Aggregation
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
             Utils.DropDatabase(Client, Databases.Persons);
-            Utils.DropDatabase(Client, Databases.Trips);
         }
 
         public async Task Run()
@@ -28,18 +27,16 @@ namespace MongoDb.Csharp.Samples.Aggregation
         {
             var usersCollectionName = "users";
             var personsDatabase = Client.GetDatabase(Databases.Persons);
-            var usersCollection = personsDatabase.GetCollection<User>(usersCollectionName);
+            var collection = personsDatabase.GetCollection<User>(usersCollectionName);
             var usersQueryableCollection = personsDatabase.GetCollection<User>(usersCollectionName).AsQueryable();
-            var personsBsonCollection = personsDatabase.GetCollection<BsonDocument>(usersCollectionName);
+            var bsonCollection = personsDatabase.GetCollection<BsonDocument>(usersCollectionName);
 
             var travelersCollectionName = "travelers";
             var tripsDatabase = Client.GetDatabase(Databases.Trips);
             var travelersCollection = tripsDatabase.GetCollection<Traveler>(travelersCollectionName);
-            var travelersQueryableCollection = tripsDatabase.GetCollection<Traveler>(travelersCollectionName).AsQueryable();
-            var travelersBsonCollection = tripsDatabase.GetCollection<BsonDocument>(travelersCollectionName);
             #region Prepare data
 
-            await usersCollection.InsertManyAsync(RandomData.GenerateUsers(500));
+            await collection.InsertManyAsync(RandomData.GenerateUsers(500));
             await travelersCollection.InsertManyAsync(RandomData.GenerateTravelers(500));
 
             #endregion
@@ -52,7 +49,8 @@ namespace MongoDb.Csharp.Samples.Aggregation
                 .Include(u => u.Gender)
                 .Include(u => u.DateOfBirth);
 
-            var simpleProjectionResults = await usersCollection.Find(Builders<User>.Filter.Empty)
+            var simpleProjectionResults = await collection
+                .Find(Builders<User>.Filter.Empty)
                 .Project(simpleProjection)
                 .ToListAsync();
 
@@ -61,37 +59,50 @@ namespace MongoDb.Csharp.Samples.Aggregation
             var customProjection = Builders<User>.Projection.Expression(u =>
                 new
                 {
-                    fullName = u.FirstName + " " + u.LastName,
+                    fullName = $"{u.FirstName} {u.LastName}",
+                    fullNameUpper = ToUpperCase($"{u.FirstName} {u.LastName}"),
                     gender = u.Gender.ToString(),
                     age = DateTime.Today.Year - u.DateOfBirth.Year
                 });
 
-            var results = await usersCollection.Find(Builders<User>.Filter.Empty)
+            var results = await collection.Find(Builders<User>.Filter.Empty)
                 .Project(customProjection)
                 .ToListAsync();
 
             foreach (var result in results)
             {
-                Utils.Log($"{result.fullName} {result.gender} {result.age}");
+                Utils.Log(result.ToBsonDocument());
             }
 
             #endregion
 
             #region BsonDocument commands
 
+            var bsonSimpleProjection = Builders<BsonDocument>.Projection
+                .Exclude("_id")
+                .Include("gender")
+                .Include("dateOfBirth");
+
+            var bsonSimpleProjectionResults = await bsonCollection
+                .Find(Builders<BsonDocument>.Filter.Empty)
+                .Project(bsonSimpleProjection)
+                .ToListAsync();
 
             #endregion
 
             #region Linq
 
-            var linqSimpleProjection = from u in usersQueryableCollection
-                                       select new
-                                       {
-                                           lastName = u.FirstName + " " + u.LastName,
-                                           gender = u.Gender == Gender.Male ? "Male" : "Female",
-                                           age = DateTime.Now.Year - u.DateOfBirth.Year
-                                       };
+            var linqSimpleProjection = 
+                from u in usersQueryableCollection
+               select new
+               {
+                   fullName = u.FirstName + " " + u.LastName,
+                   fullNameUpper = ToUpperCase($"{u.FirstName} {u.LastName}"),
+                   gender = u.Gender == Gender.Male ? "Male" : "Female",
+                   age = DateTime.Now.Year - u.DateOfBirth.Year
+               };
 
+            Utils.Log($"Query built: {linqSimpleProjection}");
             var linqSimpleProjectionResults = await linqSimpleProjection.ToListAsync();
 
             #endregion
@@ -149,6 +160,11 @@ namespace MongoDb.Csharp.Samples.Aggregation
             var exercice_1_result = await exercice_1_projection.FirstOrDefaultAsync();
 
             #endregion
+        }
+
+        private string ToUpperCase(string value)
+        {
+            return value.ToUpper();
         }
     }
 }
