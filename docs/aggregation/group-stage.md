@@ -188,5 +188,139 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-### 
+### Match - Group - Project
+
+The sample combines 4 stages to calculate the average monthly expenses per gender. 
+
+* The **$match** stage filters documents based on the salary
+* The **$group** stage groups the filtered documents per gender and calculate the average monthly expenses
+* The **$project** stage formats the gender as a string
+* The last stage **$sort,** simply sorts the results per average monthly expenses
+
+{% tabs %}
+{% tab title="C\#" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+var excercice1Aggregate = collection.Aggregate()
+    .Match(Builders<User>.Filter.Gte(u => u.Salary, 1500) &
+           Builders<User>.Filter.Lte(u => u.Salary, 3000))
+    .Group(u => u.Gender,
+        ac => new
+        {
+            gender = ac.Key,
+            averageMonthlyExpenses = ac.Average(u => u.MonthlyExpenses),
+            total = ac.Sum(u => 1)
+        })
+    .Project(group => new 
+    {
+        Gender = group.gender == 0 ? "Male" : "Female",
+        AverageMonthlyExpenses = group.averageMonthlyExpenses,
+        Total = group.total
+    })
+    .SortByDescending(group => group.AverageMonthlyExpenses);
+    
+var excercice1Result = await excercice1Aggregate.ToListAsync();
+```
+{% endtab %}
+
+{% tab title="LINQ" %}
+```csharp
+var collection = database.GetCollection<User>(collectionName);
+
+var linqQuery = collection.AsQueryable()
+    .Where(u => u.Salary > 1500 && u.Salary < 3000)
+    .GroupBy(u => u.Gender)
+    .Select(ac => new
+    {
+        gender = ac.Key,
+        averageMonthlyExpenses = 
+            Math.Ceiling(ac.Average(u => u.MonthlyExpenses)),
+        total = ac.Sum(u => 1)
+    })
+    .OrderBy(group => group.total);
+
+var excercice1LinqResult = linqQuery.ToList();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.users.aggregate([
+   {
+      "$match":{
+         "salary":{
+            "$gt":NumberDecimal("1500"),
+            "$lt":NumberDecimal("3000")
+         }
+      }
+   },
+   {
+      "$group":{
+         "_id":"$gender",
+         "__agg0":{
+            "$avg":"$monthlyExpenses"
+         },
+         "__agg1":{
+            "$sum":1
+         }
+      }
+   },
+   {
+      "$project":{
+         "gender":"$_id",
+         "averageMonthlyExpenses":{
+            "$ceil":"$__agg0"
+         },
+         "total":"$__agg1",
+         "_id":0
+      }
+   },
+   {
+      "$sort":{
+         "total":1
+      }
+   }
+])
+
+-----------------------------------------
+
+// results with ceil
+/* 1 */
+{
+	"gender" : 0,
+	"averageMonthlyExpenses" : 4127,
+	"total" : 181
+},
+
+/* 2 */
+{
+	"gender" : 1,
+	"averageMonthlyExpenses" : 4037,
+	"total" : 188
+}
+
+
+// results without ceil
+
+/* 1 */
+{
+	"gender" : 0,
+	"averageMonthlyExpenses" : 4126.922651933702,
+	"total" : 181
+},
+
+/* 2 */
+{
+	"gender" : 1,
+	"averageMonthlyExpenses" : 4036.478723404255,
+	"total" : 188
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+The LINQ query supports the `Math.Ceiling` method and can produce an average of `Int32` type.
+{% endhint %}
 
