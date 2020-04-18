@@ -110,16 +110,12 @@ public class User
 {% endtabs %}
 
 {% hint style="info" %}
-While you don't have to explicitly exclude all the fields you don't want to include in the final result, you do have to do it for the identifier field **`_id`**, otherwise it will be included in the result.
+While you don't have to explicitly exclude all the fields you don't want to include in the final result, you do have to do it for the identifier field **`_id`**, otherwise it will be included
 {% endhint %}
-
-
 
 ## Include custom fields
 
-You can use projection to include new custom calculated fields in the final result.  
-
-The sample uses a projection stage to re-format `User` documents and project the following new fields:
+You can use projection to include new custom calculated fields in the final result. The sample uses a projection stage to re-format `User` documents and project the following new fields:
 
 1. _**fullName**_: equal to _firstName_ and _lastName_ concatenated
 2. _**fullNameUpper**_: equal to fullName in upper case
@@ -203,7 +199,7 @@ The driver didn't build any complex query to the MongoDB database, instead it cr
 
 ## Projection with LINQ
 
-If you want the driver to create the exact query that matches your projection you can build the query using an **`IMongoQueryable<T>`** reference. There are some limitation though: you cannot use any custom C\# functions you want as you did using a `ProjectDefinition<T>`, but only those function that are supported by the driver. You can get an `IMongoQueryable<T>` ****reference by calling the `AsQueryable` method on a `IMongoCollection<T>` reference.
+If you want the driver to create the exact query that matches your projection you can build it using an **`IMongoQueryable<T>`** reference. There are some **limitations** though: you cannot use any custom C\# functions you want as you did using a `ProjectDefinition<T>`, but only those functions that are supported by the driver. You can get an `IMongoQueryable<T>` ****reference by calling the `AsQueryable` method on a `IMongoCollection<T>` reference.
 
 > **Syntax**: `IMongoCollection<T>.AsQueryable()`
 
