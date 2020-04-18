@@ -31,15 +31,15 @@
   * [Arrays](update-documents/update-arrays.md)
 * [➖ Delete](delete-documents.md)
 
-## 🧪 Aggregation Framework
+## 🧪 Aggregation
 
-* [Basics](aggregation-framework/basics.md)
-* [✂ Project](aggregation-framework/project-stage.md)
-* [🎯 Match](aggregation-framework/match-stage.md)
-* [📦 Group](aggregation-framework/group-stage.md)
-* [🚩 Unwind](aggregation-framework/unwind-stage.md)
-* [⏩ Pagination](aggregation-framework/limit-skip-pagination.md)
-* [📈 Bucket](aggregation-framework/bucket-stage.md)
+* [Overview](aggregation/overview.md)
+* [✂ Project](aggregation/project-stage.md)
+* [🎯 Match](aggregation/match-stage.md)
+* [📦 Group](aggregation/group-stage.md)
+* [🚩 Unwind](aggregation/unwind-stage.md)
+* [⏩ Pagination](aggregation/limit-skip-pagination.md)
+* [📈 Bucket](aggregation/bucket-stage.md)
 * [⭐ Expressions](expressions/README.md)
   * [Filter](expressions/filter.md)
   * [Slice](expressions/slice.md)
