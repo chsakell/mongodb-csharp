@@ -195,8 +195,6 @@ public class User
 The driver didn't build any complex query to the MongoDB database, instead it created a projection with the fields used in the projection stage and their values used to build the new anonymous result for each document retrieved
 {% endhint %}
 
-![](../.gitbook/assets/custom-projection.jpg)
-
 ## Projection with LINQ
 
 If you want the driver to create the exact query that matches your projection you can build it using an **`IMongoQueryable<T>`** reference. There are some **limitations** though: you cannot use any custom C\# functions you want as you did using a `ProjectDefinition<T>`, but only those functions that are supported by the driver. You can get an `IMongoQueryable<T>` ****reference by calling the `AsQueryable` method on a `IMongoCollection<T>` reference.
