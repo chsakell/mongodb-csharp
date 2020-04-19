@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
@@ -55,7 +56,7 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
             #endregion
 
-            #region group on embedded document field
+            #region group by embedded document field
 
             // group by address state and sorted
             var embeddedDocFieldAggregate = collection.Aggregate()
@@ -91,12 +92,33 @@ namespace MongoDb.Csharp.Samples.Aggregation
                         averageMonthlyExpenses = ac.Average(u => u.MonthlyExpenses),
                         total = ac.Sum(u => 1)
                     })
-                .SortByDescending(group => group.averageMonthlyExpenses);
+                .Project(group => new 
+                {
+                    Gender = group.gender == 0 ? "Male" : "Female",
+                    AverageMonthlyExpenses = group.averageMonthlyExpenses,
+                    Total = group.total
+                })
+                .SortByDescending(group => group.AverageMonthlyExpenses);
 
             var excercice1Result = await excercice1Aggregate.ToListAsync();
 
             Utils.Log("Grouped by gender with average monthly expenses");
-            foreach (var group in excercice1Result)
+            
+            
+            var linqQuery = collection.AsQueryable()
+                .Where(u => u.Salary > 1500 && u.Salary < 3000)
+                .GroupBy(u => u.Gender)
+                .Select(ac => new
+                {
+                    gender = ac.Key,
+                    averageMonthlyExpenses = Math.Ceiling(ac.Average(u => u.MonthlyExpenses)),
+                    total = ac.Sum(u => 1)
+                })
+                .OrderBy(group => group.total);
+
+            var excercice1LinqResult = linqQuery.ToList();
+
+            foreach (var group in excercice1LinqResult)
             {
                 Utils.Log($"{group.gender}: total - {group.total}, average monthly expenses - {group.averageMonthlyExpenses}");
             }
@@ -115,10 +137,6 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
             #endregion
 
-            #region BsonDocument commands
-
-
-            #endregion
 
             #region Shell commands
 
