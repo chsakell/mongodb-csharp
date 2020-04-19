@@ -162,6 +162,20 @@ db.travelers.aggregate([
 }
 ```
 {% endtab %}
+
+{% tab title="Traveler" %}
+```csharp
+public class Traveler
+{
+    [BsonId]
+    public ObjectId Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public List<string> Activities { get; set; }
+    public List<VisitedCountry> VisitedCountries { get; set; }
+}
+```
+{% endtab %}
 {% endtabs %}
 
 {% hint style="info" %}

@@ -1,2 +1,6 @@
+---
+description: Skip - Limit
+---
+
 # ⏩ Pagination
 
