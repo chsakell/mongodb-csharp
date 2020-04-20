@@ -306,5 +306,3 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-## _Not Equal_ operator - _$ne_
-
