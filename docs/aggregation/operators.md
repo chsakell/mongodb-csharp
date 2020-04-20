@@ -180,7 +180,7 @@ public class Traveler
 
 ### Pagination
 
-Slice can be combined with the Skip method and provide full pagination functionality. The following sample skips the first 2 _VisitedCountries_ array elements and returns the next 3.
+_Slice_ can be combined with the _Skip_ method and provide full pagination functionality. The following sample skips the first 2 _VisitedCountries_ array elements and returns the next 3.
 
 {% tabs %}
 {% tab title="C\#" %}
