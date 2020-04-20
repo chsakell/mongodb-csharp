@@ -4,7 +4,13 @@
 
 The _$set_ operator is used to update the value of a specified field. 
 
-> **Syntax**: `Builders<T<.Update.Set(doc => doc.<field>, <value>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T<.Update.Set(doc => doc.<field>, <value>)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample updates the _FirstName_ field of the first document in the collection.
 
@@ -183,7 +189,9 @@ public class User
 
 The _$inc_ operator is used to update the value of a specified field. 
 
-> **Syntax**: `Builders<T<.Update.Inc(doc => doc.<field>, <value>)`
+```csharp
+Builders<T<.Update.Inc(doc => doc.<field>, <value>)
+```
 
 The sample increments the first document's salary.
 
@@ -270,7 +278,14 @@ public class User
 
 The _$min_ operator is used to update the value of a specified field **only if the new value is less than** the current value.
 
-> **Syntax**: `Builders<T<.Update.Min(doc => doc.<field>, <value>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T<.Update
+    .Min(doc => doc.<field>, <value>)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample decreases the first document's _salary_ value from 3000 to 2000 💰 .
 
@@ -379,7 +394,14 @@ Of course if the new value is equal to the current one, the update result will r
 
 The _$max_ operator is used to update the value of a specified field **only if the new value is greater than** the current value.
 
-> **Syntax**: `Builders<T<.Update.Max(doc => doc.<field>, <value>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T<.Update
+    .Max(doc => doc.<field>, <value>)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample increases the first document's _salary_ value from 3000 to 3500 💰 .
 
@@ -476,7 +498,13 @@ public class User
 
 The _$mul_ operator is used to multiply the current value of a specified field by a specified value.
 
-> **Syntax**: `Builders<T<.Update.Mul(doc => doc.<field>, <value>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T<.Update.Mul(doc => doc.<field>, <value>)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample double the first document's _salary_ value from 1000 to 2000 using the $mul operator 💰 .
 
@@ -570,7 +598,13 @@ public class User
 
 The _$unset_ operator is used to remove a field from a document.
 
-> **Syntax**: `Builders<T<.Update.Unset(doc => doc.<field>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T<.Update.Unset(doc => doc.<field>)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample removes ❌ the _Website_ field from a user document.
 
@@ -676,7 +710,14 @@ var firstUser = await collection.Find(firstUserFilter)
 
 The _$rename_ operator is used to rename a field. 
 
-> **Syntax**: `Builders<T<.Update.Rename(doc => doc.<field>, <new-name>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T<.Update
+    .Rename(doc => doc.<field>, <new-name>)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample updates the _Phone_ field of the first document to _PhoneNumber_ using the _$rename_ operator.
 

@@ -4,7 +4,14 @@
 
 You can replace a single document entirely by using the `ReplaceOne` method on an `IMongoCollection<T>`.
 
-> **Syntax**: `IMongoCollection<T<.ReplaceOne(<filter>, <new-doc>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+IMongoCollection<T>
+    .ReplaceOne(FilterDefinition<T> filter, T document)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample replaces the first document with a new one.
 
@@ -134,7 +141,16 @@ The identifier field **\_**_**id**_  on the new document must fulfill one of the
 
 If the filter in the `ReplaceOne` operation fails to match a document then nothing happens in the database. You can change this behavior by passing a _replace options_ argument to the replace operation and setting `upsert = true`. 
 
-> **Syntax**: `IMongoCollection<T<.ReplaceOne(<filter>, <new-doc>, <options>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+IMongoCollection<T>
+    .ReplaceOne(FilterDefinition<T> filter, 
+                T document, 
+                ReplaceOptions options)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample tries to replace a user document that has company name "_Microsoft Corp_". If it finds a match  then it will replace it with the _microsoftCeo_ document but if it doesn't, it will insert it.
 
@@ -288,7 +304,16 @@ When no match found, the update result will be the following:
 
 `IMongoCollection<T>` contains a `FindOneAndReplaceOne` __method that behaves exactly the same as the `ReplaceOne` except that the returned result is of type `T` instead of a `ReplaceOneResult`, in other words it returns the updated or _upserted_ document itself. This can be quite convenient when you want to keep working with the new document after replacing it. 
 
-> **Syntax**: `IMongoCollection<T<.FindOneReplaceOne(<filter>, <new-doc>, <options>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+IMongoCollection<T>
+    .FindOneReplaceOne(FilterDefinition<T> filter, 
+                T document, 
+                FindOneAndReplaceOptions options)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample replaces the first document with a new one and gets back the entire document.
 
