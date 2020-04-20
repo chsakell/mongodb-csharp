@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace MongoDb.Csharp.Samples.Models
 {
-public class Traveler
+    public class Traveler
     {
         [BsonId]
         public ObjectId Id { get; set; }

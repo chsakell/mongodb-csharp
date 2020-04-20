@@ -6,11 +6,11 @@ using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
-namespace MongoDb.Csharp.Samples.Expressions
+namespace MongoDb.Csharp.Samples.Aggregation.Operators
 {
     public class Filter : RunnableSample, IRunnableSample
     {
-        public override Core.Samples Sample => Core.Samples.Expressions_Filter;
+        public override Core.Samples Sample => Core.Samples.Aggregation_Operators_Filter;
         protected override void Init()
         {
             // Create a mongodb client
@@ -105,28 +105,28 @@ namespace MongoDb.Csharp.Samples.Expressions
 
             #region Shell commands
 
-#if false
-                 db.travelers.aggregate([
-                   {
-                      "$project":{
-                         "name":"$name",
-                         "visitedCountries":{
-                            "$filter":{
-                               "input":"$visitedCountries",
-                               "as":"c",
-                               "cond":{
-                                  "$eq":[
-                                     "$$c.timesVisited",
-                                     1
-                                  ]
-                               }
-                            }
-                         },
-                         "_id":0
-                      }
-                   }
-                ])
-#endif
+        #if false
+         db.travelers.aggregate([
+           {
+              "$project":{
+                 "name":"$name",
+                 "visitedCountries":{
+                    "$filter":{
+                       "input":"$visitedCountries",
+                       "as":"c",
+                       "cond":{
+                          "$eq":[
+                             "$$c.timesVisited",
+                             1
+                          ]
+                       }
+                    }
+                 },
+                 "_id":0
+              }
+           }
+        ])
+        #endif
 
             #endregion
 

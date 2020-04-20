@@ -10,7 +10,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
 {
     public class DeleteDocuments : RunnableSample, IRunnableSample
     {
-        public override Core.Samples Sample => Core.Samples.QuickStart_DeleteDocuments;
+        public override Core.Samples Sample => Core.Samples.Crud_Delete_DeletingDocuments;
         protected override void Init()
         {
             // Create a mongodb client

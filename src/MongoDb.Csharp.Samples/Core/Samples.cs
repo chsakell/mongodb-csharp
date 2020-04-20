@@ -10,7 +10,6 @@ namespace MongoDb.Csharp.Samples.Core
         QuickStart_InsertDocuments,
         QuickStart_ReadDocuments,
         QuickStart_UpdateDocuments,
-        QuickStart_DeleteDocuments,
 
         #endregion
 
@@ -30,6 +29,8 @@ namespace MongoDb.Csharp.Samples.Core
         Crud_Update_BasicOperators,
         Crud_Update_ReplaceDocuments,
         Crud_Update_UpdatingArrays,
+
+        Crud_Delete_DeletingDocuments,
         #endregion
 
         #region Aggregation
@@ -39,16 +40,16 @@ namespace MongoDb.Csharp.Samples.Core
         Aggregation_Stages_Unwind,
         Aggregation_Stages_Bucket,
         Aggregation_Stages_Limit_Skip,
-        #endregion
 
-        #region Expressions
-        Expressions_Slice,
-        Expressions_Filter,
+        Aggregation_Operators_Filter,
+        Aggregation_Operators_Slice,
         #endregion
 
         #region Security
+
         Security_Users,
         Security_Roles
+
         #endregion
     }
 }

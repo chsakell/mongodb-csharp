@@ -6,11 +6,11 @@ using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
-namespace MongoDb.Csharp.Samples.Expressions
+namespace MongoDb.Csharp.Samples.Aggregation.Operators
 {
     public class Slice : RunnableSample, IRunnableSample
     {
-        public override Core.Samples Sample => Core.Samples.Expressions_Slice;
+        public override Core.Samples Sample => Core.Samples.Aggregation_Operators_Slice;
         protected override void Init()
         {
             // Create a mongodb client
@@ -38,18 +38,18 @@ namespace MongoDb.Csharp.Samples.Expressions
 
             #region Linq
 
-            // $slice with Distinct
+            // $slice
 
             var sliceQuery = from t in travelersQueryableCollection
-                select new {t.Name, visitedCountries = t.VisitedCountries.Take(1)};
-            
+                             select new { t.Name, visitedCountries = t.VisitedCountries.Take(1) };
+
             var sliceQueryResults = await sliceQuery.ToListAsync();
 
             foreach (var result in sliceQueryResults)
             {
                 Utils.Log($"Age: {result.Name} - countries: {string.Join(',', result.visitedCountries.FirstOrDefault()?.Name)}");
             }
-            
+
             var sliceProjection = Builders<Traveler>.Projection.Expression(u =>
                 new
                 {
@@ -64,9 +64,16 @@ namespace MongoDb.Csharp.Samples.Expressions
 
             // retrieve the last two visited countries
             var sliceQueryTwoLastCountries = from t in travelersQueryableCollection
-                select new { t.Name, visitedCountries = t.VisitedCountries.Take(-2) };
+                                             select new { t.Name, visitedCountries = t.VisitedCountries.Take(-2) };
 
             var sliceQueryTwoLastCountriesResults = await sliceQueryTwoLastCountries.ToListAsync();
+
+            // slice with skip
+
+            var sliceWithSkipQuery = from t in travelersQueryableCollection
+                select new { t.Name, visitedCountries = t.VisitedCountries.Skip(2).Take(3) };
+
+            var sliceWithSkipQueryResults = await sliceQuery.ToListAsync();
 
             #endregion
 
@@ -94,7 +101,7 @@ namespace MongoDb.Csharp.Samples.Expressions
 
             foreach (var result in bsonSlicePipelineResults)
             {
-                
+
             }
 
             #endregion
@@ -103,13 +110,30 @@ namespace MongoDb.Csharp.Samples.Expressions
             #region Shell commands
 
 #if false
-               db.travelers.aggregate()
-               .project({ name: 1, visitedCountries : { $slice: ["$visitedCountries", 1] } })
-               .pretty()
+                db.travelers.aggregate()
+                .project({ name: 1, visitedCountries : { $slice: ["$visitedCountries", 1] } })
+                .pretty()
 
                db.travelers.aggregate()
                .project({ name: 1, visitedCountries : { $slice: ["$visitedCountries", -2] } })
                .pretty()
+
+            db.travelers.aggregate([
+               {
+                  "$project":{
+                     "Name":"$name",
+                     "visitedCountries":{
+                        "$slice":[
+                           "$visitedCountries",
+                           2,
+                           3
+                        ]
+                     },
+                     "_id":0
+                  }
+               }
+            ])
+
 #endif
 
             #endregion
