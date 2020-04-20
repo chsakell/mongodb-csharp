@@ -219,6 +219,18 @@ db.users.aggregate([
       }
    }
 ])
+
+// alternative using the $slice operator
+db.users.aggregate([
+    { "$match" : { _id: ObjectId("5e9d578781f29c3b1c22d733") } },
+    { "$unwind" : "$favoriteSports" },
+    { "$sort" : { favoriteSports: 1 } },
+    { "$group": { _id: '$_id', 'favoriteSports': 
+       {$push: '$favoriteSports'} } },
+    { "$project" : { _id: 0, sports: { 
+       $slice: ["$favoriteSports", 3, 3] } } }
+])
+
 ```
 {% endtab %}
 
