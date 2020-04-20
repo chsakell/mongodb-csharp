@@ -4,7 +4,13 @@
 
 To search for a document in MongoDB you use the `Find` method on a `IMongoCollection<T>` reference. `Find` method accepts a `FilterDefinition<T>` parameter where `T` is the collection's type. 
 
-> **Syntax**: `IMongoCollection<T>.Find(<filter-definition>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+IMongoCollection<T>.Find(FilterDefinition<T> filter)
+```
+{% endtab %}
+{% endtabs %}
 
 Filters can be created using the `Builders<T>.Filter` definition builder which contain multiple filters. The following example finds a user document based on its Id. It does this using the **equality filter** `Eq<T>` on the id field.
 

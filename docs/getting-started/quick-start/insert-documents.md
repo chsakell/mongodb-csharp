@@ -4,7 +4,13 @@
 
 You can insert a document using the `InsertOne` method on a `IMongoCollection<T>` reference. 
 
-> **Syntax**: `IMongoCollection<T>.InsertOne(<document>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+IMongoCollection<T>.InsertOne(<document>)
+```
+{% endtab %}
+{% endtabs %}
 
 Depending on the collection type you can pass either your own class type or a `BsonDocument`. You can build the `BsonDocument` either manually or using the `BsonDocument.Parse` method.
 
@@ -185,7 +191,13 @@ await personsBsonCollection
 
 To add multiple documents at once, you can use the `InsertMany` collection method.
 
-> **Syntax**: `IMongoCollection<T>.InsertMany(<document-array>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+IMongoCollection<T>.InsertMany(IEnumerable<T> documents)
+```
+{% endtab %}
+{% endtabs %}
 
 {% tabs %}
 {% tab title="C\#" %}

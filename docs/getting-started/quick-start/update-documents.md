@@ -9,7 +9,15 @@ To update a document in MongoDB you need to configure 2 basic things:
 
 After configuring the above two, you use the `UpdateOne` method on an `IMongoCollection<T>` reference.
 
-> **Syntax**: `IMongoCollection<T>.UpdateOne(<filter>, <update-definition>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+IMongoCollection<T>
+    .UpdateOne(FilterDefinition<T> filter, 
+                UpdateDefinition<T> update)
+```
+{% endtab %}
+{% endtabs %}
 
 The following example updates the phone number of a user's document filter by its _id_.
 
@@ -140,7 +148,15 @@ Remember that if the document already has the same value that you want to update
 
 To update many documents at once, follow the same process but this time use the `UpdateMany` method.
 
-> **Syntax**: `IMongoCollection<T>.UpdateMany(<filter>,<update-definition>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+IMongoCollection<T>
+    .UpdateMany(FilterDefinition<T> filter, 
+                UpdateDefinition<T> update)
+```
+{% endtab %}
+{% endtabs %}
 
 The following example filters user documents having _salary_ greater than 1200 and less than 3500 and set the _salary_ value to 4000.
 
