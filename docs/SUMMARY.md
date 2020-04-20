@@ -12,7 +12,6 @@
   * [Insert documents](getting-started/quick-start/insert-documents.md)
   * [Read documents](getting-started/quick-start/read-documents.md)
   * [Update documents](getting-started/quick-start/update-documents.md)
-  * [Delete documents](getting-started/quick-start/delete-documents.md)
 
 ## 📑 CRUD Basics
 
@@ -29,7 +28,7 @@
   * [Operators](update-documents/operators.md)
   * [Replace documents](update-documents/replace-documents.md)
   * [Arrays](update-documents/update-arrays.md)
-* [➖ Delete](delete-documents.md)
+* [❌ Delete](delete-documents.md)
 
 ## 🧪 Aggregation
 

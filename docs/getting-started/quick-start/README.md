@@ -14,7 +14,6 @@ If the answer is yes then you are on the right page. Quick start section can hel
 4. Insert one or many documents at once in a collection
 5. Search for and read documents from a collection
 6. Update one or more documents in a collection
-7. Delete one or more document in a collection
 
 {% hint style="success" %}
 Quick start is recommended for those who have never used the `MongoDB .NET` driver
