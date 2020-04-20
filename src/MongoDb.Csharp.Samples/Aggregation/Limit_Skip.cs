@@ -72,8 +72,6 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
             #endregion
 
-
-
             #endregion
 
             #region BsonDocument commands
@@ -94,20 +92,19 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
             #region Shell commands
 
-#if false
+            #if false
             db.users.aggregate([
                 { "$project" : { _id: 0, userName: 1, dateOfBirth: 1 } },
                 { "$sort" : { dateOfBirth: 1 } },
                 { "$skip":  3 },
                 { "$limit": 3 }
             ])
-#endif
+            #endif
 
             #endregion
 
             #region Tips
 
-            // 1. Remember to use Slice to paginate in an embedded document array field
             // Let's paginate in the favoriteSports array field
             var user = await usersCollection.Find(u => u.FavoriteSports.Count > 10).FirstOrDefaultAsync();
             Utils.Log(user.Id.ToString());
@@ -123,7 +120,6 @@ namespace MongoDb.Csharp.Samples.Aggregation
                 .Skip(skipSize)
                 .Take(limitSize)
                 .GroupBy(q => q.id)
-                // this will create a slice
                 .Select(g => new
                 {
                     id = g.Key,

@@ -31,7 +31,7 @@ namespace MongoDb.Csharp.Samples.Aggregation
             var travelersBsonCollection = tripsDatabase.GetCollection<BsonDocument>(travelersCollectionName);
             #region Prepare data
 
-            await travelersCollection.InsertManyAsync(RandomData.GenerateTravelers(10, 5));
+            await travelersCollection.InsertManyAsync(RandomData.GenerateTravelers(40, 5));
 
             #endregion
 
@@ -41,16 +41,19 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
             var bucket = aggregate.Bucket(
                 t => t.Age,
-                new[] { 20, 40, 60, 80 },
+                new[] { 20, 32, 45, 60, 80 },
                 g => new
                 {
                     _id = default(int),
                     averageAge = g.Average(e => e.Age),
                     totalTravelers = g.Count()
-
                 });
 
             var bucketResults = await bucket.ToListAsync();
+
+            var autoBucket = aggregate.BucketAuto(t => t.Age, 4);
+
+            var autoBucketResults = await autoBucket.ToListAsync();
 
             #endregion
 
@@ -67,15 +70,14 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
             #endregion
 
-
             #region Shell commands
 
-#if false
+            #if false
             db.travelers.aggregate([
                {
                   "$bucket":{
                      "groupBy":"$age",
-                     "boundaries":[20,40,60,80],
+                     "boundaries":[20,32, 45,60,80],
                      "output":{
                         "averageAge":{
                            "$avg":"$age"
@@ -87,7 +89,7 @@ namespace MongoDb.Csharp.Samples.Aggregation
                   }
                }
             ])
-#endif
+            #endif
 
             #endregion
 
