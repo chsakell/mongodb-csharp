@@ -68,6 +68,7 @@ db.travelers.aggregate()
 
 {% tab title="Traveler" %}
 ```csharp
+public class Traveler
 {
     [BsonId]
     public ObjectId Id { get; set; }
@@ -164,6 +165,7 @@ db.travelers
 
 {% tab title="Traveler" %}
 ```csharp
+public class Traveler
 {
     [BsonId]
     public ObjectId Id { get; set; }
@@ -178,106 +180,87 @@ db.travelers
 
 ## _Filter_ operator - _$filter_
 
-The _equal operator_ is used to match documents having a field value equal to a specific value. You can use it for both top level and embedded documents.
+The $_filter_ operator is used to match and return array elements that fulfill the specified condition. The Enumerable.Where method can be used to create the condition.
 
-{% tabs %}
-{% tab title="Syntax" %}
-```csharp
-Builders<T>.Filter.Eq(doc => doc.<field>, <value>)
-```
-{% endtab %}
-{% endtabs %}
-
-The sample uses an _equal_ operator to find all documents that have the _profession_ field _\(top level field\)_ equal to "_Pilot_".
+The sample returns `Traveler` documents with their _VisitedCountries_ array field containing only the countries that have been visited once.
 
 {% tabs %}
 {% tab title="C\#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var travelersQueryableCollection = tripsDatabase
+    .GetCollection<Traveler>(travelersCollectionName)
+    .AsQueryable();
 
-// Case sensitive!
-var equalPilotsFilter = Builders<User>.Filter
-    .Eq(u => u.Profession, "Pilot");
+var filterQuery = 
+    from t in travelersQueryableCollection
+    select new
+      {
+         t.Name,
+         visitedCountries = t.VisitedCountries
+             .Where(c => c.TimesVisited == 1)
+      };
 
-var pilots = await collection
-    .Find(equalPilotsFilter).ToListAsync();
+var filterQueryResults = await filterQuery.ToListAsync();
 ```
 {% endcode %}
 {% endtab %}
 
-{% tab title="Bson" %}
-```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
-
-// Case sensitive matters!  
-var bsonEqualPilotsFilter = Builders<BsonDocument>.Filter
-    .Eq("profession", "Pilot");
-    
-var bsonPilots = await bsonCollection
-    .Find(bsonEqualPilotsFilter).ToListAsync();
-```
-{% endtab %}
-
 {% tab title="Shell" %}
 ```javascript
-db.users.find({profession: { $eq: "Pilot"}})
-// or..
-db.users.find({profession: "Pilot"})
+db.travelers.aggregate([
+   {
+      "$project":{
+         "name":"$name",
+         "visitedCountries":{
+            "$filter":{
+               "input":"$visitedCountries",
+               "as":"c",
+               "cond":{
+                  "$eq":[
+                     "$$c.timesVisited",
+                     1
+                  ]
+               }
+            }
+         },
+         "_id":0
+      }
+   }
+])
 
---------------------
+------------------------------
 
-// sample matched document
+// sample result
+
+/* 1 */
 {
-	"_id" : ObjectId("5e91e3ba3c1ba62570a67b97"),
-	"gender" : 0,
-	"firstName" : "Gilbert",
-	"lastName" : "Beer",
-	"userName" : "Gilbert43",
-	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/lingeswaran/128.jpg",
-	"email" : "Gilbert_Beer@yahoo.com",
-	"dateOfBirth" : ISODate("1950-06-07T20:53:27.758+02:00"),
-	"address" : {
-		"street" : "3952 Felicita Garden",
-		"suite" : "Suite 048",
-		"city" : "North Pasqualefort",
-		"state" : "Kansas",
-		"zipCode" : "56191",
-		"geo" : {
-			"lat" : -0.8177,
-			"lng" : -154.6886
+	"name" : "Emmitt Wuckert",
+	"visitedCountries" : [
+		{
+			"name" : "Djibouti",
+			"timesVisited" : 1, // matched
+			"lastDateVisited" : ISODate("2019-03-10T04:36:32.678+02:00"),
+			"coordinates" : {
+				"latitude" : -45.7154,
+				"longitude" : 60.261
+			}
+		},
+		{
+			"name" : "Greece",
+			"timesVisited" : 1, // matched
+			"lastDateVisited" : ISODate("2019-05-30T15:26:04.146+03:00"),
+			"coordinates" : {
+				"latitude" : 23.1572,
+				"longitude" : 36.6096
+			}
 		}
-	},
-	"phone" : "(973) 473-1826 x2746",
-	"website" : "virgie.net",
-	"company" : {
-		"name" : "Quigley, Mitchell and McGlynn",
-		"catchPhrase" : "Multi-layered holistic moratorium",
-		"bs" : "enable front-end markets"
-	},
-	"salary" : 3028,
-	"monthlyExpenses" : 3080,
-	"favoriteSports" : [
-		"Cycling",
-		"MMA",
-		"Boxing",
-		"Handball",
-		"Snooker",
-		"American Football",
-		"Volleyball",
-		"Water Polo",
-		"Beach Volleyball",
-		"Ice Hockey",
-		"Motor Sport",
-		"Tennis",
-		"Formula 1"
-	],
-	"profession" : "Pilot" // matched here
+	]
 }
 ```
 {% endtab %}
 
-{% tab title="User" %}
+{% tab title="Traveler" %}
 ```csharp
 public class User
 {
