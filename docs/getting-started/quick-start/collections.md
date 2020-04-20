@@ -4,7 +4,13 @@
 
 In order to read/write data from/to a database collection, first you need to get a reference to that collection. The collection doesn't have to exist already and if it doesn't, it will be created automatically the very first time you run a read or write operation. Use the `GetCollection<T>` method on an `IMongoDatabase` reference to get a collection reference.
 
-> **Syntax**: `IMongoDatabase.GetCollection<T>(<collection-name>)`
+{% tabs %}
+{% tab title="Synxtax" %}
+```csharp
+IMongoDatabase.GetCollection<T>(string collection)
+```
+{% endtab %}
+{% endtabs %}
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -122,7 +128,13 @@ Using a `IMongoCollection<BsonDocument>`collection reference,  you can build pre
 
 You can create a collection using the `CreateCollection` method on a `IMongoDatabase` reference.
 
-> **Syntax**: `IMongoDatabase.CreateCollection(<collection-name>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+IMongoDatabase.CreateCollection(string collection)
+```
+{% endtab %}
+{% endtabs %}
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -207,7 +219,13 @@ db.createCollection("myCollection", {
 
 You can get all available collections in a database by using the `ListCollections` method on an `IMongoDatabase` reference.
 
-> **Syntax**: `IMongoDatabase.ListCollections()`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+IMongoDatabase.ListCollections()
+```
+{% endtab %}
+{% endtabs %}
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -249,7 +267,9 @@ var collections = (await usersDatabase
 
 Delete a collection using the `DropCollection` method. The collection along with its data will be entirely removed.
 
-> **Syntax**: `IMongoDatabase.DropCollection(<collection-name>)`
+```csharp
+IMongoDatabase.DropCollection(string collection)
+```
 
 ```csharp
 var loginsCollectionName = "logins";
