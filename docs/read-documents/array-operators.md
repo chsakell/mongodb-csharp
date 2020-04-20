@@ -183,7 +183,14 @@ db.travelers
 
 The _$elemMatch_ operator is used to match elements inside array fields based on one or more criteria.
 
-> **Syntax**: `Builders<T>.Filter.ElemMatch(doc => doc.<array-field>,<expressions>[])`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter
+    .ElemMatch(doc => doc.<array-field>,<expressions>[])
+```
+{% endtab %}
+{% endtabs %}
 
 The sample filters `Traveler` documents that their _VisitedCountries_ array field contain a `VisitedCountry` element with name _Greece_ and _TimesVisited = 3_. 
 
@@ -556,7 +563,14 @@ public class Traveler
 
 The _$all_ operator is applied on array fields and matches documents when the array field **contains all** the items specified. You use the _All_ operator when you want to ensure that an array contains _\(or doesn't\)_ a list of values.
 
-> **Syntax**: `Builders<T>.Filter.All(doc => doc.<array-field>,<values>[])`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter
+    .All(doc => doc.<array-field>,<values>[])
+```
+{% endtab %}
+{% endtabs %}
 
 The sample finds all `Traveler` documents having _"Backpacking"_ and _"Climbing"_ values on their _Activities_ list. _Activities_ is an array of string values.
 

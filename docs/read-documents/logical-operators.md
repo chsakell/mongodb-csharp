@@ -21,7 +21,13 @@ Logical operators allow you to match documents based on the **boolean result** â
 
 The AND _operator_ performs a logical AND on a set of expressions and match documents that satisfy all of them. 
 
-> **Syntax**: `Builders<T>.Filter.And(FilterDefinition<T>[] filters)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter.And(FilterDefinition<T>[] filters)
+```
+{% endtab %}
+{% endtabs %}
 
 The idea is that you create as many **filter definitions** you want and pass them as an argument to the `And` `FilterDefinitionBuilder` method. 
 
@@ -324,7 +330,13 @@ The inner filter definitions passed as arguments in the **`And`** method can be 
 
 The NOT _operator_ performs a logical NOT on an expression and match documents that **don't satisfy** the expression. 
 
-> **Syntax**: `Builders<T>.Filter.Not(FilterDefinition<T> filter)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter.Not(FilterDefinition<T> filter)
+```
+{% endtab %}
+{% endtabs %}
 
 The idea is that you create a **filter definition** and pass it as an argument to the `Not` `FilterDefinitionBuilder` method. The boolean expression's result for the matched documents will be **false**, meaning that they don't satisfy the expression.
 
@@ -448,7 +460,13 @@ public class User
 
 The _OR_ operator performs a logical OR on an **set of expressions** and match documents that **satisfy** at least on of the expressions. 
 
-> **Syntax**: `Builders<T>.Filter.Or(FilterDefinition<T>[] filters)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter.Or(FilterDefinition<T>[] filters)
+```
+{% endtab %}
+{% endtabs %}
 
 The idea is that you create as many **filter definitions** you want and pass them as an argument to the `Or` `FilterDefinitionBuilder` method. The filters passed as parameters can be as complex as you want.
 

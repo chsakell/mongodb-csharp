@@ -17,7 +17,14 @@ MongoDB providers two element query operators that helps you find documents base
 
 The _$exists_ operator matches the documents that contain the field, even its value is _null_. 
 
-> **Syntax**: `Builders<T>.Filter.Exists(doc => doc.<field>, <true || false>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter
+    .Exists(doc => doc.<field>, <true || false>)
+```
+{% endtab %}
+{% endtabs %}
 
 The filter definition being created with the `Exists`method on a specific field, matches the documents which contain the field event if its value is _null_.
 
@@ -118,7 +125,13 @@ On the contrary, if you omit this attribute and try to insert a document with nu
 
 The _Type_ _operator_ matches documents where the field's value is an instance of a [BSON](https://docs.mongodb.com/manual/reference/glossary/#term-bson) [type](https://docs.mongodb.com/manual/reference/bson-types/).
 
-> **Syntax**: `Builders<T>.Filter.Type(doc => doc.<field>, BsonType)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter.Type(doc => doc.<field>, BsonType type)
+```
+{% endtab %}
+{% endtabs %}
 
 Use this operator when you need to ensure that a document's field has \(or hasn't\) been assigned with a specific value type.
 

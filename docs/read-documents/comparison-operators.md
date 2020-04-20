@@ -21,7 +21,13 @@ Comparison operators are probably the most used operators when querying any type
 
 The _equal operator_ is used to match documents having a field value equal to a specific value. You can use it for both top level and embedded documents.
 
-> **Syntax**: `Builders<T>.Filter.Eq(doc => doc.<field>, <value>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter.Eq(doc => doc.<field>, <value>)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample uses an _equal_ operator to find all documents that have the _profession_ field _\(top level field\)_ equal to "_Pilot_".
 
@@ -145,7 +151,9 @@ public class User
 
 When you want to match all document that certain field\(s\) values **are not equal** to a specific value then you use the `Not Equal` operator. 
 
-> **Syntax**: `Builders<T>.Filter.Ne(doc => doc.<field>, <value>)`
+```csharp
+Builders<T>.Filter.Ne(doc => doc.<field>, <value>)
+```
 
 The sample uses a _not equal_ operator to match all documents that their _profession_ field is other than "_Doctor_".
 
@@ -264,7 +272,13 @@ public class User
 
 The _greater than_ operator is used to find all documents that the field value is **greater than** a specific value.
 
-> **Syntax**: `Builders<T>.Filter.Gt(doc => doc.<field>, <value>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter.Gt(doc => doc.<field>, <value>)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample finds all user documents having their _salary_ field **greater than** 3500.
 
@@ -386,7 +400,13 @@ public class User
 
 The _greater than or equal_ operator is used to find all documents that the field value is **greater than or equal** a specific value.
 
-> **Syntax**: `Builders<T>.Filter.Gte(doc => doc.<field>, <value>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter.Gte(doc => doc.<field>, <value>)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample finds all user documents having their _salary_ field **greater than or equal** to 4500.
 
@@ -510,7 +530,13 @@ public class User
 
 The _less than_ operator is used to find all documents that the field value is **less than** a specific value.
 
-> **Syntax**: `Builders<T>.Filter.Lt(doc => doc.<field>, <value>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter.Lt(doc => doc.<field>, <value>)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample finds all user documents having their _salary_ field **less than** 2500.
 
@@ -623,7 +649,13 @@ public class User
 
 The _less than or equal_ operator is used to find all documents that the field value is **less than or equal** a specific value.
 
-> **Syntax**: `Builders<T>.Filter.Lte(doc => doc.<field>, <value>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter.Lte(doc => doc.<field>, <value>)
+```
+{% endtab %}
+{% endtabs %}
 
 The sample finds all user documents having their _salary_ field **less than or equal** to 1500.
 
@@ -741,7 +773,14 @@ public class User
 
 The _In_ operator finds documents having a field value **contained** in a specified array of values.
 
-> **Syntax**: `Builders<T>.Filter.In(doc => doc.<field>, [<value1>,<value2>,..<valueN>])`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter.In(doc => doc.<field>, 
+    [<value1>,<value2>,..<valueN>])
+```
+{% endtab %}
+{% endtabs %}
 
 The sample finds all user documents where their _profession_ field value is either  "_Dentist_",  "_Pharmacist_", or "_Nurse_" 🏥 . This means that all documents matched will have _profession_ value one of the above.
 
@@ -853,7 +892,14 @@ public class User
 
 The _Not In_ operator finds documents having a field value **not contained** in a specified array of values.
 
-> **Syntax**: `Builders<T>.Filter.Nin(doc => doc.<field>, [<value1>,<value2>,..<valueN>])`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<T>.Filter.Nin(doc => doc.<field>, 
+    [<value1>,<value2>,..<valueN>])
+```
+{% endtab %}
+{% endtabs %}
 
 The sample finds all user documents where their _profession_ field value is **different than**  "_Dentist_",  "_Pharmacist_", or "_Nurse_" 🏥 . This means that all documents matched **will not** have _profession_ value one of the above.
 
