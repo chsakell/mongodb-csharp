@@ -39,7 +39,5 @@
 * [🚩 Unwind](aggregation/unwind-stage.md)
 * [⏩ Pagination](aggregation/limit-skip-pagination.md)
 * [📈 Bucket](aggregation/bucket-stage.md)
-* [⭐ Expressions](expressions/README.md)
-  * [Filter](expressions/filter.md)
-  * [Slice](expressions/slice.md)
+* [✨ Operators](aggregation/operators.md)
 
