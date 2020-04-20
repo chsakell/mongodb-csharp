@@ -178,6 +178,98 @@ public class Traveler
 {% endtab %}
 {% endtabs %}
 
+### Pagination
+
+Slice can be combined with the Skip method and provide full pagination functionality. The following sample skips the first 2 _VisitedCountries_ array elements and returns the next 3.
+
+{% tabs %}
+{% tab title="C\#" %}
+```csharp
+var travelersQueryableCollection = tripsDatabase
+    .GetCollection<Traveler>(travelersCollectionName)
+    .AsQueryable();
+    
+var sliceWithSkipQuery = 
+    from t in travelersQueryableCollection
+    select new { 
+        t.Name, 
+        visitedCountries = t.VisitedCountries
+                            .Skip(2).Take(3) };
+
+var sliceWithSkipQueryResults = 
+    await sliceQuery.ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.travelers.aggregate([
+   {
+      "$project":{
+         "Name":"$name",
+         "visitedCountries":{
+            "$slice":[
+               "$visitedCountries", 2, 3
+            ]
+         },
+         "_id":0
+      }
+   }
+])
+
+-----------------------------
+// sample result
+
+{
+	"Name" : "Kristofer Gutkowski",
+	"visitedCountries" : [
+		{ // 3rd
+			"name" : "Austria",
+			"timesVisited" : 1,
+			"lastDateVisited" : ISODate("2016-05-22T17:30:10.643+03:00"),
+			"coordinates" : {
+				"latitude" : -25.3767,
+				"longitude" : -114.1358
+			}
+		},
+		{ // 4th
+			"name" : "Tokelau",
+			"timesVisited" : 5,
+			"lastDateVisited" : ISODate("2019-02-15T16:33:06.861+02:00"),
+			"coordinates" : {
+				"latitude" : -83.42,
+				"longitude" : 65.0535
+			}
+		},
+		{ // 5th
+			"name" : "Libyan Arab Jamahiriya",
+			"timesVisited" : 2,
+			"lastDateVisited" : ISODate("2015-08-31T14:34:19.979+03:00"),
+			"coordinates" : {
+				"latitude" : -65.3698,
+				"longitude" : -93.8438
+			}
+		}
+	]
+}
+```
+{% endtab %}
+
+{% tab title="Traveler" %}
+```csharp
+public class Traveler
+{
+    [BsonId]
+    public ObjectId Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public List<string> Activities { get; set; }
+    public List<VisitedCountry> VisitedCountries { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
 ## _Filter_ operator - _$filter_
 
 The $_filter_ operator is used to match and return array elements that fulfill the specified condition. The Enumerable.Where method can be used to create the condition.
@@ -195,11 +287,11 @@ var travelersQueryableCollection = tripsDatabase
 var filterQuery = 
     from t in travelersQueryableCollection
     select new
-      {
+    {
          t.Name,
          visitedCountries = t.VisitedCountries
-             .Where(c => c.TimesVisited == 1)
-      };
+                 .Where(c => c.TimesVisited == 1)
+    };
 
 var filterQueryResults = await filterQuery.ToListAsync();
 ```
@@ -262,28 +354,14 @@ db.travelers.aggregate([
 
 {% tab title="Traveler" %}
 ```csharp
-public class User
+public class Traveler
 {
     [BsonId]
-    [BsonIgnoreIfDefault] // required for replace documents 
     public ObjectId Id { get; set; }
-    public Gender Gender { get; set; }
-    public string FirstName {get; set; }
-    public string LastName {get; set; }
-    public string UserName {get; set; }
-    public string Avatar {get; set; }
-    public string Email {get; set; }
-    public DateTime DateOfBirth {get; set; }
-    public AddressCard Address {get; set; }
-    public string Phone {get; set; }
-    
-    [BsonIgnoreIfDefault]
-    public string Website {get; set; }
-    public CompanyCard Company {get; set; }
-    public decimal Salary { get; set; }
-    public int MonthlyExpenses { get; set; }
-    public List<string> FavoriteSports { get; set; }
-    public string Profession { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public List<string> Activities { get; set; }
+    public List<VisitedCountry> VisitedCountries { get; set; }
 }
 ```
 {% endtab %}
