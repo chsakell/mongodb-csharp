@@ -10,8 +10,8 @@ _Skip_ and _Limit_ operators are operators commonly used for pagination purposes
 
 | Operator | Description |
 | :--- | :--- |
-| Skip | Skips a specified number of documents and pass the result to the next stage |
-| Limit | Limits the number of documents passed to the next state |
+| **Skip** | Skips a specified number of documents and pass the result to the next stage |
+| **Limit** | Limits the number of documents passed to the next state |
 
 The sample creates a pagination result on `User` documents by skipping 3 documents and returning 3 documents at a time. The results are sorted by _DateOfBirth_.
 

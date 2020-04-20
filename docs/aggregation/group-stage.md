@@ -4,7 +4,10 @@
 
 The group stage groups documents by a specified _**\_id expression**_ and outputs a document for each group. One way to use the Match stage in a pipeline is to use the `Aggregate` method in a `IMongoCollection<T>` and chain the `Match` method.
 
-> **Syntax**: `IMongoCollection<T>.Aggregate().Group(<group-key>, <output>)`
+```csharp
+IMongoCollection<T>.Aggregate()
+    .Group(doc => doc.<field>, <output>)
+```
 
 The sample groups `User` documents by their _profession_ field and outputs the total documents per group.
 

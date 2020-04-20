@@ -6,7 +6,14 @@ The match stage is used to filter documents that will be used as input to the ne
 
 One way to use the Match stage in a pipeline is to use the `Aggregate` method in a `IMongoCollection<T>` and chain the `Match` method.
 
-> **Syntax**: `IMongoCollection<T>.Aggregate().Match(FilterDefinition<T> filter)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+IMongoCollection<T>.Aggregate()
+    .Match(FilterDefinition<T> filter)
+```
+{% endtab %}
+{% endtabs %}
 
 The following sample builds an aggregate with only one stage included. An aggregate with only one stage which happens to be a _Match_ stage is actually equal to a simple _find_ result with the same filter definitions. The sample filters `User` documents having salary between 3500 and 5000. 
 
