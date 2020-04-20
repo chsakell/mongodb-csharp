@@ -1,5 +1,5 @@
 ---
-description: Categorizing documents
+description: Documents distribution
 ---
 
 # 📈 Bucket
@@ -116,6 +116,7 @@ var travelersCollection = tripsDatabase
 
 var aggregate = travelersCollection.Aggregate();
 
+// try to create 4 buckets
 var autoBucket = aggregate.BucketAuto(t => t.Age, 4);
 
 var autoBucketResults = await autoBucket.ToListAsync();
