@@ -228,5 +228,319 @@ public class GeoLocation
 {% endtab %}
 {% endtabs %}
 
-## 
+## Pull items - _$pull_
+
+To remove items that match a specified condition use the `Builders.Update.PullFilter` method.
+
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<StoreItem>.Update
+  .PullFilter(doc => doc.<array-field>,
+                item => condition(item));
+```
+{% endtab %}
+{% endtabs %}
+
+The sample removes two **string** values _\("FIFA 20", "NBA 2K17"\)_ from the _PcGames_ string array field. The empty filter ensures to remove the items for all documents in the collection.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="UpdatingArrays.cs" %}
+```csharp
+var storesCollection = genericDatabase
+    .GetCollection<StoreItem>(storesCollectionName);
+
+var storeEmptyFilter = Builders<StoreItem>.Filter.Empty;
+
+// items to be removed
+var removePcGames = new List<string> { "FIFA 20", "NBA 2K17" };
+
+// create the definition
+var pullPcGamesDefinition = Builders<StoreItem>
+    .Update.PullFilter(s => s.PcGames,
+                game => removePcGames.Contains(game));
+                
+var simplePullResult = await storesCollection
+    .UpdateManyAsync(storeEmptyFilter, 
+                pullPcGamesDefinition);
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Data" %}
+```csharp
+// initial data in the db
+
+/* 1 */
+{
+	"_id" : ObjectId("5e9f5fdb6b204f01d96a678b"),
+	"pcGames" : [
+		"Football Manager",
+		"DOOM Eternal",
+		"FIFA 20",
+		"Grand Theft Auto",
+		"NBA 2K17"
+	],
+	"xboxGames" : [
+		"Forza Horizon",
+		"Call of Duty",
+		"Mortal Kombat",
+		"Gears 5"
+	]
+},
+
+/* 2 */
+{
+	"_id" : ObjectId("5e9f5fdb6b204f01d96a678c"),
+	"pcGames" : [
+		"Assassin's Creed",
+		"Final Fantasy",
+		"The Sims",
+		"Football Manager",
+		"FIFA 20"
+	],
+	"xboxGames" : [
+		"Resident Evil",
+		"Forza Motorsport",
+		"Battlefield",
+		"Halo 5 Guardians",
+		"Mortal Kombat"
+	]
+}
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.stores.updateMany({}, {
+    "$pull": {
+        "pcGames": {
+            "$in": [
+                "FIFA 20",
+                "NBA 2K17"
+            ]
+        }
+    }
+})
+
+----------------------------
+
+// final result
+
+/* 1 */
+{
+	"_id" : ObjectId("5e9f5fdb6b204f01d96a678b"),
+	"pcGames" : [
+		"Football Manager",
+		"DOOM Eternal",
+		"Grand Theft Auto"
+	],
+	"xboxGames" : [
+		"Forza Horizon",
+		"Call of Duty",
+		"Mortal Kombat",
+		"Gears 5"
+	]
+},
+
+/* 2 */
+{
+	"_id" : ObjectId("5e9f5fdb6b204f01d96a678c"),
+	"pcGames" : [
+		"Assassin's Creed",
+		"Final Fantasy",
+		"The Sims",
+		"Football Manager"
+	],
+	"xboxGames" : [
+		"Resident Evil",
+		"Forza Motorsport",
+		"Battlefield",
+		"Halo 5 Guardians",
+		"Mortal Kombat"
+	]
+}
+```
+{% endtab %}
+
+{% tab title="Model" %}
+```csharp
+public class StoreItem
+{
+    public BsonObjectId Id { get; set; }
+
+    [BsonIgnoreIfDefault]
+    public List<string> PcGames { get; set; }
+    [BsonIgnoreIfDefault]
+    public List<string> XboxGames { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+The _PcGames_ array field doesn't have to contain both values. If any of the string arguments passed is contained, it will be pulled out from the array.
+{% endhint %}
+
+## Pull items from multiple arrays
+
+To remove items from multiple array fields at the same time use the  Builders.Update .Combine method to combine 2 or more update definitions.
+
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+Builders<StoreItem>.Update
+    .Combine(UpdateDefinition[] definitions)
+```
+{% endtab %}
+{% endtabs %}
+
+The sample removes two string values from the _PcGames_ array field and one from the _XboxGames_.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="UpdatingArrays.cs" %}
+```csharp
+var storesCollection = genericDatabase
+    .GetCollection<StoreItem>(storesCollectionName);
+
+var storeEmptyFilter = Builders<StoreItem>.Filter.Empty;
+
+var removePcGames = new List<string> { "FIFA 20", "NBA 2K17" };
+var removeXboxGames = new List<string> { "Mortal Kombat" };
+
+// create the 1st pull definition
+var pullPcGamesDefinition = Builders<StoreItem>
+    .Update.PullFilter(s => s.PcGames,
+        game => removePcGames.Contains(game));
+
+// create the 2nd pull definition      
+var pullXboxGamesDefinition = Builders<StoreItem>
+    .Update.PullFilter(s => s.XboxGames,
+        game => removeXboxGames.Contains(game));
+
+// combine the definition
+var pullCombined = Builders<StoreItem>.Update
+    .Combine(pullPcGamesDefinition, pullXboxGamesDefinition);
+    
+var removeUpdateResult = await storesCollection
+    .UpdateManyAsync(storeEmptyFilter, pullCombined);
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Data" %}
+```csharp
+// initial data in the db
+
+/* 1 */
+{
+	"_id" : ObjectId("5e9f5fdb6b204f01d96a678b"),
+	"pcGames" : [
+		"Football Manager",
+		"DOOM Eternal",
+		"FIFA 20",
+		"Grand Theft Auto",
+		"NBA 2K17"
+	],
+	"xboxGames" : [
+		"Forza Horizon",
+		"Call of Duty",
+		"Mortal Kombat",
+		"Gears 5"
+	]
+},
+
+/* 2 */
+{
+	"_id" : ObjectId("5e9f5fdb6b204f01d96a678c"),
+	"pcGames" : [
+		"Assassin's Creed",
+		"Final Fantasy",
+		"The Sims",
+		"Football Manager",
+		"FIFA 20"
+	],
+	"xboxGames" : [
+		"Resident Evil",
+		"Forza Motorsport",
+		"Battlefield",
+		"Halo 5 Guardians",
+		"Mortal Kombat"
+	]
+}
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.stores.updateMany({}, {
+    "$pull": {
+        "pcGames": {
+            "$in": [
+                "FIFA 20",
+                "NBA 2K17"
+            ]
+        },
+        "xboxGames" : {
+					"$in" : [
+						"Mortal Kombat"
+					]
+				}
+    }
+})
+
+----------------------------
+
+// final result
+
+/* 1 */
+{
+	"_id" : ObjectId("5e9f62f94c1ea5e62f506597"),
+	"pcGames" : [
+		"Football Manager",
+		"DOOM Eternal",
+		"Grand Theft Auto"
+	],
+	"xboxGames" : [
+		"Forza Horizon",
+		"Call of Duty",
+		"Gears 5"
+	]
+},
+
+/* 2 */
+{
+	"_id" : ObjectId("5e9f62f94c1ea5e62f506598"),
+	"pcGames" : [
+		"Assassin's Creed",
+		"Final Fantasy",
+		"The Sims",
+		"Football Manager"
+	],
+	"xboxGames" : [
+		"Resident Evil",
+		"Forza Motorsport",
+		"Battlefield",
+		"Halo 5 Guardians"
+	]
+}
+```
+{% endtab %}
+
+{% tab title="Model" %}
+```csharp
+public class StoreItem
+{
+    public BsonObjectId Id { get; set; }
+
+    [BsonIgnoreIfDefault]
+    public List<string> PcGames { get; set; }
+    [BsonIgnoreIfDefault]
+    public List<string> XboxGames { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
 
