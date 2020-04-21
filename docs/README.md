@@ -2,7 +2,7 @@
 description: '♥ Welcome to the MongoDB C# driver docs! ♥'
 ---
 
-# Introduction
+# ⭐ Introduction
 
 ## ℹ About the docs
 
