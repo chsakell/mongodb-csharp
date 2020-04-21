@@ -51,6 +51,13 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             var addNewVisitedCountryResult = await collection.UpdateOneAsync(firstTraveler, pushCountryDefinition);
             Utils.Log("South Korea has been added to user's visited countries");
 
+            var newVisitedCountries = RandomData.GenerateVisitedCountries(10);
+            var pushCountriesDefinition = Builders<Traveler>.Update
+                .PushEach(t => t.VisitedCountries, newVisitedCountries);
+
+            var addNewVisitedCountriesResult = await collection
+                .UpdateOneAsync(firstTraveler, pushCountriesDefinition);
+
             #endregion
 
             #region update matched array elements
@@ -116,6 +123,13 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             var bsonAddNewVisitedCountryResult = await bsonCollection
                 .UpdateOneAsync(bsonFirstUser, bsonPushCountryDefinition);
 
+            var bsonNewVisitedCountries = RandomData.GenerateVisitedCountries(10);
+            var bsonPushCountriesDefinition = Builders<BsonDocument>.Update
+                .PushEach("visitedCountries", bsonNewVisitedCountries);
+
+            var bsonAddNewVisitedCountries = await bsonCollection
+                .UpdateOneAsync(bsonFirstUser, bsonPushCountriesDefinition);
+
             #endregion
 
             #region update matched array elements
@@ -159,6 +173,33 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
             db.travelers.updateOne( {}, { 
                 $push: { visitedCountries: { name: "My Own Country", visitedTimes: 2, lastDateVisited: ISODate("2018-07-11T10:00:23.454Z") } }
+            })
+
+            db.travelers.updateOne({}, {
+                $push: {
+                    visitedCountries: {
+                        $each: [
+                            {
+                                "name": "South Korea",
+                                "timesVisited": 5,
+                                "lastDateVisited": ISODate("2025-04-21T19:27:38.700+03:00"),
+                                "coordinates": {
+                                    "latitude": 4.2429,
+                                    "longitude": -148.3179
+                                }
+                            },
+                            {
+                                "name": "Mozambique",
+                                "timesVisited": 6,
+                                "lastDateVisited": ISODate("2017-01-20T14:42:27.786+02:00"),
+                                "coordinates": {
+                                    "latitude": -45.9077,
+                                    "longitude": -121.6868
+                                }
+                            }
+                        ]
+                    }
+                }
             })
 
 #endif
