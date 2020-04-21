@@ -18,6 +18,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
             Utils.DropDatabase(Client, Databases.Trips);
+            Utils.DropDatabase(Client, Databases.GenericUseDb);
         }
 
         public async Task Run()
@@ -28,12 +29,16 @@ namespace MongoDb.Csharp.Samples.Crud.Update
         private async Task UpdatingArraysDefinitions()
         {
             var collectionName = "travelers";
+            var storesCollectionName = "stores";
             var database = Client.GetDatabase(Databases.Trips);
+            var genericDatabase = Client.GetDatabase(Databases.GenericUseDb);
             var collection = database.GetCollection<Traveler>(collectionName);
             var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+            var storesCollection = genericDatabase.GetCollection<StoreItem>(storesCollectionName);
+            var bsonStoresCollection = genericDatabase.GetCollection<BsonDocument>(storesCollectionName);
             #region Prepare data
 
-            await collection.InsertManyAsync(RandomData.GenerateTravelers(500));
+            await collection.InsertManyAsync(RandomData.GenerateTravelers(2));
 
             #endregion
 
@@ -57,6 +62,65 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
             var addNewVisitedCountriesResult = await collection
                 .UpdateOneAsync(firstTraveler, pushCountriesDefinition);
+
+            #endregion
+
+            #region remove array items
+
+            // add two items
+            var storeItems = new List<StoreItem>
+            {
+                new StoreItem()
+                {
+                    PcGames = new List<string>
+                    {
+                        "Football Manager", "DOOM Eternal", 
+                        "FIFA 20", "Grand Theft Auto", "NBA 2K17"
+                    },
+                    XboxGames = new List<string> 
+                    { 
+                        "Forza Horizon", "Call of Duty", 
+                        "Mortal Kombat", "Gears 5"
+                    }
+                },
+                new StoreItem()
+                {
+                    PcGames = new List<string>
+                    {
+                        "Assassin's Creed", "Final Fantasy", 
+                        "The Sims", "Football Manager", "FIFA 20"
+                    },
+                    XboxGames = new List<string>
+                    {
+                        "Resident Evil", "Forza Motorsport", 
+                        "Battlefield", "Halo 5 Guardians", "Mortal Kombat"
+                    }
+                }
+            };
+
+            await storesCollection.InsertManyAsync(storeItems);
+
+            var storeEmptyFilter = Builders<StoreItem>.Filter.Empty;
+            var removePcGames = new List<string> { "FIFA 20", "NBA 2K17" };
+            var removeXboxGames = new List<string> { "Mortal Kombat" };
+
+            var pullPcGamesDefinition = Builders<StoreItem>.Update.PullFilter(s => s.PcGames,
+                game => removePcGames.Contains(game));
+            var pullXboxGamesDefinition = Builders<StoreItem>.Update.PullFilter(s => s.XboxGames,
+                game => removeXboxGames.Contains(game));
+
+            var pullCombined = Builders<StoreItem>.Update
+                .Combine(pullPcGamesDefinition, pullXboxGamesDefinition);
+
+            var simplePullResult = await storesCollection
+                .UpdateManyAsync(storeEmptyFilter, pullPcGamesDefinition);
+
+            // reset collection
+            await genericDatabase.DropCollectionAsync(storesCollectionName);
+            await storesCollection.InsertManyAsync(storeItems);
+
+            var removeUpdateResult = await storesCollection
+                .UpdateManyAsync(storeEmptyFilter, pullCombined);
 
             #endregion
 
@@ -85,12 +149,12 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             var updateGreeceResult = await collection.UpdateManyAsync(visitedHellasExactly3Times, updateGreeceDefinition);
 
             // TODO : more with Aggregation Pipeline
-            
+
             var updateExactVisitedDefinition = Builders<Traveler>.Update.Inc("visitedCountries.$[el].timesVisited", 10);
             var updateExactVisitedResult = await collection.UpdateManyAsync(
                 Builders<Traveler>.Filter
-                    .ElemMatch(t => t.VisitedCountries,country => country.Name == "Hellas")
-                , updateExactVisitedDefinition, 
+                    .ElemMatch(t => t.VisitedCountries, country => country.Name == "Hellas")
+                , updateExactVisitedDefinition,
                 new UpdateOptions()
                 {
                     ArrayFilters = new List<ArrayFilterDefinition<VisitedCountry>>()
@@ -135,7 +199,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             #region update matched array elements
             var bsonVisitedGreeceExactly3Times = Builders<BsonDocument>.Filter
                 .ElemMatch<BsonValue>("visitedCountries", new BsonDocument { { "name", "Greece" }, { "timesVisited", 3 } });
-            
+
             var bsonUpdateDefinition = Builders<BsonDocument>.Update.Set("visitedCountries.$.name", "Hellas");
 
             var bsonUpdateHellasResult = await bsonCollection
