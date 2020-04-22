@@ -74,17 +74,16 @@ db.users.updateOne(
 { $set: {  phone: "123-456-789" }})
 
 --------------------
-
+// sample result
 {
 	"acknowledged" : true,
 	"matchedCount" : 1,
 	"modifiedCount" : 1
 }
-```
-{% endtab %}
 
-{% tab title="Doc" %}
-```javascript
+--------------------
+
+// sample document
 {
 	"_id" : ObjectId("5e89b1db4cd4d45b2039f401"),
 	"gender" : 1,
