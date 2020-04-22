@@ -6,19 +6,19 @@ description: '♥ Welcome to the MongoDB C# driver docs! ♥'
 
 ## ℹ About the docs
 
-MongoDB has been evolved dramatically over the years 💪 resulting more developers of many different language and backgrounds, to be attracted to it. While there are official MongoDB [drivers](https://docs.mongodb.com/ecosystem/drivers/) for many different languages, many developers find kind of difficult to solve their problems based on each driver's reference or API. 
+MongoDB has been evolved dramatically over the years 💪 resulting more developers of many different languages and backgrounds, to be attracted to it. While there are official MongoDB [drivers](https://docs.mongodb.com/ecosystem/drivers/) for many different languages, many developers find kind of difficult to solve their problems based on each driver's reference or API. 
 
 These MongoDB C\# driver docs have been created for one purpose and one purpose only - to **bridge the gap between MongoDB and C\# developers** 👏. You will find numerous samples solving problems all developers facing on a daily basis.
 
 ![MongoDB for C\# developers](.gitbook/assets/main.png)
 
 {% hint style="success" %}
-These docs don't intend to replace the official MongoDB documentation but instead act as a complementary reference, especially for C\# developers 
+These docs don't intend to replace the official MongoDB documentation but instead act as a complementary reference
 {% endhint %}
 
 ## ❓ How to read the docs
 
-It depends on what your are looking for. In case this is the very first time your are dealing with MongoDB using the [C\# driver](https://docs.mongodb.com/ecosystem/drivers/csharp/) then you should definitely read the entire Getting Started section from top to bottom.
+It depends on what your are looking for. In case this is the very first time your are dealing with MongoDB using the [C\# driver](https://docs.mongodb.com/ecosystem/drivers/csharp/) then you should definitely read the entire Getting Started section.
 
 On the other hand, in case you already have some experience with the driver and you simply want to find a sample that may help you solve your problem, just search for it. 
 
@@ -41,53 +41,124 @@ The code for solving a specific case will look like this:
 {% tabs %}
 {% tab title="C\#" %}
 ```csharp
-var travelersQueryableCollection = tripsDatabase
-    .GetCollection<Traveler>(travelersCollectionName).AsQueryable();
+// get a collection reference
+var collection = database
+    .GetCollection<User>(collectionName);
+    
+// 1st filter definition (equality)
+var maleFilter = Builders<User>.Filter
+    .Eq(u => u.Gender, Gender.Male);
 
-var sliceQuery = from t in travelersQueryableCollection
-                select new 
-                {
-                       t.Name, 
-                       visitedCountries = t.VisitedCountries.Take(1)
-                };
-            
-var sliceQueryResults = await sliceQuery.ToListAsync();
+// 2nd filter definition (equality)    
+var doctorFilter = Builders<User>.Filter
+    .Eq(u => u.Profession, "Doctor");
+
+// combine filters    
+var maleDoctorsFilter = Builders<User>
+    .Filter.And(maleFilter, doctorFilter);
+
+// get results
+var maleDoctors = await collection
+    .Find(maleDoctorsFilter).ToListAsync();
 ```
 {% endtab %}
 
 {% tab title="Bson" %}
 ```csharp
-var bsonSlicePipeline = new[]
-{
-    new BsonDocument()
-    {
-        {"$project", new BsonDocument()
-            {
-                {   "name",  1 },
-                {
-                    "visitedCountries", new BsonDocument()
-                    {
-                        {"$slice", new BsonArray() { "$visitedCountries", 1 } }
-                    }
-                }
-            }
-        }
-    }
-};
+var bsonCollection = database
+    .GetCollection<BsonDocument>(collectionName);
+    
+var bsonMaleFilter = Builders<BsonDocument>
+    .Filter.Eq("gender", Gender.Male);
+    
+var bsonDoctorFilter = Builders<BsonDocument>
+    .Filter.Eq("profession", "Doctor");
+    
+var bsonMaleDoctorsFilter = Builders<BsonDocument>
+    .Filter.And(bsonMaleFilter, bsonDoctorFilter);
+    
+var bsonMaleDoctors = await bsonCollection
+    .Find(bsonMaleDoctorsFilter).ToListAsync();
 ```
 {% endtab %}
 
 {% tab title="Shell" %}
 ```javascript
-db.travelers
-.aggregate()
- .project({ 
-            name: 1, 
-            visitedCountries : 
-            { 
-               $slice: ["$visitedCountries", 1] 
-            }})
- .pretty()
+db.users.find({
+    $and: [{
+        profession:
+            { $eq: "Doctor" }
+    },
+    { gender: { $eq: 0 } }]
+})
+
+----------------------------
+
+// sample result
+
+/* 1 */
+{
+	"_id" : ObjectId("5e9d578781f29c3b1c22d756"),
+	"gender" : 0,
+	"firstName" : "John",
+	"lastName" : "Pouros",
+	"userName" : "John.Pouros",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/axel/128.jpg",
+	"email" : "John29@yahoo.com",
+	"dateOfBirth" : ISODate("1999-12-26T02:49:38.625+02:00"),
+	"address" : {
+		"street" : "3493 Beer Unions",
+		"suite" : "Apt. 435",
+		"city" : "West Ewell",
+		"state" : "Massachusetts",
+		"zipCode" : "93115",
+		"geo" : {
+			"lat" : 21.9856,
+			"lng" : 136.1137
+		}
+	},
+	"phone" : "1-938-915-9412",
+	"website" : "thad.biz",
+	"company" : {
+		"name" : "Carroll, Kutch and Harber",
+		"catchPhrase" : "User-centric 4th generation core",
+		"bs" : "innovate rich users"
+	},
+	"salary" : 4853,
+	"monthlyExpenses" : 4742,
+	"favoriteSports" : [
+		"Ice Hockey"
+	],
+	"profession" : "Doctor"
+}
+```
+{% endtab %}
+
+{% tab title="Models" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
+}
 ```
 {% endtab %}
 {% endtabs %}
@@ -97,7 +168,7 @@ As you can see, the solution is presented in 3 different ways. If any other code
 {% hint style="success" %}
 * The **C\#** tab will always contain the typed way of querying MongoDB
 * The **Bson** tab contains the code using `BsonDocument`
-* The **Shell** contains the code you would write directly in a MongoDB shell, following with sample results 
+* The **Shell** contains the code you would write directly in a MongoDB shell, following with sample results. This tab may also contain some documents directly from the database to get an idea of their schema
 
 > Other than these tabs, samples might also contain result documents or the C\# class models used in the queries
 {% endhint %}
@@ -117,7 +188,7 @@ All samples of the docs are part of the [mongodb-csharp](https://github.com/chsa
     "QuickStart_ReadDocuments": false,
     "QuickStart_UpdateDocuments": false,
     "QuickStart_DeleteDocuments": false,
-    "Crud_Insert_OrderedInsert": false,
+    "Crud_Insert_OrderedInsert": true, // this sample will fire
     "Crud_Insert_WriteConcern": false,
     "Crud_Read_Basics": false,
     "Crud_Read_Query_ComparisonOperators": false,
@@ -133,24 +204,22 @@ All samples of the docs are part of the [mongodb-csharp](https://github.com/chsa
     "Aggregation_Stages_Projection": false,
     "Aggregation_Stages_Unwind": false,
     "Aggregation_Stages_Bucket": false,
-    "Aggregation_Stages_Limit_Skip": false,
-    "Expressions_Slice": true,
-    "Expressions_Filter": false
+    "Aggregation_Stages_Limit_Skip": false
   }
 }
 ```
 {% endtab %}
 {% endtabs %}
 
-According to the above configuration when the app fires, the samples that will run are inside the _Slice.cs_ file in the _**Expressions**_ folder.
+According to the above configuration when the app fires, the samples that will run are inside the _OrderedInsert.cs_ file in the _Crud/Insert_ folder.
 
 {% hint style="warning" %}
-Avoid running multiple samples simultaneously 🚫 . Each sample usually starts with dropping the database to be used and adding a banch of documents _\(sometimes 1000 documents\)_ to a collection.
+Avoid running multiple samples simultaneously 🚫 . Each sample usually starts with dropping the database to be used and adding a banch of documents _\(sometimes 500 documents\)_ to a collection.
 {% endhint %}
 
 ## 👨💻 How to contribute
 
-Contribution on the docs is of course highly welcomed as long as it fulfills the following criteria:
+The docs are being updated 🔃 as soon as new samples are available or new MongoDB driver's features are released. Contribution is highly welcomed as long as it fulfills the following criteria:
 
 * **Request a new sample**: You can open a new issue at the repository's [issues](https://github.com/chsakell/mongodb-csharp/issues) page, as long as there isn't a related one already. Make sure you have done your search either in the docs or the source code before opening the issue. Last but not least, add some sample data to explain exactly what you are looking for.
 * **Fix a sample's code**: Fork the repository 🍴 , create and send a pull request.
