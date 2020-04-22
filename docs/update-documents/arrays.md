@@ -586,6 +586,9 @@ var visited8TimesResult = await travelersCollection
 {% tab title="Bson" %}
 ```csharp
 
+var bsonTravelersCollection = tripsDatabase
+    .GetCollection<BsonDocument>(travelerCollectionName);
+
 var bsonVisited9Times = Builders<BsonDocument>.Filter
     .ElemMatch<BsonValue>("visitedCountries", 
         new BsonDocument { { "timesVisited", 9 } });
@@ -691,4 +694,143 @@ public class VisitedCountry
 ```
 {% endtab %}
 {% endtabs %}
+
+## Update matched array document
+
+To update a specific array element you need to use the [$](https://docs.mongodb.com/manual/reference/operator/update/positional/#up._S_) positional operator.  The driver can build such a query by translating the `array[-1]` as a positional operator.
+
+The sample sets the _Name_ value for all matched array `VisitedCountry` elements having _Name = Greece_ and _TimesVisited = 3._
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="UpdatingArrays.cs" %}
+```csharp
+var travelersCollection = tripsDatabase
+    .GetCollection<Traveler>(travelerCollectionName);
+
+// create an elemMatch operator
+var visitedGreeceExactly3Times = Builders<Traveler>.Filter
+    .ElemMatch(t => t.VisitedCountries,
+        country => country.Name == "Greece" 
+        && country.TimesVisited == 3);
+
+// create the update definition
+var updateDefinition = Builders<Traveler>.Update
+    .Set(t => t.VisitedCountries[-1].Name, "Hellas");
+
+// this will update only the first matching array element! 
+// ($) refers to the first match
+var updateHellasResult = await travelersCollection
+    .UpdateManyAsync(visitedGreeceExactly3Times, 
+    updateDefinition);
+
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+var bsonTravelersCollection = tripsDatabase
+    .GetCollection<BsonDocument>(travelerCollectionName);
+
+var bsonVisitedGreeceExactly3Times = Builders<BsonDocument>.Filter
+    .ElemMatch<BsonValue>("visitedCountries", 
+    new BsonDocument { { "name", "Greece" }, 
+            { "timesVisited", 3 } });
+
+var bsonUpdateDefinition = Builders<BsonDocument>
+    .Update.Set("visitedCountries.$.name", "Hellas");
+
+var bsonUpdateHellasResult = await bsonTravelersCollection
+    .UpdateManyAsync(bsonVisitedGreeceExactly3Times, 
+    bsonUpdateDefinition);
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.travelers.updateMany(
+    {
+        visitedCountries:
+            {
+                $elemMatch:
+                    { name: "Greece", timesVisited: 3 }
+            }
+    },
+    { $set: { "visitedCountries.$.name": "Hellas" } }
+)
+
+------------------------------
+
+// sample result
+{
+	"acknowledged" : true,
+	"matchedCount" : 1,
+	"modifiedCount" : 1
+}
+
+// sample document
+{
+	"_id" : ObjectId("5ea073c55c436f374c4c48ae"),
+	"name" : "Orville White",
+	"age" : 55,
+	"activities" : [
+		"Golf",
+		"Wine tourism",
+		"Running",
+		"Geocaching",
+		"Snow-kiting",
+		"Collecting",
+		"Blogging"
+	],
+	"visitedCountries" : [
+		{
+			"name" : "Hellas", // updated from "Greece"
+			"timesVisited" : 3,
+			"lastDateVisited" : ISODate("2018-10-10T09:11:38.314+03:00"),
+			"coordinates" : {
+				"latitude" : 82.9026,
+				"longitude" : 95.4488
+			}
+		},
+		{
+			"name" : "Ecuador",
+			"timesVisited" : 9,
+			"lastDateVisited" : ISODate("2018-01-24T11:30:48.835+02:00"),
+			"coordinates" : {
+				"latitude" : 80.4824,
+				"longitude" : 179.1376
+			}
+		}
+	]
+}
+```
+{% endtab %}
+
+{% tab title="Models" %}
+```csharp
+public class Traveler
+{
+    [BsonId]
+    public ObjectId Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public List<string> Activities { get; set; }
+    public List<VisitedCountry> VisitedCountries { get; set; }
+}
+
+public class VisitedCountry
+{
+    public string Name { get; set; }
+    public int TimesVisited { get; set; }
+    public DateTime LastDateVisited { get; set; }
+    public GeoLocation Coordinates { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="success" %}
+Normally, based on the **$elemMatch** operator, the **$set** operator should have been applied to the root document\(s\) but the **$** position operator causes the update to be applied on the matched document instead
+{% endhint %}
 

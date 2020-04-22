@@ -27,7 +27,7 @@
 * [📝 Update](update-documents/README.md)
   * [Operators](update-documents/operators.md)
   * [Replace documents](update-documents/replace-documents.md)
-  * [Arrays](update-documents/update-arrays.md)
+  * [Arrays](update-documents/arrays.md)
 * [❌ Delete](delete-documents.md)
 
 ## 🧪 Aggregation
