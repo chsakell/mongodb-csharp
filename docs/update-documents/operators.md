@@ -156,7 +156,7 @@ db.users.updateOne({}, { $set: {
 ```
 {% endtab %}
 
-{% tab title="Models" %}
+{% tab title="User" %}
 ```csharp
 public class User
 {
@@ -245,7 +245,7 @@ db.users.updateOne({}, { $inc:
 ```
 {% endtab %}
 
-{% tab title="Models" %}
+{% tab title="User" %}
 ```csharp
 public class User
 {
@@ -465,7 +465,7 @@ db.users.updateOne({}, { $max: {
 ```
 {% endtab %}
 
-{% tab title="Models" %}
+{% tab title="User" %}
 ```csharp
 public class User
 {
@@ -565,7 +565,7 @@ db.users.updateOne({}, { $mul: { salary: 2 } })
 ```
 {% endtab %}
 
-{% tab title="Models" %}
+{% tab title="User" %}
 ```csharp
 public class User
 {
@@ -657,7 +657,7 @@ db.users.updateOne({}, { $unset: { website: ""  }})
 ```
 {% endtab %}
 
-{% tab title="Models" %}
+{% tab title="User" %}
 ```csharp
 public class User
 {
@@ -773,7 +773,7 @@ db.users.updateOne({}, {
 ```
 {% endtab %}
 
-{% tab title="Models" %}
+{% tab title="User" %}
 ```csharp
 public class User
 {
