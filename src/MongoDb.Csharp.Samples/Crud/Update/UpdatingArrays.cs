@@ -28,17 +28,17 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
         private async Task UpdatingArraysDefinitions()
         {
-            var collectionName = "travelers";
+            var travelerCollectionName = "travelers";
             var storesCollectionName = "stores";
-            var database = Client.GetDatabase(Databases.Trips);
+            var tripsDatabase = Client.GetDatabase(Databases.Trips);
             var genericDatabase = Client.GetDatabase(Databases.GenericUseDb);
-            var collection = database.GetCollection<Traveler>(collectionName);
-            var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+            var travelersCollection = tripsDatabase.GetCollection<Traveler>(travelerCollectionName);
+            var bsonTravelersCollection = tripsDatabase.GetCollection<BsonDocument>(travelerCollectionName);
             var storesCollection = genericDatabase.GetCollection<StoreItem>(storesCollectionName);
             var bsonStoresCollection = genericDatabase.GetCollection<BsonDocument>(storesCollectionName);
             #region Prepare data
 
-            await collection.InsertManyAsync(RandomData.GenerateTravelers(2));
+            await travelersCollection.InsertManyAsync(RandomData.GenerateTravelers(2));
 
             #endregion
 
@@ -53,14 +53,14 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             visitedCountry.LastDateVisited = DateTime.UtcNow.AddYears(5);
 
             var pushCountryDefinition = Builders<Traveler>.Update.Push(t => t.VisitedCountries, visitedCountry);
-            var addNewVisitedCountryResult = await collection.UpdateOneAsync(firstTraveler, pushCountryDefinition);
+            var addNewVisitedCountryResult = await travelersCollection.UpdateOneAsync(firstTraveler, pushCountryDefinition);
             Utils.Log("South Korea has been added to user's visited countries");
 
             var newVisitedCountries = RandomData.GenerateVisitedCountries(10);
             var pushCountriesDefinition = Builders<Traveler>.Update
                 .PushEach(t => t.VisitedCountries, newVisitedCountries);
 
-            var addNewVisitedCountriesResult = await collection
+            var addNewVisitedCountriesResult = await travelersCollection
                 .UpdateOneAsync(firstTraveler, pushCountriesDefinition);
 
             #endregion
@@ -122,6 +122,24 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             var removeUpdateResult = await storesCollection
                 .UpdateManyAsync(storeEmptyFilter, pullCombined);
 
+            // remove embedded document
+
+            await travelersCollection.InsertManyAsync(RandomData.GenerateTravelers(10, 15));
+            var visited8Times = Builders<Traveler>.Filter
+                .ElemMatch(t => t.VisitedCountries, country =>  country.TimesVisited == 8);
+
+            var totalDocVisited8Times = await travelersCollection
+                    .Find(visited8Times).CountDocumentsAsync();
+
+            var pullVisited8TimesDefinition = Builders<Traveler>.Update
+                .PullFilter(t => t.VisitedCountries,
+                country => country.TimesVisited == 8);
+
+            var visited8TimesResult = await travelersCollection
+                .UpdateManyAsync(visited8Times, pullVisited8TimesDefinition);
+
+            Utils.Log($"{totalDocVisited8Times} document found with TimesVisited = 8 and {visited8TimesResult.ModifiedCount} removed");
+
             #endregion
 
             #region update matched array elements
@@ -133,7 +151,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             var updateDefinition = Builders<Traveler>.Update.Set(t => t.VisitedCountries[-1].Name, "Hellas");
 
             // this will update only the first matching array element! ($) refers to the first match
-            var updateHellasResult = await collection.UpdateManyAsync(visitedGreeceExactly3Times, updateDefinition);
+            var updateHellasResult = await travelersCollection.UpdateManyAsync(visitedGreeceExactly3Times, updateDefinition);
             Utils.Log($"{updateHellasResult.ModifiedCount} visited countries have been updated");
 
             #endregion
@@ -146,12 +164,12 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
             // TODO : more with Aggregation Pipeline
             var updateGreeceDefinition = Builders<Traveler>.Update.Inc("visitedCountries.$[].timesVisited", 10);
-            var updateGreeceResult = await collection.UpdateManyAsync(visitedHellasExactly3Times, updateGreeceDefinition);
+            var updateGreeceResult = await travelersCollection.UpdateManyAsync(visitedHellasExactly3Times, updateGreeceDefinition);
 
             // TODO : more with Aggregation Pipeline
 
             var updateExactVisitedDefinition = Builders<Traveler>.Update.Inc("visitedCountries.$[el].timesVisited", 10);
-            var updateExactVisitedResult = await collection.UpdateManyAsync(
+            var updateExactVisitedResult = await travelersCollection.UpdateManyAsync(
                 Builders<Traveler>.Filter
                     .ElemMatch(t => t.VisitedCountries, country => country.Name == "Hellas")
                 , updateExactVisitedDefinition,
@@ -184,15 +202,28 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             var bsonPushCountryDefinition = Builders<BsonDocument>.Update
                 .Push("visitedCountries", visitedCountry.ToBsonDocument());
 
-            var bsonAddNewVisitedCountryResult = await bsonCollection
+            var bsonAddNewVisitedCountryResult = await bsonTravelersCollection
                 .UpdateOneAsync(bsonFirstUser, bsonPushCountryDefinition);
 
             var bsonNewVisitedCountries = RandomData.GenerateVisitedCountries(10);
             var bsonPushCountriesDefinition = Builders<BsonDocument>.Update
                 .PushEach("visitedCountries", bsonNewVisitedCountries);
 
-            var bsonAddNewVisitedCountries = await bsonCollection
+            var bsonAddNewVisitedCountries = await bsonTravelersCollection
                 .UpdateOneAsync(bsonFirstUser, bsonPushCountriesDefinition);
+            
+            var bsonVisited9Times = Builders<BsonDocument>.Filter
+                .ElemMatch<BsonValue>("visitedCountries", new BsonDocument { { "timesVisited", 9 } });
+
+            var bsonTotalDocVisited9Times = await bsonTravelersCollection
+                .Find(bsonVisited9Times).CountDocumentsAsync();
+
+            var bsonPullVisited9TimesDefinition = Builders<BsonDocument>.Update
+                .PullFilter<BsonValue>("visitedCountries",
+                    new BsonDocument { { "timesVisited", 9 } });
+
+            var bsonVisited9TimesResult = await bsonTravelersCollection
+                .UpdateManyAsync(bsonVisited9Times, bsonPullVisited9TimesDefinition);
 
             #endregion
 
@@ -202,7 +233,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
             var bsonUpdateDefinition = Builders<BsonDocument>.Update.Set("visitedCountries.$.name", "Hellas");
 
-            var bsonUpdateHellasResult = await bsonCollection
+            var bsonUpdateHellasResult = await bsonTravelersCollection
                 .UpdateManyAsync(bsonVisitedGreeceExactly3Times, bsonUpdateDefinition);
 
             #endregion
@@ -214,7 +245,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
             // TODO : more with projection
             var bsonUpdateGreeceDefinition = Builders<BsonDocument>.Update.Inc("visitedCountries.$[].timesVisited", 10);
-            var bsonUpdateGreeceResult = await bsonCollection
+            var bsonUpdateGreeceResult = await bsonTravelersCollection
                 .UpdateManyAsync(bsonVisitedHellasExactly3Times, bsonUpdateGreeceDefinition);
 
             #endregion
@@ -224,6 +255,23 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             #region Shell commands
 
 #if false
+            db.travelers.updateMany(
+                {
+                    "visitedCountries": {
+                        "$elemMatch": {
+                            "timesVisited": 8
+                        }
+                    },
+                },
+                {
+                    "$pull": {
+                        "visitedCountries": {
+                            "timesVisited": 8
+                        }
+                    }
+                }
+            )
+
             db.travelers.updateMany(
                 { visitedCountries: { $elemMatch: { name: "Hellas", timesVisited: 3 }}},
                 { $set: { "visitedCountries.$.name": "Greece" } }
