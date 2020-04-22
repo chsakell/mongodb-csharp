@@ -544,3 +544,151 @@ public class StoreItem
 {% endtab %}
 {% endtabs %}
 
+## Pull embedded items from array
+
+To remove nested documents from  an array field create an `UpdateDefinition` with the specified condition to be applied on the documents to be removed. Assuming `T` is the type of the root document which contains an array field having `E` type of documents, the syntax is the following.
+
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+var pullDefinition = 
+        Builders<T>.Update
+                .PullFilter(root => root.<array-field>,
+                arrayDoc => condition(arrayDoc<field>));
+```
+{% endtab %}
+{% endtabs %}
+
+The sample removes `VisitedCountry` documents from the _VisitedCountries_ array field of `Traveler` documents based on the `VisitedCountry.TimesVisited` value.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="UpdatingArrays.cs" %}
+```csharp
+var travelersCollection = tripsDatabase
+    .GetCollection<Traveler>(travelerCollectionName);
+
+// create a filter
+var visited8Times = Builders<Traveler>
+    .Filter.ElemMatch(t => t.VisitedCountries, 
+    country =>  country.TimesVisited == 8);
+
+var pullVisited8TimesDefinition = Builders<Traveler>.Update
+    .PullFilter(t => t.VisitedCountries,
+        country => country.TimesVisited == 8); // condition
+
+var visited8TimesResult = await travelersCollection
+    .UpdateManyAsync(visited8Times, pullVisited8TimesDefinition);
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+
+var bsonVisited9Times = Builders<BsonDocument>.Filter
+    .ElemMatch<BsonValue>("visitedCountries", 
+        new BsonDocument { { "timesVisited", 9 } });
+
+var bsonTotalDocVisited9Times = await bsonTravelersCollection
+    .Find(bsonVisited9Times).CountDocumentsAsync();
+
+var bsonPullVisited9TimesDefinition = Builders<BsonDocument>.Update
+    .PullFilter<BsonValue>("visitedCountries",
+        new BsonDocument { { "timesVisited", 9 } });
+
+var bsonVisited9TimesResult = await bsonTravelersCollection
+    .UpdateManyAsync(bsonVisited9Times, 
+        bsonPullVisited9TimesDefinition);
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.travelers.updateMany(
+    {
+        "visitedCountries": {
+            "$elemMatch": {
+                "timesVisited": 8
+            }
+        },
+    },
+    {
+        "$pull": {
+            "visitedCountries": {
+                "timesVisited": 8
+            }
+        }
+    }
+)
+
+------------------------------
+
+// sample result
+{
+	"acknowledged" : true,
+	"matchedCount" : 10,
+	"modifiedCount" : 10
+}
+
+// sample document
+{
+	"_id" : ObjectId("5ea073c55c436f374c4c48ae"),
+	"name" : "Orville White",
+	"age" : 55,
+	"activities" : [
+		"Golf",
+		"Wine tourism",
+		"Running",
+		"Geocaching",
+		"Snow-kiting",
+		"Collecting",
+		"Blogging"
+	],
+	"visitedCountries" : [ // docs with timesVisited = 8 removed
+		{
+			"name" : "Montenegro",
+			"timesVisited" : 2,
+			"lastDateVisited" : ISODate("2018-10-10T09:11:38.314+03:00"),
+			"coordinates" : {
+				"latitude" : 82.9026,
+				"longitude" : 95.4488
+			}
+		},
+		{
+			"name" : "Ecuador",
+			"timesVisited" : 9,
+			"lastDateVisited" : ISODate("2018-01-24T11:30:48.835+02:00"),
+			"coordinates" : {
+				"latitude" : 80.4824,
+				"longitude" : 179.1376
+			}
+		}
+	]
+}
+```
+{% endtab %}
+
+{% tab title="Models" %}
+```csharp
+public class Traveler
+{
+    [BsonId]
+    public ObjectId Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public List<string> Activities { get; set; }
+    public List<VisitedCountry> VisitedCountries { get; set; }
+}
+
+public class VisitedCountry
+{
+    public string Name { get; set; }
+    public int TimesVisited { get; set; }
+    public DateTime LastDateVisited { get; set; }
+    public GeoLocation Coordinates { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
