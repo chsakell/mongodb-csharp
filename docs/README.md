@@ -13,7 +13,7 @@ These MongoDB C\# driver docs have been created for one purpose and one purpose 
 ![MongoDB for C\# developers](.gitbook/assets/main.png)
 
 {% hint style="success" %}
-These docs don't intend to replace the official MongoDB documentation but instead act as a complementary reference
+These docs don't intend to replace the official MongoDB C\# Driver [reference](https://mongodb.github.io/mongo-csharp-driver/) but instead act as a complementary reference. Also, the _C\#_ samples in the MongoDB [docs](https://docs.mongodb.com/) are written using **`BsonDocument`** which is not ideal for _C\#_ developers
 {% endhint %}
 
 ## ❓ How to read the docs
