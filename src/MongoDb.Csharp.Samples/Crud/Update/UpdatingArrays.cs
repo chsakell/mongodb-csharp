@@ -160,7 +160,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
             var visitedHellasExactly3Times = Builders<Traveler>.Filter
                 .ElemMatch(t => t.VisitedCountries,
-                    country => country.Name == "Hellas" && country.TimesVisited == 3);
+                    country => country.Name == "Greece" && country.TimesVisited == 3);
 
             // TODO : more with Aggregation Pipeline
             var updateGreeceDefinition = Builders<Traveler>.Update.Inc("visitedCountries.$[].timesVisited", 10);
