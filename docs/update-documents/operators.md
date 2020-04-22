@@ -108,7 +108,7 @@ db.users.updateOne({},
 ```
 {% endtab %}
 
-{% tab title="Models" %}
+{% tab title="User" %}
 ```csharp
 public class User
 {
