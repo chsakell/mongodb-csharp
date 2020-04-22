@@ -62,6 +62,49 @@ db.users.updateOne({},
 	"matchedCount" : 1,
 	"modifiedCount" : 1
 }
+
+// user document
+
+{
+	"_id" : ObjectId("5e9d578781f29c3b1c22d796"),
+	"gender" : 1,
+	"firstName" : "Tracey",
+	"lastName" : "Pfannerstill",
+	"userName" : "Tracey_Pfannerstill97",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/mattlat/128.jpg",
+	"email" : "Tracey_Pfannerstill99@yahoo.com",
+	"dateOfBirth" : ISODate("1960-02-09T21:33:43.279+02:00"),
+	"address" : {
+		"street" : "636 Klein Corners",
+		"suite" : "Apt. 556",
+		"city" : "Kacieport",
+		"state" : "New Mexico",
+		"zipCode" : "58913-4315",
+		"geo" : {
+			"lat" : -48.7019,
+			"lng" : -111.2376
+		}
+	},
+	"phone" : "320-280-8093 x4487",
+	"website" : "josh.com",
+	"company" : {
+		"name" : "Sawayn - Donnelly",
+		"catchPhrase" : "Customer-focused mobile groupware",
+		"bs" : "maximize cross-media e-tailers"
+	},
+	"salary" : 1716,
+	"monthlyExpenses" : 2203,
+	"favoriteSports" : [
+		"Cricket",
+		"Formula 1",
+		"Table Tennis",
+		"Water Polo",
+		"Basketball",
+		"Handball",
+		"American Football"
+	],
+	"profession" : "Financial Adviser"
+}
 ```
 {% endtab %}
 
@@ -153,6 +196,49 @@ db.users.updateOne({}, { $set: {
 	"matchedCount" : 1,
 	"modifiedCount" : 1
 }
+
+// user document
+
+{
+	"_id" : ObjectId("5e9d578781f29c3b1c22d796"),
+	"gender" : 1,
+	"firstName" : "Tracey",
+	"lastName" : "Pfannerstill",
+	"userName" : "Tracey_Pfannerstill97",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/mattlat/128.jpg",
+	"email" : "Tracey_Pfannerstill99@yahoo.com",
+	"dateOfBirth" : ISODate("1960-02-09T21:33:43.279+02:00"),
+	"address" : {
+		"street" : "636 Klein Corners",
+		"suite" : "Apt. 556",
+		"city" : "Kacieport",
+		"state" : "New Mexico",
+		"zipCode" : "58913-4315",
+		"geo" : {
+			"lat" : -48.7019,
+			"lng" : -111.2376
+		}
+	},
+	"phone" : "320-280-8093 x4487",
+	"website" : "josh.com",
+	"company" : {
+		"name" : "Sawayn - Donnelly",
+		"catchPhrase" : "Customer-focused mobile groupware",
+		"bs" : "maximize cross-media e-tailers"
+	},
+	"salary" : 1716,
+	"monthlyExpenses" : 2203,
+	"favoriteSports" : [
+		"Cricket",
+		"Formula 1",
+		"Table Tennis",
+		"Water Polo",
+		"Basketball",
+		"Handball",
+		"American Football"
+	],
+	"profession" : "Financial Adviser"
+}
 ```
 {% endtab %}
 
@@ -241,6 +327,49 @@ db.users.updateOne({}, { $inc:
 	"acknowledged" : true,
 	"matchedCount" : 1,
 	"modifiedCount" : 1
+}
+
+// user document
+
+{
+	"_id" : ObjectId("5e9d578781f29c3b1c22d796"),
+	"gender" : 1,
+	"firstName" : "Tracey",
+	"lastName" : "Pfannerstill",
+	"userName" : "Tracey_Pfannerstill97",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/mattlat/128.jpg",
+	"email" : "Tracey_Pfannerstill99@yahoo.com",
+	"dateOfBirth" : ISODate("1960-02-09T21:33:43.279+02:00"),
+	"address" : {
+		"street" : "636 Klein Corners",
+		"suite" : "Apt. 556",
+		"city" : "Kacieport",
+		"state" : "New Mexico",
+		"zipCode" : "58913-4315",
+		"geo" : {
+			"lat" : -48.7019,
+			"lng" : -111.2376
+		}
+	},
+	"phone" : "320-280-8093 x4487",
+	"website" : "josh.com",
+	"company" : {
+		"name" : "Sawayn - Donnelly",
+		"catchPhrase" : "Customer-focused mobile groupware",
+		"bs" : "maximize cross-media e-tailers"
+	},
+	"salary" : 1716,
+	"monthlyExpenses" : 2203,
+	"favoriteSports" : [
+		"Cricket",
+		"Formula 1",
+		"Table Tennis",
+		"Water Polo",
+		"Basketball",
+		"Handball",
+		"American Football"
+	],
+	"profession" : "Financial Adviser"
 }
 ```
 {% endtab %}
@@ -345,6 +474,49 @@ db.users.updateOne({}, { $min: {
 	"acknowledged" : true,
 	"matchedCount" : 1,
 	"modifiedCount" : 1
+}
+
+// user document
+
+{
+	"_id" : ObjectId("5e9d578781f29c3b1c22d796"),
+	"gender" : 1,
+	"firstName" : "Tracey",
+	"lastName" : "Pfannerstill",
+	"userName" : "Tracey_Pfannerstill97",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/mattlat/128.jpg",
+	"email" : "Tracey_Pfannerstill99@yahoo.com",
+	"dateOfBirth" : ISODate("1960-02-09T21:33:43.279+02:00"),
+	"address" : {
+		"street" : "636 Klein Corners",
+		"suite" : "Apt. 556",
+		"city" : "Kacieport",
+		"state" : "New Mexico",
+		"zipCode" : "58913-4315",
+		"geo" : {
+			"lat" : -48.7019,
+			"lng" : -111.2376
+		}
+	},
+	"phone" : "320-280-8093 x4487",
+	"website" : "josh.com",
+	"company" : {
+		"name" : "Sawayn - Donnelly",
+		"catchPhrase" : "Customer-focused mobile groupware",
+		"bs" : "maximize cross-media e-tailers"
+	},
+	"salary" : 1716,
+	"monthlyExpenses" : 2203,
+	"favoriteSports" : [
+		"Cricket",
+		"Formula 1",
+		"Table Tennis",
+		"Water Polo",
+		"Basketball",
+		"Handball",
+		"American Football"
+	],
+	"profession" : "Financial Adviser"
 }
 ```
 {% endtab %}
@@ -462,6 +634,49 @@ db.users.updateOne({}, { $max: {
 	"matchedCount" : 1,
 	"modifiedCount" : 1
 }
+
+// user document
+
+{
+	"_id" : ObjectId("5e9d578781f29c3b1c22d796"),
+	"gender" : 1,
+	"firstName" : "Tracey",
+	"lastName" : "Pfannerstill",
+	"userName" : "Tracey_Pfannerstill97",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/mattlat/128.jpg",
+	"email" : "Tracey_Pfannerstill99@yahoo.com",
+	"dateOfBirth" : ISODate("1960-02-09T21:33:43.279+02:00"),
+	"address" : {
+		"street" : "636 Klein Corners",
+		"suite" : "Apt. 556",
+		"city" : "Kacieport",
+		"state" : "New Mexico",
+		"zipCode" : "58913-4315",
+		"geo" : {
+			"lat" : -48.7019,
+			"lng" : -111.2376
+		}
+	},
+	"phone" : "320-280-8093 x4487",
+	"website" : "josh.com",
+	"company" : {
+		"name" : "Sawayn - Donnelly",
+		"catchPhrase" : "Customer-focused mobile groupware",
+		"bs" : "maximize cross-media e-tailers"
+	},
+	"salary" : 1716,
+	"monthlyExpenses" : 2203,
+	"favoriteSports" : [
+		"Cricket",
+		"Formula 1",
+		"Table Tennis",
+		"Water Polo",
+		"Basketball",
+		"Handball",
+		"American Football"
+	],
+	"profession" : "Financial Adviser"
+}
 ```
 {% endtab %}
 
@@ -562,6 +777,49 @@ db.users.updateOne({}, { $mul: { salary: 2 } })
 	"matchedCount" : 1,
 	"modifiedCount" : 1
 }
+
+// user document
+
+{
+	"_id" : ObjectId("5e9d578781f29c3b1c22d796"),
+	"gender" : 1,
+	"firstName" : "Tracey",
+	"lastName" : "Pfannerstill",
+	"userName" : "Tracey_Pfannerstill97",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/mattlat/128.jpg",
+	"email" : "Tracey_Pfannerstill99@yahoo.com",
+	"dateOfBirth" : ISODate("1960-02-09T21:33:43.279+02:00"),
+	"address" : {
+		"street" : "636 Klein Corners",
+		"suite" : "Apt. 556",
+		"city" : "Kacieport",
+		"state" : "New Mexico",
+		"zipCode" : "58913-4315",
+		"geo" : {
+			"lat" : -48.7019,
+			"lng" : -111.2376
+		}
+	},
+	"phone" : "320-280-8093 x4487",
+	"website" : "josh.com",
+	"company" : {
+		"name" : "Sawayn - Donnelly",
+		"catchPhrase" : "Customer-focused mobile groupware",
+		"bs" : "maximize cross-media e-tailers"
+	},
+	"salary" : 1716,
+	"monthlyExpenses" : 2203,
+	"favoriteSports" : [
+		"Cricket",
+		"Formula 1",
+		"Table Tennis",
+		"Water Polo",
+		"Basketball",
+		"Handball",
+		"American Football"
+	],
+	"profession" : "Financial Adviser"
+}
 ```
 {% endtab %}
 
@@ -653,6 +911,49 @@ db.users.updateOne({}, { $unset: { website: ""  }})
 	"acknowledged" : true,
 	"matchedCount" : 1,
 	"modifiedCount" : 1
+}
+
+// user document
+
+{
+	"_id" : ObjectId("5e9d578781f29c3b1c22d796"),
+	"gender" : 1,
+	"firstName" : "Tracey",
+	"lastName" : "Pfannerstill",
+	"userName" : "Tracey_Pfannerstill97",
+	"avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/mattlat/128.jpg",
+	"email" : "Tracey_Pfannerstill99@yahoo.com",
+	"dateOfBirth" : ISODate("1960-02-09T21:33:43.279+02:00"),
+	"address" : {
+		"street" : "636 Klein Corners",
+		"suite" : "Apt. 556",
+		"city" : "Kacieport",
+		"state" : "New Mexico",
+		"zipCode" : "58913-4315",
+		"geo" : {
+			"lat" : -48.7019,
+			"lng" : -111.2376
+		}
+	},
+	"phone" : "320-280-8093 x4487",
+	"website" : "josh.com",
+	"company" : {
+		"name" : "Sawayn - Donnelly",
+		"catchPhrase" : "Customer-focused mobile groupware",
+		"bs" : "maximize cross-media e-tailers"
+	},
+	"salary" : 1716,
+	"monthlyExpenses" : 2203,
+	"favoriteSports" : [
+		"Cricket",
+		"Formula 1",
+		"Table Tennis",
+		"Water Polo",
+		"Basketball",
+		"Handball",
+		"American Football"
+	],
+	"profession" : "Financial Adviser"
 }
 ```
 {% endtab %}
