@@ -41,7 +41,8 @@ public class Message
 
 {% tab title="Result" %}
 ```javascript
-// Id hasn't be recognized by MongoDB as an auto generated property
+// Id hasn't be recognized by MongoDB 
+// as an auto generated property
 {
   "_id": null,
   "text": "hello world"
