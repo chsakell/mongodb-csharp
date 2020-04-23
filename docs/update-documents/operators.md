@@ -18,7 +18,8 @@ The sample updates the _FirstName_ field of the first document in the collection
 {% tab title="C\#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+            .GetCollection<User>(Constants.UsersCollection);
 
 // create an empty filter
 var firstUserFilter = Builders<User>.Filter.Empty;
@@ -38,7 +39,7 @@ var updateNameResult = await collection
 {% tab title="Bson" %}
 ```csharp
 var bsonCollection = database
-            .GetCollection<BsonDocument>(collectionName);
+            .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonUpdateNameDefinition = Builders<BsonDocument>
             .Update.Set("firstName", "John");
@@ -147,7 +148,8 @@ The sample updates the first document's _Phone_, _Website_ and _FavoriteSports \
 {% tab title="C\#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+        .GetCollection<User>(Constants.UsersCollection);
 
 var multiUpdateDefinition = Builders<User>.Update
         .Set(u => u.Phone, "123-456-789")
@@ -165,7 +167,7 @@ var multiUpdateResult = await collection
 {% tab title="Bson" %}
 ```csharp
 var bsonCollection = database
-            .GetCollection<BsonDocument>(collectionName);
+            .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonMultiUpdateDefinition = Builders<BsonDocument>.Update
     .Set("phone", "123-456-789")
@@ -285,7 +287,8 @@ The sample increments the first document's salary.
 {% tab title="C\#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+            .GetCollection<User>(Constants.UsersCollection);
 
 // create an empty filter
 var firstUserFilter = Builders<User>.Filter.Empty;
@@ -304,7 +307,7 @@ var incrementSalaryResult = await collection
 {% tab title="Bson" %}
 ```csharp
 var bsonCollection = database
-            .GetCollection<BsonDocument>(collectionName);
+            .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonIncrementSalaryDefinition = Builders<BsonDocument>
             .Update.Inc("salary", 450);
@@ -422,7 +425,8 @@ The sample decreases the first document's _salary_ value from 3000 to 2000 💰 
 {% tab title="C\#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // create an empty filter
 var firstUserFilter = Builders<User>.Filter.Empty;
@@ -446,7 +450,7 @@ var minUpdateResult = await collection
 {% tab title="Bson" %}
 ```csharp
 var bsonCollection = database
-            .GetCollection<BsonDocument>(collectionName);
+            .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 await bsonCollection.UpdateOneAsync(bsonFirstUserFilter,
     Builders<BsonDocument>.Update.Set("salary", 3000));
@@ -521,7 +525,7 @@ db.users.updateOne({}, { $min: {
 ```
 {% endtab %}
 
-{% tab title="Models" %}
+{% tab title="User" %}
 ```csharp
 public class User
 {
@@ -581,7 +585,8 @@ The sample increases the first document's _salary_ value from 3000 to 3500 💰 
 {% tab title="C\#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // create an empty filter
 var firstUserFilter = Builders<User>.Filter.Empty;
@@ -605,7 +610,7 @@ var maxUpdateResult = await collection
 {% tab title="Bson" %}
 ```csharp
 var bsonCollection = database
-            .GetCollection<BsonDocument>(collectionName);
+            .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 await bsonCollection.UpdateOneAsync(bsonFirstUserFilter,
     Builders<BsonDocument>.Update.Set("salary", 3000));
@@ -727,7 +732,8 @@ The sample double the first document's _salary_ value from 1000 to 2000 using th
 {% tab title="C\#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // create an empty filter
 var firstUserFilter = Builders<User>.Filter.Empty;
@@ -750,7 +756,7 @@ var mulUpdateResult = await collection
 {% tab title="Bson" %}
 ```csharp
 var bsonCollection = database
-            .GetCollection<BsonDocument>(collectionName);
+        .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 await bsonCollection.UpdateOneAsync(bsonFirstUserFilter,
     Builders<BsonDocument>.Update
@@ -870,7 +876,8 @@ The sample removes ❌ the _Website_ field from a user document.
 {% tab title="C\#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // create an empty filter
 var firstUserFilter = Builders<User>.Filter.Empty;
@@ -889,7 +896,7 @@ var removeWebsiteFieldUpdateResult = await collection
 {% tab title="Bson" %}
 ```csharp
 var bsonCollection = database
-            .GetCollection<BsonDocument>(collectionName);
+            .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonRemoveWebsiteDefinition = Builders<BsonDocument>
             .Update.Unset("website");
@@ -1026,7 +1033,8 @@ The sample updates the _Phone_ field of the first document to _PhoneNumber_ usin
 {% tab title="C\#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // create an empty filter
 var firstUserFilter = Builders<User>.Filter.Empty;
@@ -1046,7 +1054,7 @@ var renamePhoneFieldUpdateResult = await collection
 {% tab title="Bson" %}
 ```csharp
 var bsonCollection = database
-            .GetCollection<BsonDocument>(collectionName);
+            .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonRenamePhoneDefinition = Builders<BsonDocument>
             .Update.Rename("phone", "phoneNumber");
