@@ -14,8 +14,8 @@ The sample finds the distribution among `Traveler` documents based on their age 
 {% tab title="C\#" %}
 {% code title="Bucket.cs" %}
 ```csharp
-var travelersCollection = tripsDatabase
-    .GetCollection<Traveler>(travelersCollectionName);
+var travelersCollection = database
+    .GetCollection<Traveler>(Constants.TravelersCollection);
 
 var aggregate = travelersCollection.Aggregate();
 
@@ -111,8 +111,8 @@ The sample distributes the documents based on their age to 4 buckets.
 {% tab title="C\#" %}
 {% code title="Bucket.cs" %}
 ```csharp
-var travelersCollection = tripsDatabase
-    .GetCollection<Traveler>(travelersCollectionName);
+var travelersCollection = database
+    .GetCollection<Traveler>(Constants.TravelersCollection);
 
 var aggregate = travelersCollection.Aggregate();
 

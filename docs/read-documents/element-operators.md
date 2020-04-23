@@ -34,7 +34,8 @@ The sample uses the _Exists_ operator to find `Order` documents that have assign
 {% tab title="C\#" %}
 {% code title="ElementOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<Order>(collectionName);
+var collection = database
+            .GetCollection<Order>(Constants.Invoices);
 
 // find all orders having a lotnumber
 var lotNumberFilter = Builders<Order>.Filter
@@ -48,7 +49,8 @@ var ordersWithLotNumber = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.Invoices);
 
 var bsonLotNumberFilter = Builders<BsonDocument>.Filter
     .Exists("lotNumber", exists: true);
@@ -141,7 +143,8 @@ The sample uses the _Type_ operator to find all orders that have been shipped by
 {% tab title="C\#" %}
 {% code title="ElementOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.Invoices);
 
 // find documents with shippedDate assigned a DateTime value
 var typeFilter = Builders<Order>.Filter
@@ -155,7 +158,8 @@ var shippedOrders = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.Invoices);
 
 var bsonMaleFilter = Builders<BsonDocument>.Filter
     .Eq("gender", Gender.Male);
@@ -237,7 +241,8 @@ The sample finds all documents with `NULL` shipment's contact phone number.
 {% tab title="C\#" %}
 {% code title="ElementOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+     .GetCollection<Order>(Constants.Invoices);
 
 // search for null contact phone numbers
 // the field does exists, but has null value
@@ -252,7 +257,8 @@ var nullContactPhoneOrders = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+      .GetCollection<BsonDocument>(Constants.Invoices);
 
 var bsonNullContactPhoneFilter = Builders<BsonDocument>.Filter
       .Type("shipmentDetails.contactPhone", BsonType.Null);

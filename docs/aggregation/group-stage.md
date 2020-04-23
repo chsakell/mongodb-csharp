@@ -13,7 +13,7 @@ The sample groups `User` documents by their _profession_ field and outputs the t
 
 {% tabs %}
 {% tab title="C\#" %}
-{% code title="Match.cs" %}
+{% code title="Group.cs" %}
 ```csharp
 var collection = database.GetCollection<User>(collectionName);
 
@@ -107,7 +107,7 @@ You can group by any document's field you want. The sample groups the `User` doc
 
 {% tabs %}
 {% tab title="C\#" %}
-{% code title="Match.cs" %}
+{% code title="Group.cs" %}
 ```csharp
 var collection = database.GetCollection<User>(collectionName);
 

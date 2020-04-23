@@ -8,7 +8,8 @@ When adding multiple documents using the `InsertMany` method and if an error occ
 {% tab title="C\#" %}
 {% code title="OrderedInsert.cs" %}
 ```csharp
-var sportsCollection = bettingDatabase.GetCollection<Sport>("sports");
+var sportsCollection = bettingDatabase
+.GetCollection<Sport>(Constants.SportsCollection);
 
 // Sport title is the identifier _id field
 var sports = new List<Sport>
@@ -120,7 +121,8 @@ You can configure your multiple documents insertions, to continue even if when s
 {% tab title="C\#" %}
 {% code title="OrderedInsert.cs" %}
 ```csharp
-var sportsCollection = bettingDatabase.GetCollection<Sport>("sports");
+var sportsCollection = bettingDatabase
+    .GetCollection<Sport>(Constants.SportsCollection);
 
 // Sport title is the identifier _id field
 var sports = new List<Sport>

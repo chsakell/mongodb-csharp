@@ -21,7 +21,8 @@ The following sample builds an aggregate with only one stage included. An aggreg
 {% tab title="C\#" %}
 {% code title="Match.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // creates an aggregate pipeline
 var aggregate = collection.Aggregate()
@@ -145,7 +146,7 @@ The following sample adds a _Match_ stage to filter `Traveler` documents that ha
 {% code title="Match.cs" %}
 ```csharp
 var travelersCollection = travelersDatabase.
-    GetCollection<Traveler>(tripsCollection);
+    GetCollection<Traveler>(Constants.TravelersCollection);
 
 // match stage
 var visitedGreeceExactly3Times = Builders<Traveler>.Filter
@@ -173,7 +174,7 @@ var greeceVisited3Times = await greeceAggregate.ToListAsync();
 {% tab title="Bson" %}
 ```csharp
 var travelersBsonCollection = travelersDatabase
-    .GetCollection<BsonDocument>(tripsCollection);
+    .GetCollection<BsonDocument>(Constants.TravelersCollection);
 
 var bsonSimpleProjection = Builders<BsonDocument>.Projection
     .Include("name")
