@@ -37,7 +37,8 @@ The sample uses an _And_ operator to find all documents that have male _gender_ 
 {% tab title="C\#" %}
 {% code title="LogicalOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // create an equality filter on the gender for 'male' (0)
 var maleFilter = Builders<User>.Filter
@@ -58,7 +59,8 @@ var maleDoctors = await collection.Find(maleDoctorsFilter).ToListAsync();
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonMaleFilter = Builders<BsonDocument>.Filter
     .Eq("gender", Gender.Male);
@@ -178,7 +180,7 @@ You can combine as many filters as you want to an AND operator. The following sa
 {% tab title="C\#" %}
 {% code title="LogicalOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database.GetCollection<User>(Constants.UsersCollection);
 
 // female filter - condition 1
 var femaleFilter = Builders<User>.Filter.Eq(u => u.Gender, Gender.Female);
@@ -203,7 +205,8 @@ var matchedUsers = await collection.Find(combinedFilter).ToListAsync();
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 // female filter - condition 1
 var bsonFemaleFilter = Builders<BsonDocument>.Filter
@@ -346,7 +349,8 @@ The sample uses an _Not_ operator to find all documents having male _gender,_ wh
 {% tab title="C\#" %}
 {% code title="LogicalOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // Negates the internal equality filter
 var notMaleFilter = Builders<User>.Filter.Not(
@@ -361,7 +365,8 @@ var femaleUsers = await collection.Find(notMaleFilter).ToListAsync();
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonNotMaleFilter = Builders<BsonDocument>.Filter
 .Not(
@@ -476,7 +481,7 @@ The sample uses an _Or_ operator to find all documents having _salary,_ either t
 {% tab title="C\#" %}
 {% code title="LogicalOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database.GetCollection<User>(Constants.UsersCollection);
 
 // users with salary either < 1500 (too low) or > 4000 (too high)
 var orSalaryFilter = Builders<User>.Filter.Or(
@@ -492,7 +497,8 @@ var lowOrHighSalaryUsers = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonOrSalaryFilter = Builders<BsonDocument>.Filter.Or(
     Builders<BsonDocument>.Filter.Lt("salary", 1500),
@@ -598,7 +604,8 @@ Since the matched documents needs to fail the above criteria, you should use the
 {% tab title="C\#" %}
 {% code title="LogicalOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 var norFilter = Builders<User>.Filter.And(
     Builders<User>.Filter // negate 1st filter
@@ -615,7 +622,8 @@ var norUsers = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonNorFilter = Builders<BsonDocument>.Filter.And(
     Builders<BsonDocument>.Filter
@@ -723,7 +731,7 @@ public class User
 {% tabs %}
 {% tab title="C\#" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database.GetCollection<User>(Constants.UsersCollection);
 
 var firstFilterToFail = Builders<User>.Filter
     .Eq(u => u.Profession, "Doctor");

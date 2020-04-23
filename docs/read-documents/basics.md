@@ -81,7 +81,8 @@ Builders<T>.Filter.Eq(doc => doc.<field>, <value>)
 {% tab title="C\#" %}
 {% code title="Crud.Read.Basics.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // create the equality filter
 var doctorsFilter = Builders<User>.Filter
@@ -94,7 +95,8 @@ var doctors = await collection.Find(doctorsFilter).ToListAsync();
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var sampleBsonUserFilter = Builders<BsonDocument>.Filter
     .Eq("email", sampleUser.Email);
@@ -170,7 +172,8 @@ The hierarchy from _`<field1>`_ to the _`<embedded-field>`_ **cannot** contain a
 {% tab title="C\#" %}
 {% code title="Crud.Read.Basics.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // create the filter on the address.city field
 var athensCityFilter = Builders<User>
@@ -184,7 +187,8 @@ var athensUsers = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonAthensCityFilter = Builders<BsonDocument>
     .Filter.Eq("address.city", "Athens");
@@ -306,7 +310,8 @@ Assuming your document contains an array field with **string** values, you want 
 {% tabs %}
 {% tab title="Syntax" %}
 ```csharp
-Builders<T>.Filter.Eq(doc => doc.<array-field>, <value>)
+Builders<T>.Filter
+    .Eq(doc => doc.<array-field>, <value>)
 ```
 {% endtab %}
 {% endtabs %}
@@ -317,7 +322,8 @@ The example retrieves all user documents that their _FavoriteSports_ array field
 {% tab title="C\#" %}
 {% code title="Crud.Read.Basics.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // create an equality filter on an array field
 // find all user documents that contains 'Basketball' on their sports array
@@ -334,7 +340,8 @@ var usersHaveBasketball = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonBasketballFilter = Builders<BsonDocument>.Filter
     .AnyEq("favoriteSports", "Basketball");
@@ -349,11 +356,9 @@ var bsonUsersHaveBasketball = await bsonCollection
 // MongoDB understands that favoriteSports field is an array
 // and makes the right search on it
 db.users.find({"favoriteSports": "Basketball"})
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+-------------------------------
+
 // sample result
 {
 	"_id" : ObjectId("5e91e3ba3c1ba62570a67b98"),
@@ -446,7 +451,8 @@ In case you want to run an exact match on the array field then you must use an a
 {% tabs %}
 {% tab title="Syntax" %}
 ```csharp
-Builders<T>.Filter.Eq(doc => doc.<array-field>, <array-values>)
+Builders<T>.Filter
+    .Eq(doc => doc.<array-field>, <array-values>)
 ```
 {% endtab %}
 {% endtabs %}
@@ -457,7 +463,8 @@ The following example finds the documents that their _FavoriteSports_ array fiel
 {% tab title="C\#" %}
 {% code title="Crud.Read.Basics.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // create an equality filter on an array field
 // find all user documents that have only 'Soccer' on their sports array
@@ -473,7 +480,8 @@ var soccerUsers = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+            .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonOnlySoccerFilter = Builders<BsonDocument>.Filter
             .Eq("favoriteSports", new List<string>() { "Soccer" });

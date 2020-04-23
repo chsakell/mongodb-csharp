@@ -33,7 +33,8 @@ The following sample finds:
 {% tab title="C\#" %}
 {% code title="ArrayOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<Traveler>(collectionName);
+var collection = database
+    .GetCollection<Traveler>(Constants.TravelersCollection);
 
 var fiveVisitedCountriesFilter = await collection
     .Find(t => t.VisitedCountries.Count == 5).ToListAsync();
@@ -46,7 +47,8 @@ var moreThan10VisitedCountries = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.TravelersCollection);
 
 // exactly 5
 var bsonFiveVisitedCountriesFilter = await bsonCollection.Find(
@@ -198,7 +200,8 @@ The sample filters `Traveler` documents that their _VisitedCountries_ array fiel
 {% tab title="C\#" %}
 {% code title="ArrayOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<Traveler>(collectionName);
+var collection = database
+    .GetCollection<Traveler>(Constants.TravelersCollection);
 
 var visitedGreeceExactly3Times = Builders<Traveler>.Filter
     .ElemMatch(t => t.VisitedCountries,
@@ -213,7 +216,8 @@ var visitedGreeceExactly3TimesTravelers = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.TravelersCollection);
 
 var bsonVisitedGreeceExactly3Times = Builders<BsonDocument>.Filter
     .ElemMatch<BsonValue>("visitedCountries", 
@@ -329,7 +333,8 @@ The following sample filters `Traveler` documents that their _VisitedCountries_ 
 {% tab title="C\#" %}
 {% code title="ArrayOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<Traveler>(collectionName);
+var collection = database
+    .GetCollection<Traveler>(Constants.TravelersCollection);
 
 // filter on country name
 var countryNameFilter = Builders<VisitedCountry>.Filter
@@ -349,7 +354,8 @@ var visitedGreeceOrItalyExactly3Times = Builders<Traveler>.Filter
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.TravelersCollection);
 
 var bsonVisitedGreeceOrItalyExactly3Times = Builders<BsonDocument>.Filter
     .ElemMatch<BsonValue>("visitedCountries", new BsonDocument
@@ -449,7 +455,8 @@ The sample finds the `Traveler` documents where _"Greece"_ is contained in the _
 {% tab title="C\#" %}
 {% code title="ArrayOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<Traveler>(collectionName);
+var collection = database
+    .GetCollection<Traveler>(Constants.TravelersCollection);
 
 var greeceTravelers = await collection
     .Find(t => t.VisitedCountries
@@ -460,7 +467,8 @@ var greeceTravelers = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+            .GetCollection<BsonDocument>(Constants.TravelersCollection);
 
 var bsonGreeceVisitedFilter = Builders<BsonDocument>.Filter
             .AnyEq("visitedCountries.name", "Greece");
@@ -490,7 +498,8 @@ You can go further, and add an **\|\|** __operator in the `Any` method. This wil
 {% tabs %}
 {% tab title="C\#" %}
 ```csharp
-var collection = database.GetCollection<Traveler>(collectionName);
+var collection = database
+  .GetCollection<Traveler>(Constants.TravelersCollection);
 
 var greeceItalyTravelers = await collection
   .Find(t => t.VisitedCountries
@@ -578,7 +587,8 @@ The sample finds all `Traveler` documents having _"Backpacking"_ and _"Climbing"
 {% tab title="C\#" %}
 {% code title="ArrayOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<Traveler>(collectionName);
+var collection = database
+    .GetCollection<Traveler>(Constants.TravelersCollection);
 
 var climbingAndBackpackingFilter = Builders<Traveler>.Filter
     .All(t => t.Activities, 
@@ -592,7 +602,8 @@ var climbingAndBackpackingTravelers = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.TravelersCollection);
 
 var bsonClimbingAndBackpackingFilter = Builders<BsonDocument>.Filter
     .All("activities", new List<string> { "Backpacking", "Climbing" });

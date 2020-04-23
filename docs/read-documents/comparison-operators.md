@@ -35,7 +35,8 @@ The sample uses an _equal_ operator to find all documents that have the _profess
 {% tab title="C\#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // Case sensitive!
 var equalPilotsFilter = Builders<User>.Filter
@@ -49,7 +50,8 @@ var pilots = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 // Case sensitive matters!  
 var bsonEqualPilotsFilter = Builders<BsonDocument>.Filter
@@ -161,7 +163,8 @@ The sample uses a _not equal_ operator to match all documents that their _profes
 {% tab title="C\#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 var notEqualDoctorsFilter = Builders<User>.Filter
     .Ne(u => u.Profession, "Doctor");
@@ -174,7 +177,8 @@ var notDoctors = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+            .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonNotEqualDoctorsFilter = Builders<BsonDocument>.Filter
             .Ne("profession", "Doctor");
@@ -286,7 +290,7 @@ The sample finds all user documents having their _salary_ field **greater than**
 {% tab title="C\#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database.GetCollection<User>(Constants.UsersCollection);
 
 var filterGreaterThan = Builders<User>.Filter
     .Gt(u => u.Salary, 3500);
@@ -299,7 +303,8 @@ var greaterThan3500 = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+            .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonFilterGreaterThan = Builders<BsonDocument>
             .Filter.Gt("salary", 3500);
@@ -414,7 +419,8 @@ The sample finds all user documents having their _salary_ field **greater than o
 {% tab title="C\#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+  .GetCollection<User>(Constants.UsersCollection);
 
 // create a greater than or equal filter on salary
 var filterGreaterOrEqualThan = Builders<User>.Filter
@@ -428,7 +434,8 @@ var greaterOrEqualThan4500 = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+   .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonFilterGreaterOrEqualThan = Builders<BsonDocument>
             .Filter.Gte("salary", 4500);
@@ -544,7 +551,8 @@ The sample finds all user documents having their _salary_ field **less than** 25
 {% tab title="C\#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 var filterLessThan = Builders<User>.Filter
     .Lt(u => u.Salary, 2500);
@@ -557,7 +565,8 @@ var lessThan2500 = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+   .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonFilterLessThan = Builders<BsonDocument>.Filter
     .Lt("salary", 2500);
@@ -663,7 +672,8 @@ The sample finds all user documents having their _salary_ field **less than or e
 {% tab title="C\#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+  .GetCollection<User>(Constants.UsersCollection);
 
 // create a less than or equal filter on salary
 var filterLessOrEqualThan = Builders<User>.Filter
@@ -677,7 +687,8 @@ var lessThanOrEqual1500 = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+   .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonFilterLessOrEqualThan = Builders<BsonDocument>.Filter
             .Lte("salary", 1500);
@@ -788,7 +799,8 @@ The sample finds all user documents where their _profession_ field value is eith
 {% tab title="C\#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+  .GetCollection<User>(Constants.UsersCollection);
 
 // create an In operator filter on profession
 var medicalProfessionsFilter = Builders<User>.Filter
@@ -802,7 +814,8 @@ var medicalUsers = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+   .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonMedicalProfessionsFilter = Builders<BsonDocument>.Filter
    .In("profession",  new[] { "Dentist", "Pharmacist", "Nurse" });
@@ -907,7 +920,7 @@ The sample finds all user documents where their _profession_ field value is **di
 {% tab title="C\#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database.GetCollection<User>(Constants.UsersCollection);
 
 // create an Not In operator filter on profession
 var nonMedicalProfessionsFilter = Builders<User>.Filter
@@ -921,7 +934,8 @@ var nonMedicalUsers = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+  .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonNotMedicalProfessionsFilter = Builders<BsonDocument>.Filter
   .Nin("profession", new[] { "Dentist", "Pharmacist", "Nurse" });
