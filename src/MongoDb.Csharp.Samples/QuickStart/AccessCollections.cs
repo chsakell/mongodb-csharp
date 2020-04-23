@@ -15,8 +15,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Core.Databases.Persons);
-            Utils.DropDatabase(Client, Core.Databases.Trips);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()
@@ -25,36 +24,34 @@ namespace MongoDb.Csharp.Samples.QuickStart
         }
         private async Task CollectionSamples()
         {
-            var usersDatabase = Client.GetDatabase(Databases.Persons);
-            var tripsDatabase = Client.GetDatabase(Databases.Trips);
+            var database = Client.GetDatabase(Constants.SamplesDatabase);
 
             #region Typed classes commands
 
             // Will create the users collection on the fly if it doesn't exists
-            var personsCollection = usersDatabase.GetCollection<User>("users");
-            var bsonPersonsCollection = usersDatabase.GetCollection<BsonDocument>("users");
+            var personsCollection = database.GetCollection<User>(Constants.UsersCollection);
+            var bsonPersonsCollection = database.GetCollection<BsonDocument>(Constants.UsersCollection);
 
             User typedUser = RandomData.GenerateUsers(1).First();
             await personsCollection.InsertOneAsync(typedUser);
 
             // Create another collection
             var loginsCollectionName = "logins";
-            await usersDatabase.CreateCollectionAsync(loginsCollectionName);
+            await database.CreateCollectionAsync(loginsCollectionName);
 
             // list collections
-            var collections = (await usersDatabase.ListCollectionsAsync()).ToList();
+            var collections = (await database.ListCollectionsAsync()).ToList();
             Utils.Log(collections, "List Collections");
 
             // remove collection
-            await usersDatabase.DropCollectionAsync(loginsCollectionName);
+            await database.DropCollectionAsync(loginsCollectionName);
 
             #region Capped collection
 
             // create a capped collection
             // 'size' field is required when 'capped' is true
-            var travelersCollectionName = "travelers";
-            await tripsDatabase
-                .CreateCollectionAsync(travelersCollectionName,
+            await database
+                .CreateCollectionAsync(Constants.TravelersCollection,
                     new CreateCollectionOptions()
                     {
                         Capped = true, MaxDocuments = 3, MaxSize = 10000
@@ -63,8 +60,8 @@ namespace MongoDb.Csharp.Samples.QuickStart
             var travelers = RandomData.GenerateTravelers(3);
             travelers.First().Name = "Christos";
 
-            var travelersCollection = tripsDatabase
-                .GetCollection<Traveler>(travelersCollectionName);
+            var travelersCollection = database
+                .GetCollection<Traveler>(Constants.TravelersCollection);
 
             await travelersCollection.InsertManyAsync(travelers);
 

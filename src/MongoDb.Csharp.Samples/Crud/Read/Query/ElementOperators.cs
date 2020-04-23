@@ -13,7 +13,7 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Databases.Orders);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()
@@ -23,10 +23,9 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
         private async Task ElementOperatorsSamples()
         {
-            var collectionName = "invoices";
-            var database = Client.GetDatabase(Databases.Orders);
-            var collection = database.GetCollection<Order>(collectionName);
-            var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+            var database = Client.GetDatabase(Constants.SamplesDatabase);
+            var collection = database.GetCollection<Order>(Constants.InvoicesCollection);
+            var bsonCollection = database.GetCollection<BsonDocument>(Constants.InvoicesCollection);
 
             #region Prepare data
 

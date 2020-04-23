@@ -15,7 +15,7 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Databases.Persons);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()
@@ -25,13 +25,13 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 
         private async Task WriteConcernSamples()
         {
-            var personsDatabase = Client.GetDatabase(Databases.Persons);
+            var personsDatabase = Client.GetDatabase(Constants.SamplesDatabase);
 
 
             #region Prepare data
             var writeConcern = new WriteConcern(w: new Optional<WriteConcern.WValue>("0"), journal: false);
             var user = RandomData.GenerateUsers(1).First();
-            var usersCollection = personsDatabase.GetCollection<User>("users")
+            var usersCollection = personsDatabase.GetCollection<User>(Constants.UsersCollection)
                 .WithWriteConcern(writeConcern);
 
             // Requests no acknowledgment of the write operation

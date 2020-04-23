@@ -14,7 +14,7 @@ namespace MongoDb.Csharp.Samples.Aggregation
         {
             // Create a mongodb client using a connection string
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Databases.Trips);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()
@@ -24,11 +24,9 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
         private async Task BucketSamples()
         {
-            var travelersCollectionName = "travelers";
-            var tripsDatabase = Client.GetDatabase(Databases.Trips);
-            var travelersCollection = tripsDatabase.GetCollection<Traveler>(travelersCollectionName);
-            var travelersQueryableCollection = tripsDatabase.GetCollection<Traveler>(travelersCollectionName).AsQueryable();
-            var travelersBsonCollection = tripsDatabase.GetCollection<BsonDocument>(travelersCollectionName);
+            var database = Client.GetDatabase(Constants.SamplesDatabase);
+            var travelersCollection = database.GetCollection<Traveler>(Constants.TravelersCollection);
+            var travelersBsonCollection = database.GetCollection<BsonDocument>(Constants.TravelersCollection);
             #region Prepare data
 
             await travelersCollection.InsertManyAsync(RandomData.GenerateTravelers(40, 5));

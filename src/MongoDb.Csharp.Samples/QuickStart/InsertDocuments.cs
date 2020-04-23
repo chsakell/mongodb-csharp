@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
@@ -17,7 +16,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Core.Databases.Persons);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()
@@ -26,12 +25,12 @@ namespace MongoDb.Csharp.Samples.QuickStart
         }
         private async Task InsertSamples()
         {
-            var usersDatabase = Client.GetDatabase(Core.Databases.Persons);
+            var database = Client.GetDatabase(Constants.SamplesDatabase);
 
             #region Typed classes commands
 
             // Will create the users collection on the fly if it doesn't exists
-            var personsCollection = usersDatabase.GetCollection<User>("users");
+            var personsCollection = database.GetCollection<User>(Constants.UsersCollection);
 
             User appPerson = RandomData.GenerateUsers(1).First();
             // Insert one document
@@ -46,7 +45,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
 
             #region BsonDocument commands
 
-            var personsBsonCollection = usersDatabase.GetCollection<BsonDocument>("users");
+            var personsBsonCollection = database.GetCollection<BsonDocument>(Constants.UsersCollection);
 
             var bsonPerson = new BsonDocument
             {

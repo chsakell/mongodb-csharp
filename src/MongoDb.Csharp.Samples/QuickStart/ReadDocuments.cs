@@ -15,7 +15,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Databases.Persons);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()
@@ -24,12 +24,12 @@ namespace MongoDb.Csharp.Samples.QuickStart
         }
         private async Task ReadSamples()
         {
-            var usersDatabase = Client.GetDatabase(Core.Databases.Persons);
+            var database = Client.GetDatabase(Constants.SamplesDatabase);
 
             #region Prepare data
 
             // Will create the users collection on the fly if it doesn't exists
-            var personsCollection = usersDatabase.GetCollection<User>("users");
+            var personsCollection = database.GetCollection<User>(Constants.UsersCollection);
 
             User appPerson = RandomData.GenerateUsers(1).First();
             // Insert one document
@@ -58,7 +58,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
 
             #region BsonDocument commands
             // we need to get the BsonDocument schema based collection
-            var bsonPersonCollection = usersDatabase.GetCollection<BsonDocument>("users");
+            var bsonPersonCollection = database.GetCollection<BsonDocument>(Constants.UsersCollection);
 
             // Create a bson filter
             var bsonPersonFilter = Builders<BsonDocument>.Filter.Eq("_id", appPerson.Id);

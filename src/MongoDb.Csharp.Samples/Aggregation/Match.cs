@@ -13,8 +13,7 @@ namespace MongoDb.Csharp.Samples.Aggregation
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Databases.Persons);
-            Utils.DropDatabase(Client, Databases.Trips);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()
@@ -24,14 +23,12 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
         private async Task MatchStageSamples()
         {
-            var usersCollection = "users";
-            var tripsCollection = "trips";
-            var personsDatabase = Client.GetDatabase(Databases.Persons);
-            var travelersDatabase = Client.GetDatabase(Databases.Trips);
-            var personsCollection = personsDatabase.GetCollection<User>(usersCollection);
-            var personsBsonCollection = personsDatabase.GetCollection<BsonDocument>(usersCollection);
-            var travelersCollection = travelersDatabase.GetCollection<Traveler>(tripsCollection);
-            var travelersBsonCollection = travelersDatabase.GetCollection<BsonDocument>(tripsCollection);
+            var personsDatabase = Client.GetDatabase(Constants.SamplesDatabase);
+            var travelersDatabase = Client.GetDatabase(Constants.SamplesDatabase);
+            var personsCollection = personsDatabase.GetCollection<User>(Constants.UsersCollection);
+            var personsBsonCollection = personsDatabase.GetCollection<BsonDocument>(Constants.UsersCollection);
+            var travelersCollection = travelersDatabase.GetCollection<Traveler>(Constants.TravelersCollection);
+            var travelersBsonCollection = travelersDatabase.GetCollection<BsonDocument>(Constants.TravelersCollection);
             #region Prepare data
 
             await personsCollection.InsertManyAsync(RandomData.GenerateUsers(500));

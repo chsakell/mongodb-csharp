@@ -17,7 +17,7 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Databases.Chat);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()
@@ -27,12 +27,12 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 
         private async Task IdMemberSamples()
         {
-            var chatDatabase = Client.GetDatabase(Databases.Chat);
+            var database = Client.GetDatabase(Constants.SamplesDatabase);
 
             #region Prepare data
 
             // Will create the users collection on the fly if it doesn't exists
-            var messagesCollection = chatDatabase.GetCollection<Message>(" messages");
+            var messagesCollection = database.GetCollection<Message>(Constants.MessagesCollection);
 
             #endregion
 

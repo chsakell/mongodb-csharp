@@ -17,7 +17,7 @@ namespace MongoDb.Csharp.Samples.Aggregation
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Databases.Persons);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()
@@ -27,10 +27,9 @@ namespace MongoDb.Csharp.Samples.Aggregation
 
         private async Task GroupStageSamples()
         {
-            var collectionName = "users";
-            var database = Client.GetDatabase(Databases.Persons);
-            var collection = database.GetCollection<User>(collectionName);
-            var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+            var database = Client.GetDatabase(Constants.SamplesDatabase);
+            var collection = database.GetCollection<User>(Constants.UsersCollection);
+            var bsonCollection = database.GetCollection<BsonDocument>(Constants.UsersCollection);
             #region Prepare data
 
             await collection.InsertManyAsync(RandomData.GenerateUsers(1000));

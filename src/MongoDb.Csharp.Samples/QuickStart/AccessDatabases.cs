@@ -14,7 +14,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Core.Databases.Persons);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()

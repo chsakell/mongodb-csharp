@@ -17,8 +17,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Databases.Trips);
-            Utils.DropDatabase(Client, Databases.GenericUseDb);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()
@@ -28,14 +27,11 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
         private async Task UpdatingArraysDefinitions()
         {
-            var travelerCollectionName = "travelers";
-            var storesCollectionName = "stores";
-            var tripsDatabase = Client.GetDatabase(Databases.Trips);
-            var genericDatabase = Client.GetDatabase(Databases.GenericUseDb);
-            var travelersCollection = tripsDatabase.GetCollection<Traveler>(travelerCollectionName);
-            var bsonTravelersCollection = tripsDatabase.GetCollection<BsonDocument>(travelerCollectionName);
-            var storesCollection = genericDatabase.GetCollection<StoreItem>(storesCollectionName);
-            var bsonStoresCollection = genericDatabase.GetCollection<BsonDocument>(storesCollectionName);
+            var database = Client.GetDatabase(Constants.SamplesDatabase);
+            var travelersCollection = database.GetCollection<Traveler>(Constants.TravelersCollection);
+            var bsonTravelersCollection = database.GetCollection<BsonDocument>(Constants.TravelersCollection);
+            var storesCollection = database.GetCollection<StoreItem>(Constants.StoreCollection);
+
             #region Prepare data
 
             await travelersCollection.InsertManyAsync(RandomData.GenerateTravelers(2));
@@ -116,7 +112,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
                 .UpdateManyAsync(storeEmptyFilter, pullPcGamesDefinition);
 
             // reset collection
-            await genericDatabase.DropCollectionAsync(storesCollectionName);
+            await database.DropCollectionAsync(Constants.StoreCollection);
             await storesCollection.InsertManyAsync(storeItems);
 
             var removeUpdateResult = await storesCollection

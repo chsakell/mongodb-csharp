@@ -16,7 +16,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Core.Databases.Persons);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()
@@ -25,12 +25,12 @@ namespace MongoDb.Csharp.Samples.QuickStart
         }
         private async Task UpdateSamples()
         {
-            var usersDatabase = Client.GetDatabase(Core.Databases.Persons);
+            var usersDatabase = Client.GetDatabase(Constants.SamplesDatabase);
 
             #region Prepare data
 
             // Will create the users collection on the fly if it doesn't exists
-            var personsCollection = usersDatabase.GetCollection<User>("users");
+            var personsCollection = usersDatabase.GetCollection<User>(Constants.UsersCollection);
 
             User appPerson = RandomData.GenerateUsers(1).First();
             // Insert one document
@@ -80,7 +80,7 @@ namespace MongoDb.Csharp.Samples.QuickStart
 
             #region BsonDocument commands
             // we need to get the BsonDocument schema based collection
-            var bsonPersonCollection = usersDatabase.GetCollection<BsonDocument>("users");
+            var bsonPersonCollection = usersDatabase.GetCollection<BsonDocument>(Constants.UsersCollection);
             // Find a person using a class filter
             var bsonSingleFilter = Builders<BsonDocument>.Filter.Eq("_id", appPerson.Id);
             var bsonUpdate = Builders<BsonDocument>.Update.Set("phone", "123-456-678");

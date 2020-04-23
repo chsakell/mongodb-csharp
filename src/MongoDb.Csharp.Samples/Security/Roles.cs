@@ -15,7 +15,7 @@ namespace MongoDb.Csharp.Samples.Expressions
         {
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Databases.Trips);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()
@@ -26,7 +26,7 @@ namespace MongoDb.Csharp.Samples.Expressions
         private async Task RolesSamples()
         {
             var travelersCollectionName = "travelers";
-            var tripsDatabase = Client.GetDatabase(Databases.Trips);
+            var tripsDatabase = Client.GetDatabase(Constants.SamplesDatabase);
             var travelersCollection = tripsDatabase.GetCollection<Traveler>(travelersCollectionName);
             var travelersQueryableCollection = tripsDatabase.GetCollection<Traveler>(travelersCollectionName).AsQueryable();
             var travelersBsonCollection = tripsDatabase.GetCollection<BsonDocument>(travelersCollectionName);

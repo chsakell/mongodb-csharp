@@ -16,7 +16,7 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
             BsonClassMap.RegisterClassMap<Sport>();
             // Create a mongodb client
             Client = new MongoClient(Utils.DefaultConnectionString);
-            Utils.DropDatabase(Client, Databases.Betting);
+            Utils.DropDatabase(Client, Constants.SamplesDatabase);
         }
 
         public async Task Run()
@@ -26,8 +26,9 @@ namespace MongoDb.Csharp.Samples.Crud.Insert
 
         private async Task OrderedInsertSamples()
         {
-            var bettingDatabase = Client.GetDatabase(Databases.Betting);
-            var sportsCollection = bettingDatabase.GetCollection<Sport>("sports");
+            var bettingDatabase = Client.GetDatabase(Constants.SamplesDatabase);
+
+            var sportsCollection = bettingDatabase.GetCollection<Sport>(Constants.SportsCollection);
             #region Prepare data
 
             var sports = new List<Sport>
