@@ -19,7 +19,8 @@ The sample pushes a new `VisitedCountry` in the _VisitedCountries_ array of a `T
 {% tab title="C\#" %}
 {% code title="UpdatingArrays.cs" %}
 ```csharp
-var collection = database.GetCollection<Traveler>(collectionName);
+var collection = database
+    .GetCollection<Traveler>(Constants.TravelersCollection);
 
 var firstTraveler = Builders<Traveler>.Filter.Empty;
 
@@ -42,7 +43,8 @@ var addNewVisitedCountryResult = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.TravelersCollection);
 
 var bsonFirstUser = Builders<BsonDocument>.Filter.Empty;
 var bsonVisitedCountry = RandomData.GenerateVisitedCountries(1).First();
@@ -128,7 +130,8 @@ The sample adds 10 new `VisitedCountry` items in the _VisitedCountries_ array fi
 {% tab title="C\#" %}
 {% code title="UpdatingArrays.cs" %}
 ```csharp
-var collection = database.GetCollection<Traveler>(collectionName);
+var collection = database
+    .GetCollection<Traveler>(Constants.TravelersCollection);
 
 var firstTraveler = Builders<Traveler>.Filter.Empty;
 
@@ -145,7 +148,8 @@ var addNewVisitedCountriesResult = await collection
 
 {% tab title="Bson" %}
 ```csharp
-var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+var bsonCollection = database
+    .GetCollection<BsonDocument>(Constants.TravelersCollection);
 
 var bsonFirstUser = Builders<BsonDocument>.Filter.Empty;
 
@@ -248,8 +252,8 @@ The sample removes two **string** values _\("FIFA 20", "NBA 2K17"\)_ from the _P
 {% tab title="C\#" %}
 {% code title="UpdatingArrays.cs" %}
 ```csharp
-var storesCollection = genericDatabase
-    .GetCollection<StoreItem>(storesCollectionName);
+var storesCollection = database
+    .GetCollection<StoreItem>(Constants.StoreCollection);
 
 var storeEmptyFilter = Builders<StoreItem>.Filter.Empty;
 
@@ -402,8 +406,8 @@ The sample removes two string values from the _PcGames_ array field and one from
 {% tab title="C\#" %}
 {% code title="UpdatingArrays.cs" %}
 ```csharp
-var storesCollection = genericDatabase
-    .GetCollection<StoreItem>(storesCollectionName);
+var storesCollection = database
+    .GetCollection<StoreItem>(Constants.StoreCollection);
 
 var storeEmptyFilter = Builders<StoreItem>.Filter.Empty;
 
@@ -565,8 +569,8 @@ The sample removes `VisitedCountry` documents from the _VisitedCountries_ array 
 {% tab title="C\#" %}
 {% code title="UpdatingArrays.cs" %}
 ```csharp
-var travelersCollection = tripsDatabase
-    .GetCollection<Traveler>(travelerCollectionName);
+var travelersCollection = database
+    .GetCollection<Traveler>(Constants.TravelersCollection);
 
 // create a filter
 var visited8Times = Builders<Traveler>
@@ -705,8 +709,8 @@ The sample sets the _Name_ value for all matched array `VisitedCountry` elements
 {% tab title="C\#" %}
 {% code title="UpdatingArrays.cs" %}
 ```csharp
-var travelersCollection = tripsDatabase
-    .GetCollection<Traveler>(travelerCollectionName);
+var travelersCollection = database
+    .GetCollection<Traveler>(Constants.TravelersCollection);
 
 // create an elemMatch operator
 var visitedGreeceExactly3Times = Builders<Traveler>.Filter

@@ -19,7 +19,8 @@ The sample replaces the first document with a new one.
 {% tab title="C\#" %}
 {% code title="ReplaceDocuments.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // this is the new document - demo only
 var newUser = RandomData.GenerateUsers(1).First();
@@ -34,7 +35,7 @@ var replaceOneResult = await collection
 {% tab title="Bson" %}
 ```csharp
 var bsonCollection = database
-            .GetCollection<BsonDocument>(collectionName);
+            .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 // this is the new document - demo only
 var newUser = RandomData.GenerateUsers(1).First();
@@ -158,7 +159,8 @@ The sample tries to replace a user document that has company name "_Microsoft Co
 {% tab title="C\#" %}
 {% code title="ReplaceDocuments.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // this is the new document - demo only
 var microsoftCeo = RandomData.GenerateUsers(1).First();
@@ -180,7 +182,7 @@ var addOrReplaceSatyaNadellaResult = await collection
 {% tab title="Bson" %}
 ```csharp
 var bsonCollection = database
-            .GetCollection<BsonDocument>(collectionName);
+      .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 // this is the new document - demo only
 // this is the new document - demo only
@@ -321,7 +323,8 @@ The sample replaces the first document with a new one and gets back the entire d
 {% tab title="C\#" %}
 {% code title="ReplaceDocuments.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+  .GetCollection<User>(Constants.UsersCollection);
 
 var firstDbUser = await collection.
             Find(Builders<User>.Filter.Empty)
@@ -348,7 +351,7 @@ var firstUser = await collection
 {% tab title="Bson" %}
 ```csharp
 var bsonCollection = database
-            .GetCollection<BsonDocument>(collectionName);
+     .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 // this is the new document - demo only
 
