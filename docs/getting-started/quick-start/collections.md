@@ -17,12 +17,12 @@ IMongoDatabase.GetCollection<T>(string collection)
 {% code title="AccessCollections.cs" %}
 ```csharp
 // Get a reference to the database
-var usersDatabase = Client
-    .GetDatabase(Databases.Persons);
+var database = Client
+    .GetDatabase(Constants.SamplesDatabase);
 
 // Get a reference to a database's collection named 'users'
-var personsTypedCollection = usersDatabase
-    .GetCollection<User>("users");
+var personsTypedCollection = database
+    .GetCollection<User>(Constants.UsersCollection);
 ```
 {% endcode %}
 {% endtab %}
@@ -116,8 +116,8 @@ Notice that in the above sample the collection reference is a **typed** collecti
 This is different than getting a reference collection of type `IMongoCollection<BsonDocument>`:
 
 ```csharp
-var bsonPersonsCollection = usersDatabase
-    .GetCollection<BsonDocument>("users");
+var bsonPersonsCollection = database
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
 ```
 
 {% hint style="success" %}
@@ -141,7 +141,7 @@ IMongoDatabase.CreateCollection(string collection)
 {% code title="AccessCollections.cs" %}
 ```csharp
 var loginsCollectionName = "logins";
-await usersDatabase
+await database
     .CreateCollectionAsync(loginsCollectionName);
 ```
 {% endcode %}
@@ -166,9 +166,8 @@ Remember that in case you set the `MaxDocuments` you are required to set the `Ma
 {% tab title="C\#" %}
 {% code title="AccessCollections.cs" %}
 ```csharp
-var travelersCollectionName = "travelers";
-await tripsDatabase
-    .CreateCollectionAsync(travelersCollectionName,
+await database
+    .CreateCollectionAsync(Constants.TravelersCollection,
         new CreateCollectionOptions()
         {
             Capped = true, MaxDocuments = 3, MaxSize = 10000
@@ -231,10 +230,10 @@ IMongoDatabase.ListCollections()
 {% tab title="C\#" %}
 {% code title="AccessCollections.cs" %}
 ```csharp
-var usersDatabase = Client.GetDatabase(Databases.Persons);
+var database = Client.GetDatabase(Constants.SamplesDatabase);
 
 // Get all collections
-var collections = (await usersDatabase
+var collections = (await database
     .ListCollectionsAsync()).ToList();
 ```
 {% endcode %}
@@ -273,7 +272,7 @@ IMongoDatabase.DropCollection(string collection)
 
 ```csharp
 var loginsCollectionName = "logins";
-await usersDatabase
+await database
     .DropCollectionAsync(loginsCollectionName);
 ```
 
