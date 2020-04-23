@@ -276,5 +276,3 @@ await database
     .DropCollectionAsync(loginsCollectionName);
 ```
 
-
-

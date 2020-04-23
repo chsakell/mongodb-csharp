@@ -18,7 +18,11 @@ Depending on the collection type you can pass either your own class type or a `B
 {% tab title="C\#" %}
 {% code title="InsertDocuments.cs" %}
 ```csharp
-var personsCollection = usersDatabase.GetCollection<User>("users");
+var database = Client
+    .GetDatabase(Constants.SamplesDatabase);
+
+var personsCollection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 User appPerson = RandomData.GenerateUsers(1).First();
 
@@ -176,8 +180,8 @@ db.users.insertOne({
 Luckily, there is the **`ToBsonDocument`** helper method that builds the `BsonDocument` from your typed class automatically and saves you from all the trouble.
 
 ```csharp
-var personsBsonCollection = usersDatabase
-    .GetCollection<BsonDocument>("users");
+var personsBsonCollection = database
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 User appPerson = RandomData
     .GenerateUsers(1).First();
