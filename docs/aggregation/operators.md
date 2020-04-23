@@ -20,7 +20,7 @@ The sample returns `Traveler` documents but only include the **first** element o
 {% code title="Slice.cs" %}
 ```csharp
 var travelersQueryableCollection = tripsDatabase
-    .GetCollection<Traveler>(travelersCollectionName)
+    .GetCollection<Traveler>(Constants.TravelersCollection)
     .AsQueryable();
 
 var sliceQuery = from t in travelersQueryableCollection
@@ -186,7 +186,7 @@ _Slice_ can be combined with the _Skip_ method and provide full pagination funct
 {% tab title="C\#" %}
 ```csharp
 var travelersQueryableCollection = tripsDatabase
-    .GetCollection<Traveler>(travelersCollectionName)
+    .GetCollection<Traveler>(Constants.TravelersCollection)
     .AsQueryable();
     
 var sliceWithSkipQuery = 
@@ -281,7 +281,7 @@ The sample returns `Traveler` documents with their _VisitedCountries_ array fiel
 {% code title="ComparisonOperators.cs" %}
 ```csharp
 var travelersQueryableCollection = tripsDatabase
-    .GetCollection<Traveler>(travelersCollectionName)
+    .GetCollection<Traveler>(Constants.TravelersCollection)
     .AsQueryable();
 
 var filterQuery = 

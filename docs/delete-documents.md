@@ -11,7 +11,8 @@ To delete a single document, create a filter definition that matches the documen
 {% code title="DeleteDocuments.cs" %}
 ```csharp
 // get a collection reference
-var personsCollection = usersDatabase.GetCollection<User>("users");
+var personsCollection = usersDatabase
+    .GetCollection<User>(Constants.UsersCollection);
 
 // find a person using an equality filter on its id
 var filter = Builders<User>.Filter.Eq(person => person.Id, appPerson.Id);
@@ -30,7 +31,7 @@ if (personDeleteResult.DeletedCount == 1)
 ```csharp
 // get a collection reference
 var bsonPersonCollection = usersDatabase
-    .GetCollection<BsonDocument>("users");
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
     
 // find a person using a greater than filter on its salary field
 var bsonSingleFilter = Builders<BsonDocument>.Filter.Gt("salary", 2000);
@@ -70,7 +71,8 @@ To delete the first document in the collection, simply use an empty filter defin
 {% code title="DeleteDocuments.cs" %}
 ```csharp
 // get a collection reference
-var personsCollection = usersDatabase.GetCollection<User>("users");
+var personsCollection = usersDatabase
+    .GetCollection<User>(Constants.UsersCollection);
 
 // create an empty filter definition
 var emptyFilter = Builders<User>.Filter.Empty;
@@ -86,7 +88,7 @@ var firstPersonDeleteResult = await personsCollection
 ```csharp
 // get a collection reference
 var bsonPersonCollection = usersDatabase
-    .GetCollection<BsonDocument>("users");
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 // create an empty filter
 var bsonEmptyFilter = Builders<BsonDocument>.Filter.Empty;
@@ -117,7 +119,9 @@ The following example shows how to delete user documents based on the _salary_ f
 {% tab title="C\#" %}
 {% code title="DeleteDocuments.cs" %}
 ```csharp
-
+var personsCollection = usersDatabase
+    .GetCollection<User>(Constants.UsersCollection);
+    
 // create a filter
 var salaryFilter = Builders<User>.Filter
     .And(
@@ -143,7 +147,7 @@ if (personsDeleteResult.DeletedCount.Equals(totalPersons))
 {% tab title="Bson" %}
 ```csharp
 var bsonPersonCollection = usersDatabase
-    .GetCollection<BsonDocument>("users");
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
     
 // find all users with salary > 2000
 var bsonSingleFilter = Builders<BsonDocument>.Filter.Gt("salary", 2000);

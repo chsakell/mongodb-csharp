@@ -20,7 +20,7 @@ The sample creates a pagination result on `User` documents by skipping 3 documen
 {% code title="Limit\_skip.cs" %}
 ```csharp
 var usersCollection = personsDatabase
-    .GetCollection<User>(usersCollectionName);
+    .GetCollection<User>(Constants.UsersCollection);
 
 var topLevelProjection = Builders<User>.Projection
     .Exclude(u => u.Id)
@@ -41,7 +41,7 @@ var topLevelProjectionResults = await usersCollection
 {% tab title="Bson" %}
 ```csharp
 var usersBsonCollection = personsDatabase
-    .GetCollection<BsonDocument>(usersCollectionName);
+    .GetCollection<BsonDocument>(Constants.UsersCollection);
     
 var bsonTopLevelProjection = Builders<BsonDocument>
     .Projection
@@ -126,7 +126,7 @@ To fetch the next page result just change the _skip_ size. The same query can al
 
 ```csharp
 var usersQueryableCollection = personsDatabase
-    .GetCollection<User>(usersCollectionName)
+    .GetCollection<User>(Constants.UsersCollection)
     .AsQueryable();
     
 var linqTopLevelResults = await usersQueryableCollection
@@ -147,7 +147,7 @@ Paginating an array field requires at least an extra **$unwind** stage to decons
 {% code title="Limit\_skip.cs" %}
 ```csharp
 var usersQueryableCollection = personsDatabase
-    .GetCollection<User>(usersCollectionName)
+    .GetCollection<User>(Constants.UsersCollection)
     .AsQueryable();
 
 var user = await usersCollection

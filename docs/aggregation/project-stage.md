@@ -32,7 +32,8 @@ The sample uses a projection stage to re-format `User` documents by excluding th
 {% tab title="C\#" %}
 {% code title="Projection.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 // exclude id, return only gender and date of birth
 var simpleProjection = Builders<User>.Projection
@@ -51,7 +52,7 @@ var simpleProjectionResults = await usersCollection
 {% tab title="Bson" %}
 ```csharp
 var bsonCollection = database
-            .GetCollection<BsonDocument>(collectionName);
+            .GetCollection<BsonDocument>(Constants.UsersCollection);
 
 var bsonSimpleProjection = Builders<BsonDocument>.Projection
     .Exclude("_id")
@@ -126,7 +127,8 @@ You can use projection to include new custom calculated fields in the final resu
 {% tab title="C\#" %}
 {% code title="Projection.cs" %}
 ```csharp
-var collection = database.GetCollection<User>(collectionName);
+var collection = database
+    .GetCollection<User>(Constants.UsersCollection);
 
 var customProjection = Builders<User>.Projection.Expression(u =>
     new
@@ -213,7 +215,7 @@ IMongoCollection<T>.AsQueryable()
 ```csharp
 // get an IMongoQueryable<T> reference
 var usersQueryableCollection = personsDatabase
-    .GetCollection<User>(usersCollectionName)
+    .GetCollection<User>(Constants.UsersCollection)
     .AsQueryable();
 
 // 'select new' creates a projection stage

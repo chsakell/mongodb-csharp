@@ -63,7 +63,7 @@ The following sample finds the distinct activities grouped by age for `Traveler`
 {% code title="Unwind.cs" %}
 ```csharp
 var travelersQueryableCollection = tripsDatabase
-    .GetCollection<Traveler>(travelersCollectionName)
+    .GetCollection<Traveler>(Constants.TravelersCollection)
     .AsQueryable();
 
 var linqQuery = travelersQueryableCollection
