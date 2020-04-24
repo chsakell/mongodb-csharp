@@ -8,7 +8,7 @@ description: '♥ Welcome to the MongoDB C# driver docs! ♥'
 
 MongoDB has been evolved rapidly over the years 💪 attracting more and more developers from different languages and backgrounds. While there are official MongoDB [drivers](https://docs.mongodb.com/ecosystem/drivers/) for different programming languages, many developers find kind of difficult to solve their problems based on each driver's reference or API. 
 
-These MongoDB C\# driver docs have been created for one purpose and one purpose only - to **bridge the gap between MongoDB and C\# developers** 👏. You will find numerous samples solving problems all developers facing on a daily basis.
+These MongoDB C\# driver docs have been created for one purpose only - to **bridge the gap between MongoDB and C\# developers** 👏. You will find numerous samples solving problems all developers facing on a daily basis.
 
 ![MongoDB for C\# developers](.gitbook/assets/main.png)
 
