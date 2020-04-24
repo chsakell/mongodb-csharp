@@ -5,7 +5,7 @@
 To update a document in MongoDB you need to configure 2 basic things:
 
 1. A filter definition that defines which document should be updated
-2. An update definition what defines what should be updated in the matched document
+2. An update definition that defines what should be updated in the matched document
 
 After configuring the above two, you use the `UpdateOne` method on an `IMongoCollection<T>` reference.
 

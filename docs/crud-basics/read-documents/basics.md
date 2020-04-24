@@ -4,7 +4,7 @@ description: "Meet the builder \U0001F91D"
 
 # Basics
 
-## The `FilterDefinitionBuilder` class
+## Filter Definition Builder
 
 To create a filter query for an `IMongoCollection<T>` collection, you need to build a `FilterDefinition<T>` filter. You can do this using the `Builders<T>.Filter` filter definition builder which contains several filters such as the equality or element filters. This section will give you an overview on how to create and use the filter definition builder.
 
@@ -202,11 +202,11 @@ var bsonAthensUsers = await bsonCollection
 ```javascript
 db.users.find({"address.city": { $eq: "Athens"}})
 db.users.find({"address.city": "Athens"})
-```
-{% endtab %}
 
-{% tab title="Result" %}
-```javascript
+-------------------------
+
+// sample result
+
 {
 	"_id" : ObjectId("5e919356139fe1568028900d"),
 	"gender" : 1,
@@ -251,6 +251,7 @@ db.users.find({"address.city": "Athens"})
 	],
 	"profession" : "Model"
 },
+
 ```
 {% endtab %}
 

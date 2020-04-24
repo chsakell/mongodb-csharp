@@ -2,7 +2,7 @@
 
 ## Unique Identifier
 
-Each top level document in MongoDB contains an _id_ field that uniquely identifies documents in the collection.  This field can be mapped from/to a public property in _C\#_ models. By convention public members named _Id_, _id_ and _id_ will be used as the identifier. MongoDB will ensure to generate a value for your identifier field when inserting documents and deserialize it back your model member during reads.
+Each top level document in MongoDB contains an \__id_ field that uniquely identifies documents in the collection.  This field can be mapped from/to a public property in _C\#_ models. By convention public members named _Id_, _id_ and _id_ will be used as the identifier. MongoDB will ensure to generate a value for your identifier field when inserting documents and deserialize it back your model member during reads.
 
 {% hint style="warning" %}
 The identifier member can be of any type but this doesn't mean that MongoDB will be able to automatically generate the value during insertions
