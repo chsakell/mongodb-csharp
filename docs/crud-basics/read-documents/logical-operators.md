@@ -10,10 +10,10 @@ Logical operators allow you to match documents based on the **boolean result** â
 
 | Operator | Description |
 | :--- | :--- |
-| **AND** | Matches documents that fulfills all specified conditions |
-| **NOT** | Matches documents that don't fulfills the specified expression |
-| **OR** | Matches documents that fulfills at least one of a set of conditions |
-| **NOR** | Matches documents that fails to fulfill both conditions |
+| **AND** | Matches documents that fulfill all specified conditions |
+| **NOT** | Matches documents that don't fulfill the specified expression |
+| **OR** | Matches documents that fulfill at least one of a set of conditions |
+| **NOR** | Matches documents that fail to fulfill both conditions |
 
 ![Logical operators](../../.gitbook/assets/logical.png)
 
@@ -24,12 +24,13 @@ The AND _operator_ performs a logical AND on a set of expressions and match docu
 {% tabs %}
 {% tab title="Syntax" %}
 ```csharp
-Builders<T>.Filter.And(FilterDefinition<T>[] filters)
+Builders<T>.Filter
+    .And(FilterDefinition<T>[] filters)
 ```
 {% endtab %}
 {% endtabs %}
 
-The idea is that you create as many **filter definitions** you want and pass them as an argument to the `And` `FilterDefinitionBuilder` method. 
+Create as many **filter definitions** you want and pass them as an argument to the **`And`** `FilterDefinitionBuilder` method. 
 
 The sample uses an _And_ operator to find all documents that have male _gender_ **AND** have the _profession_ field equal to "_Doctor_".
 
@@ -336,12 +337,13 @@ The NOT _operator_ performs a logical NOT on an expression and match documents t
 {% tabs %}
 {% tab title="Syntax" %}
 ```csharp
-Builders<T>.Filter.Not(FilterDefinition<T> filter)
+Builders<T>.Filter
+    .Not(FilterDefinition<T> filter)
 ```
 {% endtab %}
 {% endtabs %}
 
-The idea is that you create a **filter definition** and pass it as an argument to the `Not` `FilterDefinitionBuilder` method. The boolean expression's result for the matched documents will be **false**, meaning that they don't satisfy the expression.
+Create a **filter definition** and pass it as an argument to the **`Not`** `FilterDefinitionBuilder` method. The boolean expression's result for the matched documents will be **false**, meaning that they don't satisfy the expression.
 
 The sample uses an _Not_ operator to find all documents having male _gender,_ which can be translated as **NOT** _female_.
 
@@ -463,7 +465,7 @@ public class User
 
 ## _OR_ operator - _$or_
 
-The _OR_ operator performs a logical OR on an **set of expressions** and match documents that **satisfy** at least on of the expressions. 
+The _OR_ operator performs a logical OR on an **set of expressions** and matches documents that **satisfy** at least on of the expressions. 
 
 {% tabs %}
 {% tab title="Syntax" %}
@@ -473,7 +475,7 @@ Builders<T>.Filter.Or(FilterDefinition<T>[] filters)
 {% endtab %}
 {% endtabs %}
 
-The idea is that you create as many **filter definitions** you want and pass them as an argument to the `Or` `FilterDefinitionBuilder` method. The filters passed as parameters can be as complex as you want.
+Create as many **filter definitions** you want and pass them as an argument to the **`Or`** `FilterDefinitionBuilder` method. The filters passed as parameters can be as complex as you want.
 
 The sample uses an _Or_ operator to find all documents having _salary,_ either too low _\(less than 1500\)_ or too high _\( greater than 4000\)._
 
@@ -589,9 +591,9 @@ public class User
 
 ## _NOR_ operator - _$nor_
 
-The _NOR_ operator performs a logical NOR on an **set of expressions** and match documents that **fail to satisfy** all the expressions. Despite the fact that MongoDB supports the [$nor](https://docs.mongodb.com/manual/reference/operator/query/nor/) operator, you won't find any method on the C\# driver. That's totally fine though because you can built it using the AND operator and negating the internal filters. 
+The _NOR_ operator performs a logical NOR on an **set of expressions** and matches documents that **fail to satisfy** all the expressions. Despite the fact that MongoDB supports the [$nor](https://docs.mongodb.com/manual/reference/operator/query/nor/) operator, you won't find any method on the C\# driver. That's totally fine though because you can built it using the AND operator and negating the internal filters. 
 
-The idea is that you create as many filter definitions you want **to fail** and pass them as an argument to the `And` `FilterDefinitionBuilder` method. The filters passed as parameters can be as complex as you want.
+Create as many filter definitions you want **to fail** and pass them as an argument to the **`And`** `FilterDefinitionBuilder` method. The filters passed as parameters can be as complex as you want.
 
 The sample finds documents that **fail** to satisfy the following criteria:
 

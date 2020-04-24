@@ -656,7 +656,7 @@ public class User
 
 ## _Less Than or Equal_ operator - _$lte_
 
-The _less than or equal_ operator is used to find all documents that the field value is **less than or equal** a specific value.
+The _less than or equal_ operator is used to find all documents that the field value is **less than or equal** to a specific value.
 
 {% tabs %}
 {% tab title="Syntax" %}
