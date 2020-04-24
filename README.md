@@ -34,3 +34,12 @@ var linqQuery = travelersQueryableCollection
 
 var linqQueryResults = await linqQuery.ToListAsync();
 ```
+
+---
+
+## License
+
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+
+- **[MIT license](https://github.com/chsakell/mongodb-csharp/blob/master/LICENSE)**
+- Copyright 2020 © <a href="https://chsakell.com/" target="_blank">chsakell's blog</a>.
