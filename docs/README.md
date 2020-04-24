@@ -221,6 +221,11 @@ Avoid running multiple samples simultaneously 🚫 . Each sample usually starts 
 
 The docs are being updated 🔃 as soon as new samples are available or new MongoDB driver's features are released. Contribution is highly welcomed as long as it fulfills the following criteria:
 
-* **Request a new sample**: You can open a new issue at the repository's [issues](https://github.com/chsakell/mongodb-csharp/issues) page, as long as there isn't a related one already. Make sure you have done your search either in the docs or the source code before opening the issue. Last but not least, add some sample data to explain exactly what you are looking for.
-* **Fix a sample's code**: Fork the repository 🍴 , create and send a pull request.
+* **Request a new sample**: You can open a new issue at the repository's [issues](https://github.com/chsakell/mongodb-csharp/issues) page, as long as there isn't a related one already.  Make sure you have done your search either in the docs or the source code before opening the issue. Last but not least, add some sample data to explain exactly what you are looking for.
+
+{% hint style="info" %}
+### Issue title
+
+The issue's title for new samples should have the format **`Request sample - <short-description>`**, for example _Request sample - add array element_
+{% endhint %}
 
