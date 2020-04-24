@@ -32,6 +32,16 @@ var linqQuery = travelersQueryableCollection
 var linqQueryResults = await linqQuery.ToListAsync();
 ```
 
+## Contributing
+
+> The docs are ofted updated with new samples but you are free to contribute as well. There are two options to do so:
+
+- **Option 1**
+    - 💡 Suggest a sample to be added on the docs. Make sure you have done your search either in the docs or the source code before opening the issue. Add some sample data to explain exactly what you are looking for. The issue's title for new samples should have the format `Request sample - <short-description>`, for example **Request sample - add array element**
+
+- **Option 2**
+    - Fix a sample in the docs. 🍴 Fork this repo and open a pull request
+
 ---
 
 ## License
