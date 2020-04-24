@@ -2,7 +2,7 @@
 
 ## List databases
 
-To get information about all databases exist in a MongoDB server, use the `ListDatabases` method on a `MongoDB` client.
+To get information about all databases existing in a MongoDB server, use the `ListDatabases` method on a `MongoDB` client.
 
 {% tabs %}
 {% tab title="Syntax" %}

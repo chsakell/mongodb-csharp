@@ -121,7 +121,7 @@ var bsonPersonsCollection = database
 ```
 
 {% hint style="success" %}
-Using a `IMongoCollection<BsonDocument>`collection reference,  you can build pretty much all MongoDB queries you write in the shell, even the complex ones. The downside though is that you end up writing ugly code that is hard to maintain when models change.  Luckily, these docs' goal is to learn you how to build **typed** MongoDB queries
+With a `IMongoCollection<BsonDocument>`collection reference,  you can build pretty much all MongoDB queries you write in the shell, even the complex ones. The downside though is that you end up writing ugly code that is hard to maintain when models change.  Luckily, these docs' goal is to learn you how to build **typed** MongoDB queries
 {% endhint %}
 
 ## Create collections
