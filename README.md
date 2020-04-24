@@ -7,11 +7,11 @@
 - Operators explanations with examples written in C# and node.js _(shell)_
 - Advanced querying using LINQ
 
-## Gitbook
+## Gitbook 📘
 
 > The docs contain code samples for building MongoDB queries using the MongoDB C# driver an a typed way rather than using `BsonDocument`.
 
-## Example - $unwind operator
+## Example - $unwind operator 🚩
 
 ```csharp
 var travelersQueryableCollection = tripsDatabase
@@ -32,7 +32,7 @@ var linqQuery = travelersQueryableCollection
 var linqQueryResults = await linqQuery.ToListAsync();
 ```
 
-## Contributing
+## Contributing ☕
 
 > The docs are ofted updated with new samples but you are free to contribute as well. There are two options to do so:
 
