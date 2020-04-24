@@ -25,11 +25,10 @@ namespace MongoDb.Csharp.Samples.Expressions
 
         private async Task UsersSamples()
         {
-            var travelersCollectionName = "travelers";
             var tripsDatabase = Client.GetDatabase(Constants.SamplesDatabase);
-            var travelersCollection = tripsDatabase.GetCollection<Traveler>(travelersCollectionName);
-            var travelersQueryableCollection = tripsDatabase.GetCollection<Traveler>(travelersCollectionName).AsQueryable();
-            var travelersBsonCollection = tripsDatabase.GetCollection<BsonDocument>(travelersCollectionName);
+            var travelersCollection = tripsDatabase.GetCollection<Traveler>(Constants.TravelersCollection);
+            var travelersQueryableCollection = tripsDatabase.GetCollection<Traveler>(Constants.TravelersCollection).AsQueryable();
+            var travelersBsonCollection = tripsDatabase.GetCollection<BsonDocument>(Constants.TravelersCollection);
             #region Prepare data
 
             await travelersCollection.InsertManyAsync(RandomData.GenerateTravelers(10, 5));

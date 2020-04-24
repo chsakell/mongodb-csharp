@@ -23,10 +23,9 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
         private async Task ElementOperatorsSamples()
         {
-            var collectionName = "users";
             var database = Client.GetDatabase(Constants.SamplesDatabase);
-            var collection = database.GetCollection<User>(collectionName);
-            var bsonCollection = database.GetCollection<BsonDocument>(collectionName);
+            var collection = database.GetCollection<User>(Constants.UsersCollection);
+            var bsonCollection = database.GetCollection<BsonDocument>(Constants.UsersCollection);
 
             #region Prepare data
 
