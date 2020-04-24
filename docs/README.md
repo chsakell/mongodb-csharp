@@ -13,12 +13,12 @@ These MongoDB C\# driver docs have been created for one purpose only - to **brid
 ![MongoDB for C\# developers](.gitbook/assets/main.png)
 
 {% hint style="success" %}
-These docs don't intend to replace the official MongoDB C\# Driver [reference](https://mongodb.github.io/mongo-csharp-driver/) but instead act as a complementary reference. Also, the C\# samples in the MongoDB [docs](https://docs.mongodb.com/) are written using **`BsonDocument`** which is not ideal for C\# developers
+These docs don't intend to replace the official MongoDB C\# Driver [reference](https://mongodb.github.io/mongo-csharp-driver/), their purpose is to act as a complementary reference. Also, the C\# samples in the MongoDB [docs](https://docs.mongodb.com/) are written using **`BsonDocument`** which is not ideal for C\# developers
 {% endhint %}
 
 ## ❓ How to read the docs
 
-It depends on what your are looking for. In case this is the very first time your are dealing with MongoDB using the [C\# driver](https://docs.mongodb.com/ecosystem/drivers/csharp/) then you should definitely read the entire Getting Started section.
+It depends on what your are looking for. In case your are dealing for the first time with MongoDB using the [C\# driver](https://docs.mongodb.com/ecosystem/drivers/csharp/), then you should definitely read the entire Getting Started section.
 
 On the other hand, in case you already have some experience with the driver and you simply want to find a sample that may help you solve your problem, just search for it. 
 
