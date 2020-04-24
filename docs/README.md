@@ -13,7 +13,7 @@ These MongoDB C\# driver docs have been created for one purpose and one purpose 
 ![MongoDB for C\# developers](.gitbook/assets/main.png)
 
 {% hint style="success" %}
-These docs don't intend to replace the official MongoDB C\# Driver [reference](https://mongodb.github.io/mongo-csharp-driver/) but instead act as a complementary reference. Also, the _C\#_ samples in the MongoDB [docs](https://docs.mongodb.com/) are written using **`BsonDocument`** which is not ideal for _C\#_ developers
+These docs don't intend to replace the official MongoDB C\# Driver [reference](https://mongodb.github.io/mongo-csharp-driver/) but instead act as a complementary reference. Also, the C\# samples in the MongoDB [docs](https://docs.mongodb.com/) are written using **`BsonDocument`** which is not ideal for C\# developers
 {% endhint %}
 
 ## ❓ How to read the docs
@@ -36,7 +36,7 @@ This way you can always compare the shell commands with the .NET code used.
 The main goal of the docs is to learn you how to use the C\# driver in a **typed** way using your C\# class models and avoiding the generic `BsonDocument`. While you can easily build any MongoDB query you want with the schema-less way, it's way too ugly plus you will face problems when changing/renaming your model properties, thus it's not recommended.
 {% endhint %}
 
-The code for solving a specific case will look like this:
+The code for solving a specific case looks like this:
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -166,9 +166,9 @@ public class User
 As you can see, the solution is presented in 3 different ways. If any other code snippet is required it will be added through a new tab.
 
 {% hint style="success" %}
-* The **C\#** tab will always contain the typed way of querying MongoDB
+* The **C\#** tab contains the typed way of querying MongoDB
 * The **Bson** tab contains the code using `BsonDocument`
-* The **Shell** contains the code you would write directly in a MongoDB shell, following with sample results. This tab may also contain some documents directly from the database to get an idea of their schema
+* The **Shell** contains the code you would write directly in a MongoDB shell, following with sample results. This tab may also include some documents directly from the database to get an idea of their schema
 
 > Other than these tabs, samples might also contain result documents or the C\# class models used in the queries
 {% endhint %}

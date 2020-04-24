@@ -26,7 +26,7 @@ The section contains samples for the following operators:
 
 Other than the update operations there are also samples showing how to **replace** documents and **array** fields.
 
-![](../.gitbook/assets/update.png)
+![](../../.gitbook/assets/update.png)
 
 ## Update Definition Builder 💪 
 

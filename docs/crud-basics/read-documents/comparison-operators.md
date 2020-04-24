@@ -15,7 +15,7 @@ Comparison operators are probably the most used operators when querying any type
 | **In** | A field's value is ****_**contained**_ among specified values |
 | **Not In** | A field's value is _**not** contained_ among specified values |
 
-![Comparison Operators](../.gitbook/assets/compare.png)
+![Comparison Operators](../../.gitbook/assets/compare.png)
 
 ## _Equal_ operator - _$eq_
 

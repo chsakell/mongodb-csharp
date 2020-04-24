@@ -15,20 +15,20 @@
 
 ## 📑 CRUD Basics
 
-* [➕ Create](create-documents/README.md)
-  * [Id Member](create-documents/id-member.md)
-  * [Ordered insert](create-documents/ordered-insert.md)
-* [🔎 Read](read-documents/README.md)
-  * [Basics](read-documents/basics.md)
-  * [Comparison Operators](read-documents/comparison-operators.md)
-  * [Logical Operators](read-documents/logical-operators.md)
-  * [Element Operators](read-documents/element-operators.md)
-  * [Array operators](read-documents/array-operators.md)
-* [📝 Update](update-documents/README.md)
-  * [Operators](update-documents/operators.md)
-  * [Replace documents](update-documents/replace-documents.md)
-  * [Arrays](update-documents/arrays.md)
-* [❌ Delete](delete-documents.md)
+* [➕ Create](crud-basics/create-documents/README.md)
+  * [Id Member](crud-basics/create-documents/id-member.md)
+  * [Ordered insert](crud-basics/create-documents/ordered-insert.md)
+* [🔎 Read](crud-basics/read-documents/README.md)
+  * [Basics](crud-basics/read-documents/basics.md)
+  * [Comparison Operators](crud-basics/read-documents/comparison-operators.md)
+  * [Logical Operators](crud-basics/read-documents/logical-operators.md)
+  * [Element Operators](crud-basics/read-documents/element-operators.md)
+  * [Array operators](crud-basics/read-documents/array-operators.md)
+* [📝 Update](crud-basics/update-documents/README.md)
+  * [Operators](crud-basics/update-documents/operators.md)
+  * [Replace documents](crud-basics/update-documents/replace-documents.md)
+  * [Arrays](crud-basics/update-documents/arrays.md)
+* [❌ Delete](crud-basics/delete-documents.md)
 
 ## 🧪 Aggregation
 

@@ -14,5 +14,5 @@ Luckily the driver supports and contains most of the MongoDB query operators tha
 * Comment Operator
 * Geo-spatial Operators
 
-![Query operators](../.gitbook/assets/operators.png)
+![Query operators](../../.gitbook/assets/operators.png)
 

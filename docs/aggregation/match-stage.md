@@ -139,7 +139,7 @@ public class User
 
 ### Match with Project
 
-The following sample adds a _Match_ stage to filter `Traveler` documents that have visited "_Greece"_ exactly 3 times and projects the _Id, Name, Age_ and _VisitedCountries_ of each document. Notice that the match stage has been applied to array field elements using the [$elemMatch](../read-documents/array-operators.md#elemmatch-operator-usdelemmatch) operator.
+The following sample adds a _Match_ stage to filter `Traveler` documents that have visited "_Greece"_ exactly 3 times and projects the _Id, Name, Age_ and _VisitedCountries_ of each document. Notice that the match stage has been applied to array field elements using the [$elemMatch](../crud-basics/read-documents/array-operators.md#elemmatch-operator-usdelemmatch) operator.
 
 {% tabs %}
 {% tab title="C\#" %}

@@ -15,7 +15,7 @@ Logical operators allow you to match documents based on the **boolean result** â
 | **OR** | Matches documents that fulfills at least one of a set of conditions |
 | **NOR** | Matches documents that fails to fulfill both conditions |
 
-![Logical operators](../.gitbook/assets/logical.png)
+![Logical operators](../../.gitbook/assets/logical.png)
 
 ## _AND_ operator - _$and_
 

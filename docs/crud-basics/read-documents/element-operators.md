@@ -9,7 +9,7 @@ MongoDB providers two element query operators that helps you find documents base
 | **Exists** | Matches documents when the specified field exists |
 | **Type** | Matches documents when a field is of the specified type |
 
-![](../.gitbook/assets/element.png)
+![](../../.gitbook/assets/element.png)
 
 
 

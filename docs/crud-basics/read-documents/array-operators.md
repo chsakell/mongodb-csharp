@@ -16,7 +16,7 @@ These operators may seem simple at first 😇 , but when combined with other Mon
 
 > Other than the operators themselves, you can create array field base queries using lambda expressions and the methods provided by `Enumerable`, such as `Enumerable.Any`
 
-![Array operators](../.gitbook/assets/arrays.png)
+![Array operators](../../.gitbook/assets/arrays.png)
 
 
 
