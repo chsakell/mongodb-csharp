@@ -2,13 +2,10 @@
 
 # MongoDB for C# developers
 
->Repository for the [MongoDB C# docs](https://chsakell.gitbook.io/mongodb-csharp-docs) gitbook
-
-> Build MongoDB queries using the [MongoDB C# driver](https://mongodb.github.io/mongo-csharp-driver/)
-
-> Operators explanations with examples written in C# and node.js _(shell)_
-
-> Advanced querying using LINQ
+- Repository for the [MongoDB C# docs](https://chsakell.gitbook.io/mongodb-csharp-docs) gitbook
+- Build MongoDB queries using the [MongoDB C# driver](https://mongodb.github.io/mongo-csharp-driver/)
+- Operators explanations with examples written in C# and node.js _(shell)_
+- Advanced querying using LINQ
 
 ## Gitbook
 
