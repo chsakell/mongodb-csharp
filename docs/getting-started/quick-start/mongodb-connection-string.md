@@ -12,7 +12,7 @@ mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][
 
 ### Standalone deployment
 
-For a standalone instance that doesn't require users to identify themselves, use the following connection string:
+For a local standalone instance that doesn't require users to identify themselves, use the following connection string:
 
 ```csharp
 mongodb://localhost:27017
@@ -34,14 +34,10 @@ The easiest way to connect to a MongoDB standalone instance via C\# is to create
 {% tab title="MongoClient" %}
 ```csharp
 // Create a mongodb client
-var client = new MongoClient(Utils.DefaultConnectionString);
-```
-{% endtab %}
+var client = new MongoClient(DefaultConnectionString);
 
-{% tab title="Utils" %}
-```csharp
 public static string DefaultConnectionString = 
-    Program.Configuration.GetConnectionString("MongoDBConnection");
+  Program.Configuration.GetConnectionString("MongoDBConnection");
 ```
 {% endtab %}
 
