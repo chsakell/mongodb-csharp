@@ -4,7 +4,16 @@
 
 To delete a single document, create a filter definition that matches the document you want to remove and call the `DeleteOne` method on a `IMongoCollection<T>` reference.
 
-> **Syntax**: `IMongoCollection<T>.DeleteOne(<filter>)`
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+IMongoCollection<T>
+    .DeleteOne(<filter>)
+```
+{% endtab %}
+{% endtabs %}
+
+The samples filter a `User` document by its Id and removes it from the collection.
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -52,6 +61,34 @@ db.users.deleteOne({ _id : ObjectId("5e5ff25170dc588dd0870073")})
 {
 	"acknowledged" : true,
 	"deletedCount" : 1
+}
+```
+{% endtab %}
+
+{% tab title="User" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
 }
 ```
 {% endtab %}
@@ -105,6 +142,34 @@ var bsonFirstPersonDeleteResult = await bsonPersonCollection
 db.users.deleteOne({})
 ```
 {% endtab %}
+
+{% tab title="User" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
+}
+```
+{% endtab %}
 {% endtabs %}
 
 ## Delete multiple documents
@@ -112,6 +177,15 @@ db.users.deleteOne({})
 To remove more that one documents at the same time, create a filter definition to match the documents you wish to delete and use the `DeleteMany` method on an `IMongoCollection<T>`. 
 
 > **Syntax**: `IMongoCollection<T>.DeleteMany(<filter>)`
+
+{% tabs %}
+{% tab title="Syntax" %}
+```csharp
+IMongoCollection<T>
+    .DeleteMany(<filter>)
+```
+{% endtab %}
+{% endtabs %}
 
 The following example shows how to delete user documents based on the _salary_ field .
 
@@ -171,6 +245,34 @@ db.users.deleteMany(
 {
 	"acknowledged" : true,
 	"deletedCount" : 15
+}
+```
+{% endtab %}
+
+{% tab title="User" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
 }
 ```
 {% endtab %}

@@ -275,7 +275,7 @@ public class User
 
 ## _Inc_ operator - _$inc_
 
-The _$inc_ operator is used to update the value of a specified field. 
+The _$inc_ operator is used to increase the value of a specified field by a specified amount. 
 
 ```csharp
 Builders<T<.Update.Inc(doc => doc.<field>, <value>)
@@ -405,6 +405,10 @@ public class User
 ```
 {% endtab %}
 {% endtabs %}
+
+{% hint style="success" %}
+The $inc operator can be used with negative values to decrease a specified field's value
+{% endhint %}
 
 ## _Min_ operator - _$min_
 
@@ -726,7 +730,7 @@ Builders<T<.Update.Mul(doc => doc.<field>, <value>)
 {% endtab %}
 {% endtabs %}
 
-The sample double the first document's _salary_ value from 1000 to 2000 using the $mul operator 💰 .
+The sample doubles the first document's _salary_ value from 1000 to 2000 using the $mul operator 💰 .
 
 {% tabs %}
 {% tab title="C\#" %}
