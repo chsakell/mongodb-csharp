@@ -2,9 +2,7 @@
 
 ## Include and Exclude
 
-You can use a projection stage into your pipeline to either exclude existing fields or add new ones. The type of the final result is a `BsonDocument`.
-
-To use the projection stage you use a `ProjectionDefinitionBuilder<T>` and start excluding or including fields. The end result is a instance of `ProjectionDefinition<T>`. Finally, you use it after the Find method since the `IFindFluent` interface allows you to call multiple methods in a **chain**.
+You can use a projection stage into your pipeline to either exclude existing fields or add new ones. To add a projection stage use a `ProjectionDefinitionBuilder<T>` and start excluding or including fields. The end result is a instance of `ProjectionDefinition<T>`. Finally, use it after the `Find` method since the `IFindFluent` interface allows you to **chain** multiple methods calls.
 
 {% tabs %}
 {% tab title="Syntax" %}
@@ -199,12 +197,13 @@ The driver didn't build any complex query to the MongoDB database, instead it cr
 
 ## Projection with LINQ
 
-If you want the driver to create the exact query that matches your projection you can build it using an **`IMongoQueryable<T>`** reference. There are some **limitations** though: you cannot use any custom C\# functions you want as you did using a `ProjectDefinition<T>`, but only those functions that are supported by the driver. You can get an `IMongoQueryable<T>` ****reference by calling the `AsQueryable` method on a `IMongoCollection<T>` reference.
+If you want the driver to create the exact query that matches your projection you can build it using an **`IMongoQueryable<T>`** reference. There are some **limitations** though: you cannot use any custom C\# functions you want as you did using a `ProjectDefinition<T>`, but only those functions that are supported by the driver. You can get an `IMongoQueryable<T>` ****reference by calling the **`AsQueryable`** method on a `IMongoCollection<T>` reference.
 
 {% tabs %}
 {% tab title="Syntax" %}
 ```csharp
-IMongoCollection<T>.AsQueryable()
+IMongoCollection<T>
+    .AsQueryable()
 ```
 {% endtab %}
 {% endtabs %}

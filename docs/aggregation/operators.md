@@ -272,7 +272,7 @@ public class Traveler
 
 ## _Filter_ operator - _$filter_
 
-The $_filter_ operator is used to match and return array elements that fulfill the specified condition. The Enumerable.Where method can be used to create the condition.
+The $_filter_ operator is used to match and return array elements that fulfill the specified condition. The `Enumerable.Where` method can be used to create the condition.
 
 The sample returns `Traveler` documents with their _VisitedCountries_ array field containing only the countries that have been visited once.
 

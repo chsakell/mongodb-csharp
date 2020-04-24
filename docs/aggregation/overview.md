@@ -6,7 +6,7 @@ Aggregation framework in MongoDB is a powerful feature that allows you to build 
 
 ### Pipeline
 
-The pipeline consists of a series of [stages](https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline/#aggregation-pipeline-operator-reference) where each stage receives the output of the previous stage. The section contain samples for the following stages:
+The pipeline consists of a series of [stages](https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline/#aggregation-pipeline-operator-reference) where each stage receives the output of the previous stage. The section contains samples for the following stages:
 
 | Stage | Description |
 | :--- | :--- |
@@ -15,7 +15,7 @@ The pipeline consists of a series of [stages](https://docs.mongodb.com/manual/re
 | **Group** | Groups documents by an identifier expression providing accumulator results |
 | **Unwind** | Deconstructs an array field |
 | **Pagination** _\(limit, skip\)_ | Skips the first _n_ documents and limits the total results |
-| **Bucket** | Produces a distribution among documents based on a specified expression and specific boundaries |
+| **Bucket** | Produces a distribution among documents based on a specified expression and specified boundaries |
 
 ![Aggregation framework](../.gitbook/assets/aggregation.png)
 

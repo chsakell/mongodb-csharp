@@ -2,7 +2,7 @@
 
 ## Group documents
 
-The group stage groups documents by a specified _**\_id expression**_ and outputs a document for each group. One way to use the Match stage in a pipeline is to use the `Aggregate` method in a `IMongoCollection<T>` and chain the `Match` method.
+The group stage groups documents by a specified _**\_id expression**_ and outputs a document for each group. One way to use the Match stage in a pipeline is to use the `Aggregate` method in a `IMongoCollection<T>` and chain the **`Group`** method.
 
 ```csharp
 IMongoCollection<T>.Aggregate()
