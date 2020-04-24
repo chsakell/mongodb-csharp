@@ -33,7 +33,7 @@ All pages contain some introductory theory to get the reader on the right contex
 This way you can always compare the shell commands with the .NET code used.
 
 {% hint style="info" %}
-The main goal of the docs is to learn you how to use the C\# driver in a **typed** way using your C\# class models and avoiding the generic `BsonDocument`. While you can easily build any MongoDB query you want with the schema-less way, it's way too ugly plus you will face problems when changing/renaming your model properties, thus it's not recommended.
+The main goal of the docs is to teach you how to use the C\# driver in a **typed** way using your C\# class models and avoiding the generic `BsonDocument`. While you can easily build any MongoDB query you want with the schema-less way, it's way too ugly plus you will face problems when changing/renaming your model properties, thus it's not recommended.
 {% endhint %}
 
 The code for solving a specific case looks like this:
@@ -163,12 +163,12 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-As you can see, the solution is presented in 3 different ways. If any other code snippet is required it will be added through a new tab.
+As you can see, the solution is presented in 3 different ways. If any other code snippet will be required, it will be added in a new tab.
 
 {% hint style="success" %}
 * The **C\#** tab contains the typed way of querying MongoDB
 * The **Bson** tab contains the code using `BsonDocument`
-* The **Shell** contains the code you would write directly in a MongoDB shell, following with sample results. This tab may also include some documents directly from the database to get an idea of their schema
+* The **Shell** contains the code you would write directly in a MongoDB shell, followed by sample results. This tab may also include some documents directly from the database to get an idea of their schema
 
 > Other than these tabs, samples might also contain result documents or the C\# class models used in the queries
 {% endhint %}
