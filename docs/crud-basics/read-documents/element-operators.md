@@ -15,7 +15,7 @@ MongoDB providers two element query operators that helps you find documents base
 
 ## _Exists_ operator - _$exists_
 
-The _$exists_ operator matches the documents that contain the field, even its value is _null_. 
+The _$exists_ operator matches the documents that contain the specified field, even if its value is _null_. 
 
 {% tabs %}
 {% tab title="Syntax" %}
@@ -26,9 +26,9 @@ Builders<T>.Filter
 {% endtab %}
 {% endtabs %}
 
-The filter definition being created with the `Exists`method on a specific field, matches the documents which contain the field event if its value is _null_.
+The filter definition being created with the `Exists`method on a specific field, matches the documents which contain the field even if its value is _null_.
 
-The sample uses the _Exists_ operator to find `Order` documents that have assigned a _lot number_. The _LotNumber_ is a nullable int property in the `Order`class.
+The sample uses the _Exists_ operator to find `Order` documents that have assigned a _lot number_. The _LotNumber_ is a nullable _int_ property in the `Order`class.
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -130,12 +130,13 @@ The _Type_ _operator_ matches documents where the field's value is an instance o
 {% tabs %}
 {% tab title="Syntax" %}
 ```csharp
-Builders<T>.Filter.Type(doc => doc.<field>, BsonType type)
+Builders<T>.Filter
+    .Type(doc => doc.<field>, BsonType type)
 ```
 {% endtab %}
 {% endtabs %}
 
-Use this operator when you need to ensure that a document's field has \(or hasn't\) been assigned with a specific value type.
+Use this operator when you need to ensure that a document's field has _\(or hasn't\)_ been assigned with a specific value type.
 
 The sample uses the _Type_ operator to find all orders that have been shipped by checking that the `ShippedDate`property has been assigned with a `DateTime` value.
 

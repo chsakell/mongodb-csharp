@@ -7,11 +7,11 @@ There are many times when you want to match documents based on array field value
 | Operator | Description |
 | :--- | :--- |
 | **Size** | Match documents based on the array's size |
-| **ElemMatch** | Match documents when array's elements matches certain conditions |
+| **ElemMatch** | Match documents when array's elements match specified conditions |
 | **All** | Match documents when all specified values are contained in the array |
 
 {% hint style="info" %}
-These operators may seem simple at first 😇 , but when combined with other MongoDB features such as **projection** or **unwind**, you will see that you can build quite complex queries! 💪 
+These operators may seem simple at first 😇 , but when combined with other MongoDB features such as **projection** or **unwind**, you will find that you can build quite complex queries! 💪 
 {% endhint %}
 
 > Other than the operators themselves, you can create array field base queries using lambda expressions and the methods provided by `Enumerable`, such as `Enumerable.Any`
@@ -194,7 +194,7 @@ Builders<T>.Filter
 {% endtab %}
 {% endtabs %}
 
-The sample filters `Traveler` documents that their _VisitedCountries_ array field contain a `VisitedCountry` element with name _Greece_ and _TimesVisited = 3_. 
+The sample filters `Traveler` documents that their _VisitedCountries_ array field contains a `VisitedCountry` element with name _Greece_ and _TimesVisited = 3_. 
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -324,10 +324,10 @@ db.travelers.find({$and: [
 ```
 {% endcode %}
 
-This is **wrong** because it doesn't apply the criteria on each array element at a time but in all elements. This means that it might match documents that indeed  contain a visited country with name "_Greece_" which hasn't _TimesVisited = 3_, but a document matched because it also contains another visited country, _e.g. Italy_ with _TimesVisited = 3_.
+This is **wrong** because it doesn't apply the criteria on each array element at a time but at all elements. This means that it might match documents that indeed  contain a visited country with name "_Greece_" which hasn't _TimesVisited = 3_, but a document matched because it also contains another visited country, _e.g. Italy_ with _TimesVisited = 3_.
 {% endhint %}
 
-The following sample filters `Traveler` documents that their _VisitedCountries_ array field contain a `VisitedCountry` element _TimesVisited = 3_ but this time, the country's name can be either _Greece_ or _Italy_. 
+The following sample filters `Traveler` documents that their _VisitedCountries_ array field contains a `VisitedCountry` element _TimesVisited = 3_ but this time, the country's name can be either _Greece_ or _Italy_. 
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -447,7 +447,7 @@ public class GeoLocation
 
 ### _Enumerable.Any - AnyEq_
 
-To check if an array field contains a specific value you can use the `Enumerable.Any` or the `FilterDefinitionBuilder<T>.AnyEq` methods.
+To check if an array field contains a specified value you can use the `Enumerable.Any` or the `FilterDefinitionBuilder<T>.AnyEq` methods.
 
 The sample finds the `Traveler` documents where _"Greece"_ is contained in the _VisitedCountries_ array field.
 
@@ -581,7 +581,7 @@ Builders<T>.Filter
 {% endtab %}
 {% endtabs %}
 
-The sample finds all `Traveler` documents having _"Backpacking"_ and _"Climbing"_ values on their _Activities_ list. _Activities_ is an array of string values.
+The sample finds all `Traveler` documents having _"Backpacking"_ and _"Climbing"_ values on their _Activities_ list. _Activities_ is an array of **string** values.
 
 {% tabs %}
 {% tab title="C\#" %}
