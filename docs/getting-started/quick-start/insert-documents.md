@@ -14,6 +14,8 @@ IMongoCollection<T>.InsertOne(<document>)
 
 Depending on the collection type you can pass either your own class type or a `BsonDocument`. You can build the `BsonDocument` either manually or using the `BsonDocument.Parse` method.
 
+The sample insert a `Use`r document in collection.
+
 {% tabs %}
 {% tab title="C\#" %}
 {% code title="InsertDocuments.cs" %}
@@ -193,15 +195,18 @@ await personsBsonCollection
 
 ## Insert many documents
 
-To add multiple documents at once, you can use the `InsertMany` collection method.
+To add multiple documents at once, you can use the `InsertMany` collection method, passing the array of items to be inserted in the collection.
 
 {% tabs %}
 {% tab title="Syntax" %}
 ```csharp
-IMongoCollection<T>.InsertMany(IEnumerable<T> documents)
+IMongoCollection<T>
+    .InsertMany(IEnumerable<T> documents)
 ```
 {% endtab %}
 {% endtabs %}
+
+The sample inserts 10 `User` documents in the collection.
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -216,7 +221,7 @@ await personsCollection.InsertManyAsync(persons);
 {% endcode %}
 {% endtab %}
 
-{% tab title="Sample result" %}
+{% tab title="Result" %}
 ```javascript
 {
 	"acknowledged" : true,
@@ -224,6 +229,86 @@ await personsCollection.InsertManyAsync(persons);
 		ObjectId("5e8a393f9c819d22e031c4f5"),
 		ObjectId("5e8a393f9c819d22e031c4f6")
 	]
+}
+
+// sample document
+
+{
+    "_id" : ObjectId("5ea4038a4e1a72d3eb7b7376"),
+    "gender" : 1,
+    "firstName" : "Hope",
+    "lastName" : "O'Hara",
+    "userName" : "Hope.OHara",
+    "avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/goddardlewis/128.jpg",
+    "email" : "Hope.OHara41@yahoo.com",
+    "dateOfBirth" : ISODate("1978-09-17T08:18:40.694Z"),
+    "address" : {
+        "street" : "8347 Lesly Pines",
+        "suite" : "Apt. 924",
+        "city" : "Brownberg",
+        "state" : "Washington",
+        "zipCode" : "78970",
+        "geo" : {
+            "lat" : -14.8666,
+            "lng" : 52.3172
+        }
+    },
+    "phone" : "1-584-453-1767 x134",
+    "website" : "dashawn.biz",
+    "company" : {
+        "name" : "Kemmer - Denesik",
+        "catchPhrase" : "Re-engineered even-keeled workforce",
+        "bs" : "revolutionize one-to-one supply-chains"
+    },
+    "salary" : NumberDecimal("3865"),
+    "monthlyExpenses" : 5644,
+    "favoriteSports" : [
+        "Boxing",
+        "Cycling",
+        "Table Tennis",
+        "Volleyball",
+        "Handball",
+        "MMA",
+        "Water Polo",
+        "Baseball",
+        "Golf",
+        "Ice Hockey",
+        "Cricket",
+        "Soccer",
+        "Basketball",
+        "Snooker",
+        "American Football",
+        "Beach Volleyball"
+    ],
+    "profession" : "Personal Trainer"
+}
+```
+{% endtab %}
+
+{% tab title="User" %}
+```csharp
+public class User
+{
+    [BsonId]
+    [BsonIgnoreIfDefault] // required for replace documents 
+    public ObjectId Id { get; set; }
+    public Gender Gender { get; set; }
+    public string FirstName {get; set; }
+    public string LastName {get; set; }
+    public string UserName {get; set; }
+    public string Avatar {get; set; }
+    public string Email {get; set; }
+    public DateTime DateOfBirth {get; set; }
+    public AddressCard Address {get; set; }
+    public string Phone {get; set; }
+    
+    [BsonIgnoreIfDefault]
+    public string Website {get; set; }
+    public CompanyCard Company {get; set; }
+    public decimal Salary { get; set; }
+    public int MonthlyExpenses { get; set; }
+    public List<string> FavoriteSports { get; set; }
+    public string Profession { get; set; }
 }
 ```
 {% endtab %}
