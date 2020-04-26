@@ -10,5 +10,6 @@
         public const string InvoicesCollection = "invoices";
         public const string StoreCollection = "store";
         public const string SocialNetworkCollection = "social_network";
+        public const string PostsCollection = "posts";
     }
 }

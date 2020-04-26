@@ -32,6 +32,8 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             var bsonTravelersCollection = database.GetCollection<BsonDocument>(Constants.TravelersCollection);
             var storesCollection = database.GetCollection<StoreItem>(Constants.StoreCollection);
             var socialNetworkCollection = database.GetCollection<SocialAccount>(Constants.SocialNetworkCollection);
+            var postsCollection = database.GetCollection<Post>(Constants.PostsCollection);
+            var bsonPostsCollection = database.GetCollection<BsonDocument>(Constants.PostsCollection);
 
             #region Prepare data
 
@@ -83,7 +85,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             }
 
             var pushNotificationsDefinition = Builders<SocialAccount>.Update
-                .PushEach(a => a.LastNotifications, newNotifications, slice:-2);
+                .PushEach(a => a.LastNotifications, newNotifications, slice: -2);
 
             var pushNotificationsResult = await socialNetworkCollection
                 .UpdateOneAsync(Builders<SocialAccount>.Filter.Eq(a => a.Id, firstAccount.Id), pushNotificationsDefinition);
@@ -102,12 +104,12 @@ namespace MongoDb.Csharp.Samples.Crud.Update
                 {
                     PcGames = new List<string>
                     {
-                        "Football Manager", "DOOM Eternal", 
+                        "Football Manager", "DOOM Eternal",
                         "FIFA 20", "Grand Theft Auto", "NBA 2K17"
                     },
-                    XboxGames = new List<string> 
-                    { 
-                        "Forza Horizon", "Call of Duty", 
+                    XboxGames = new List<string>
+                    {
+                        "Forza Horizon", "Call of Duty",
                         "Mortal Kombat", "Gears 5"
                     }
                 },
@@ -115,12 +117,12 @@ namespace MongoDb.Csharp.Samples.Crud.Update
                 {
                     PcGames = new List<string>
                     {
-                        "Assassin's Creed", "Final Fantasy", 
+                        "Assassin's Creed", "Final Fantasy",
                         "The Sims", "Football Manager", "FIFA 20"
                     },
                     XboxGames = new List<string>
                     {
-                        "Resident Evil", "Forza Motorsport", 
+                        "Resident Evil", "Forza Motorsport",
                         "Battlefield", "Halo 5 Guardians", "Mortal Kombat"
                     }
                 }
@@ -154,7 +156,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
             await travelersCollection.InsertManyAsync(RandomData.GenerateTravelers(10, 15));
             var visited8Times = Builders<Traveler>.Filter
-                .ElemMatch(t => t.VisitedCountries, country =>  country.TimesVisited == 8);
+                .ElemMatch(t => t.VisitedCountries, country => country.TimesVisited == 8);
 
             var totalDocVisited8Times = await travelersCollection
                     .Find(visited8Times).CountDocumentsAsync();
@@ -211,7 +213,56 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
             #endregion
 
+            #region array filters
 
+            var post = new Post
+            {
+                Author = "chsakell",
+                Content = "hello world",
+                Comments = new List<Comment>
+                {
+                    new Comment
+                    {
+                        Author = "author 1",
+                        Text = "comment 1",
+                        Votes = 1
+                    },
+                    new Comment
+                    {
+                        Author = "author 2",
+                        Text = "comment 2",
+                        Votes = 2
+                    },
+                    new Comment
+                    {
+                        Author = "author 3",
+                        Text = "comment 3",
+                        Votes = 3
+                    },
+                    new Comment
+                    {
+                        Author = "author 4",
+                        Text = "comment 4",
+                        Votes = 4
+                    }
+                }
+            };
+            await postsCollection.InsertOneAsync(post);
+
+            var update = Builders<BsonDocument>.Update
+                .Set("comments.$[elem].hidden", true);
+
+            var updateResult = await bsonPostsCollection.UpdateOneAsync(
+                Builders<BsonDocument>.Filter.Eq("_id", post.Id), update,
+                new UpdateOptions()
+                {
+                    ArrayFilters = new List<ArrayFilterDefinition<BsonValue>>()
+                    {
+                         new BsonDocument("elem.votes", new BsonDocument("$gte", 3))
+                    }
+                });
+
+            #endregion
 
             // TODO: pull/pop
 
@@ -239,7 +290,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
 
             var bsonAddNewVisitedCountries = await bsonTravelersCollection
                 .UpdateOneAsync(bsonFirstUser, bsonPushCountriesDefinition);
-            
+
             var bsonVisited9Times = Builders<BsonDocument>.Filter
                 .ElemMatch<BsonValue>("visitedCountries", new BsonDocument { { "timesVisited", 9 } });
 
