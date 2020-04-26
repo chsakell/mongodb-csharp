@@ -142,6 +142,7 @@ var pushCountriesDefinition = Builders<Traveler>.Update
 
 var addNewVisitedCountriesResult = await collection
     .UpdateOneAsync(firstTraveler, pushCountriesDefinition);
+    
 ```
 {% endcode %}
 {% endtab %}
@@ -227,6 +228,163 @@ public class GeoLocation
 {
     public double Latitude { get; set; }
     public double Longitude { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+### Push items to a queue
+
+`PushEach` method accepts an optional parameter **slice** which when set properly can provide a queue functionality. Assume there's a `SocialAccount` document containing an array of notifications but you  wish to always contain the last 2 inserted.
+
+{% tabs %}
+{% tab title="document" %}
+```javascript
+{
+  "_id": "5ea5801b0932798e2121ff6d",
+  "username": "Dimitri.Jaskolski",
+  "relationShips": {
+    "friends": [
+      "Jewell.Turcotte",
+      "Constantin84",
+      "Aaron_Brakus",
+      "Dane.Becker",
+      "Matteo5"
+    ],
+    "blocked": [
+      "Gerhard_Batz",
+      "Lindsey9"
+    ]
+  },
+  "lastNotifications": [
+    {
+      "text": "Fuga soluta dolores nulla facilis.",
+      "link": "/project"
+    }
+  ]
+}
+```
+{% endtab %}
+
+{% tab title="SocialAccount" %}
+```csharp
+public class SocialAccount
+{
+    [BsonIgnoreIfDefault]
+    public ObjectId Id { get; set; }
+    public string Username { get; set; }
+    public RelationShips RelationShips { get; set; }
+
+    [BsonIgnoreIfDefault]
+    public List<Notification> LastNotifications { get; set; }
+}
+
+public class Notification
+{
+    public string Text { get; set; }
+    public string Link { get; set; }
+}
+
+public class RelationShips
+{
+    public List<string> Friends { get; set; }
+    public List<string> Blocked { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+The sample tries to add 4 new notifications in the _lastNotifications_ array field using a **$slice:-2** operation. The resulting document contains only the last 2 notifications added.
+
+{% tabs %}
+{% tab title="C\#" %}
+```csharp
+var newNotifications = new List<Notification>();
+for (int i = 0; i < 4; i++)
+{
+    newNotifications.Add(new Notification()
+    {
+        Link = $"link-{i}",
+        Text = $"text-{i}"
+    });
+}
+
+var pushNotificationsDefinition = Builders<SocialAccount>.Update
+    .PushEach(a => a.LastNotifications, newNotifications, 
+    slice:-2); // $slice:-2
+
+var pushNotificationsResult = await socialNetworkCollection
+    .UpdateOneAsync(Builders<SocialAccount>
+    .Filter.Eq(a => a.Id, firstAccount.Id), pushNotificationsDefinition);
+
+firstAccount = await socialNetworkCollection
+    .Find(Builders<SocialAccount>.Filter.Empty)
+    .FirstOrDefaultAsync();
+
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.social_network.updateOne(
+  {},
+  {
+    $push: {
+      lastNotifications: {
+        $each: [
+          { // this will be discard
+            text: 'text-0',
+            link: 'link-0'
+          },
+          { // this will be discard
+            text: 'text-1',
+            link: 'link-1'
+          },
+          {
+            text: 'text-2',
+            link: 'link-2'
+          },
+          {
+            text: 'text-3',
+            link: 'link-3'
+          }
+        ],
+        $slice: -2
+      }
+    }
+  }
+);
+```
+{% endtab %}
+
+{% tab title="Result" %}
+```javascript
+{
+  "_id": "5ea5801b0932798e2121ff6d",
+  "username": "Dimitri.Jaskolski",
+  "relationShips": {
+    "friends": [
+      "Jewell.Turcotte",
+      "Constantin84",
+      "Aaron_Brakus",
+      "Dane.Becker",
+      "Matteo5"
+    ],
+    "blocked": [
+      "Gerhard_Batz",
+      "Lindsey9"
+    ]
+  },
+  "lastNotifications": [
+    {
+      "text": "text-2",
+      "link": "link-2"
+    },
+    {
+      "text": "text-3",
+      "link": "link-3"
+    }
+  ]
 }
 ```
 {% endtab %}

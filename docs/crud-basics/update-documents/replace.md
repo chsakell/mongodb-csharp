@@ -198,6 +198,24 @@ await socialNetworkCollection
         }
 ```
 {% endtab %}
+
+{% tab title="Models" %}
+```csharp
+public class SocialAccount
+{
+    [BsonIgnoreIfDefault]
+    public ObjectId Id { get; set; }
+    public string Username { get; set; }
+    public RelationShips RelationShips { get; set; }
+}
+
+public class RelationShips
+{
+    public List<string> Friends { get; set; }
+    public List<string> Blocked { get; set; }
+}
+```
+{% endtab %}
 {% endtabs %}
 
 {% hint style="info" %}
