@@ -26,7 +26,7 @@
   * [Array operators](crud-basics/read-documents/array-operators.md)
 * [📝 Update](crud-basics/update-documents/README.md)
   * [Operators](crud-basics/update-documents/operators.md)
-  * [Replace documents](crud-basics/update-documents/replace-documents.md)
+  * [Replace](crud-basics/update-documents/replace.md)
   * [Arrays](crud-basics/update-documents/arrays.md)
 * [❌ Delete](crud-basics/delete-documents.md)
 
