@@ -175,6 +175,7 @@ var socialAccountAfter = new SocialAccount
 await socialNetworkCollection
     .ReplaceOneAsync(Builders<SocialAccount>.Filter
         .Eq(ac => ac.Username, username), socialAccountAfter);
+        
 ```
 {% endcode %}
 {% endtab %}
@@ -198,6 +199,10 @@ await socialNetworkCollection
 ```
 {% endtab %}
 {% endtabs %}
+
+{% hint style="info" %}
+When replacing a document make sure to be precise 🎯 on your filter, otherwise you might get a **`E11001 duplicate key on update`** error. For example, in the previous sample if the _socialAccountAfter_ object already contained the **\_**_**id**_ value and there were more than one documents with username _"chsakell"_ you would get the error. Why? Because MongoDB would try to set in more than one documents the same _**\_id**_ unique identifier value.
+{% endhint %}
 
 ## Upsert
 
