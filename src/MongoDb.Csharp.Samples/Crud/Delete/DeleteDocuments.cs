@@ -76,6 +76,9 @@ namespace MongoDb.Csharp.Samples.QuickStart
                 Utils.Log($"{totalPersons} users deleted");
             }
 
+            // Delete all documents
+            // await personsCollection.DeleteManyAsync(Builders<User>.Filter.Empty);
+
             #endregion
 
             #region BsonDocument commands

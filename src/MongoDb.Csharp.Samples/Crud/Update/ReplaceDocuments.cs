@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDb.Csharp.Samples.Core;
@@ -26,11 +27,14 @@ namespace MongoDb.Csharp.Samples.Crud.Update
         private async Task UpdateDocumentsDefinitions()
         {
             var database = Client.GetDatabase(Constants.SamplesDatabase);
-            var collection = database.GetCollection<User>(Constants.UsersCollection);
-            var bsonCollection = database.GetCollection<BsonDocument>(Constants.UsersCollection);
+            var usersCollection = database.GetCollection<User>(Constants.UsersCollection);
+            var usersBsonCollection = database.GetCollection<BsonDocument>(Constants.UsersCollection);
+
+            var socialNetworkCollection = database.GetCollection<SocialAccount>(Constants.SocialNetworkCollection);
+            var bsonSocialNetworkBsonCollection = database.GetCollection<BsonDocument>(Constants.SocialNetworkCollection);
             #region Prepare data
 
-            await collection.InsertManyAsync(RandomData.GenerateUsers(1000));
+            await usersCollection.InsertManyAsync(RandomData.GenerateUsers(1000));
 
             #endregion
 
@@ -46,17 +50,45 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             newUser.FirstName = "Chris";
             newUser.LastName = "Sakellarios";
             newUser.Website = "https://github.com/chsakell";
-            var replaceOneResult = await collection.ReplaceOneAsync(Builders<User>.Filter.Empty, newUser);
+            var replaceOneResult = await usersCollection.ReplaceOneAsync(Builders<User>.Filter.Empty, newUser);
             Utils.Log($"First user document has been replaced with new user");
             
             // if id is available then set it on the new doc before replacing the old one
-            var firstDbUser = await collection.Find(Builders<User>.Filter.Empty).FirstOrDefaultAsync();
+            var firstDbUser = await usersCollection.Find(Builders<User>.Filter.Empty).FirstOrDefaultAsync();
             newUser.Id = firstDbUser.Id;
             newUser.Website = "https://chsakell.com";
 
-            var firstUser = await collection.FindOneAndReplaceAsync(
+            var firstUser = await usersCollection.FindOneAndReplaceAsync(
                 Builders<User>.Filter.Eq(u => u.Id, firstDbUser.Id), newUser,
                 new FindOneAndReplaceOptions<User> {ReturnDocument = ReturnDocument.After});
+
+            // move properties
+            var friends = new List<string> {"John", "Maria", "Catherine"};
+            var blocked = new List<string> { "Jake", "Helen" };
+            var username = "chsakell";
+
+            var socialAccountBefore = new BsonDocument()
+            {
+                { "username", username },
+                { "friends", new BsonArray(friends)},
+                { "blocked", new BsonArray(blocked) }
+            };
+            await bsonSocialNetworkBsonCollection.InsertOneAsync(socialAccountBefore);
+
+            // replace and move properties...
+            var socialAccountAfter = new SocialAccount
+            {
+                Username = username,
+                RelationShips = new RelationShips
+                {
+                    Friends = friends,
+                    Blocked = blocked
+                }
+            };
+
+            await socialNetworkCollection
+                .ReplaceOneAsync(Builders<SocialAccount>.Filter
+                    .Eq(ac => ac.Username, username), socialAccountAfter);
 
             #endregion
 
@@ -69,10 +101,10 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             microsoftCeo.Company.Name = "Microsoft";
 
             // returns null without upsert true
-            var satyaNadellaFirstAttemptResult = await collection
+            var satyaNadellaFirstAttemptResult = await usersCollection
                 .FindOneAndReplaceAsync<User>(u => u.Company.Name == "Microsoft", microsoftCeo);
 
-            var addOrReplaceSatyaNadellaUser = await collection
+            var addOrReplaceSatyaNadellaUser = await usersCollection
                 .FindOneAndReplaceAsync<User>(u => u.Company.Name == "Microsoft", 
                     microsoftCeo, new FindOneAndReplaceOptions<User>()
                     {
@@ -80,7 +112,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
                         ReturnDocument = ReturnDocument.After
                     });
 
-            var addOrReplaceSatyaNadellaResult = await collection
+            var addOrReplaceSatyaNadellaResult = await usersCollection
                 .ReplaceOneAsync<User>(u => u.Company.Name == "Microsoft Corp",
                     microsoftCeo, new ReplaceOptions()
                     {
@@ -96,10 +128,10 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             newUser.FirstName = "Christos";
             newUser.LastName = "Sakellarios";
             newUser.Website = "https://github.com/chsakell";
-            var bsonReplaceOneResult = await bsonCollection
+            var bsonReplaceOneResult = await usersBsonCollection
                 .ReplaceOneAsync(new BsonDocument(), newUser.ToBsonDocument());
 
-            var bsonAddOrReplaceSatyaNadellaUser = await bsonCollection
+            var bsonAddOrReplaceSatyaNadellaUser = await usersBsonCollection
                 .FindOneAndReplaceAsync(
                     Builders<BsonDocument>.Filter.Eq("company.name", "Microsoft Corp"), 
                         microsoftCeo.ToBsonDocument(), 
@@ -109,7 +141,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
                     ReturnDocument = ReturnDocument.After
                 });
 
-            var bsonFirstUser = await bsonCollection.FindOneAndReplaceAsync(
+            var bsonFirstUser = await usersBsonCollection.FindOneAndReplaceAsync(
                     Builders<BsonDocument>.Filter.Eq("_id", firstDbUser.Id), 
                     newUser.ToBsonDocument(),
                     new FindOneAndReplaceOptions<BsonDocument> 
