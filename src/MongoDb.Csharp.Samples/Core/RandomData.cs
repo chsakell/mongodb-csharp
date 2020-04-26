@@ -20,7 +20,7 @@ namespace MongoDb.Csharp.Samples.Core
 
         public static List<string> AvailableSports = new List<string>()
         {
-            "Soccer","Basketball", "Tennis","Volleyball", "Beach Volleyball", "American Football", 
+            "Soccer","Basketball", "Tennis","Volleyball", "Beach Volleyball", "American Football",
             "Baseball", "Ice Hockey", "Formula 1", "Moto GP","Motor Sport", "Handball", "Water Polo",
             "Table Tennis", "Darts","Snooker", "MMA", "Boxing","Cricket", "Cycling", "Golf"
         };
@@ -84,7 +84,7 @@ namespace MongoDb.Csharp.Samples.Core
                 .RuleFor(u => u.City, (f, u) => f.Address.City())
                 .RuleFor(u => u.ShipAddress, (f, u) => f.Address.FullAddress())
                 .RuleFor(u => u.Country, f => f.Address.Country())
-                .RuleFor(u => u.ShippedDate, (f, u) => 
+                .RuleFor(u => u.ShippedDate, (f, u) =>
                     f.Date.Between(DateTime.UtcNow.AddYears(-1), DateTime.UtcNow).OrNull(f, .8f));
 
             return shipmentDetails.Generate();
@@ -116,7 +116,7 @@ namespace MongoDb.Csharp.Samples.Core
 
             var traveler = new Faker<Traveler>(locale)
                 .RuleFor(t => t.Name, (f, u) => f.Name.FullName())
-                .RuleFor(t => t.Age, (f) => (DateTime.Now.Year - 
+                .RuleFor(t => t.Age, (f) => (DateTime.Now.Year -
                                              f.Date.Past(50, new DateTime?(Date.SystemClock().AddYears(-20))).Year))
                 .RuleFor(t => t.Activities, (f, u) => f.PickRandom(Activities, f.Random.Number(1, maximumActivities)).ToList())
                 .RuleFor(u => u.VisitedCountries, (f, u) => GenerateVisitedCountries(f.Random.Int(0, 30)));
@@ -143,6 +143,38 @@ namespace MongoDb.Csharp.Samples.Core
                 .RuleFor(c => c.Longitude, f => f.Address.Longitude());
 
             return geolocation.Generate(count);
+        }
+
+        public static List<SocialAccount> GenerateSocialAccounts(int count, string locale = "en")
+        {
+            var account = new Faker<SocialAccount>(locale)
+                .RuleFor(t => t.Username, (f, u) => f.Internet.UserName())
+                .RuleFor(u => u.RelationShips, (f, u) => GenerateRelationships(1).First())
+                .RuleFor(a => a.LastNotifications, (f,a) => GenerateNotifications(f.Random.Number(1,2)));
+
+            return account.Generate(count);
+        }
+
+        public static List<RelationShips> GenerateRelationships(int count, string locale = "en")
+        {
+            var relationShip = new Faker<RelationShips>(locale)
+                .RuleFor(c => c.Friends, f => Enumerable.Range(1, 5)
+                    .Select(_ => f.Internet.UserName())
+                    .ToList())
+                .RuleFor(c => c.Blocked, f => Enumerable.Range(1, 2)
+                    .Select(_ => f.Internet.UserName())
+                    .ToList());
+
+            return relationShip.Generate(count);
+        }
+
+        public static List<Notification> GenerateNotifications(int count, string locale = "en")
+        {
+            var notification = new Faker<Notification>(locale)
+                .RuleFor(n => n.Text, f => f.Lorem.Sentence(5))
+                .RuleFor(n => n.Link, (f, n) => f.Internet.UrlRootedPath());
+
+            return notification.Generate(count);
         }
     }
 }

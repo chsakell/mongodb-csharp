@@ -31,6 +31,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             var travelersCollection = database.GetCollection<Traveler>(Constants.TravelersCollection);
             var bsonTravelersCollection = database.GetCollection<BsonDocument>(Constants.TravelersCollection);
             var storesCollection = database.GetCollection<StoreItem>(Constants.StoreCollection);
+            var socialNetworkCollection = database.GetCollection<SocialAccount>(Constants.SocialNetworkCollection);
 
             #region Prepare data
 
@@ -59,6 +60,37 @@ namespace MongoDb.Csharp.Samples.Crud.Update
             var addNewVisitedCountriesResult = await travelersCollection
                 .UpdateOneAsync(firstTraveler, pushCountriesDefinition);
 
+            #endregion
+
+            #region Queue
+
+            var account = RandomData.GenerateSocialAccounts(1).First();
+
+            await socialNetworkCollection.InsertOneAsync(account);
+
+            var firstAccount = await socialNetworkCollection.Find(Builders<SocialAccount>.Filter.Empty)
+                .FirstOrDefaultAsync();
+            Utils.Log(firstAccount.ToBsonDocument());
+
+            var newNotifications = new List<Notification>();
+            for (int i = 0; i < 4; i++)
+            {
+                newNotifications.Add(new Notification()
+                {
+                    Link = $"link-{i}",
+                    Text = $"text-{i}"
+                });
+            }
+
+            var pushNotificationsDefinition = Builders<SocialAccount>.Update
+                .PushEach(a => a.LastNotifications, newNotifications, slice:-2);
+
+            var pushNotificationsResult = await socialNetworkCollection
+                .UpdateOneAsync(Builders<SocialAccount>.Filter.Eq(a => a.Id, firstAccount.Id), pushNotificationsDefinition);
+
+            firstAccount = await socialNetworkCollection.Find(Builders<SocialAccount>.Filter.Empty)
+                .FirstOrDefaultAsync();
+            Utils.Log(firstAccount.ToBsonDocument());
             #endregion
 
             #region remove array items
