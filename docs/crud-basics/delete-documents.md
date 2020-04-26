@@ -278,3 +278,12 @@ public class User
 {% endtab %}
 {% endtabs %}
 
+## Delete all documents
+
+To delete all documents in a collection, you can use the `DeleteMany` method with an **empty** filter. If you want though to clear the entire collection, it's faster to just [drop](../getting-started/quick-start/collections.md#drop-collections) it.
+
+```csharp
+await personsCollection
+    .DeleteManyAsync(Builders<User>.Filter.Empty);
+```
+
