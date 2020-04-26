@@ -859,7 +859,7 @@ public class VisitedCountry
 
 ## Update matched array document
 
-To update a specific array element you need to use the [$](https://docs.mongodb.com/manual/reference/operator/update/positional/#up._S_) positional operator.  The driver can build such a query by translating the `array[-1]` as a positional operator.
+To update a specific array element **without  knowing** its position in the array, you can use the [$](https://docs.mongodb.com/manual/reference/operator/update/positional/#up._S_) positional operator.  The driver can build such a query by translating the `array[-1]` as a positional operator.
 
 The sample sets the _Name_ value for all matched array `VisitedCountry` elements having _Name = Greece_ and _TimesVisited = 3._
 
