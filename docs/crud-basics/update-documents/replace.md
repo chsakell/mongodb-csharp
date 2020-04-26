@@ -138,6 +138,67 @@ The identifier field **\_**_**id**_  on the new document must fulfill one of the
 ⚠ In case you do set a value for the identifier \_id field and it's different than the current one, you will get the exception:**`After applying the update, the (immutable) field '_id' was found to have been altered to _id: <new-id>`**
 {% endhint %}
 
+One common scenario where you need to replace documents is when you want to **move fields** inside the documents. Consider that you have the following document.
+
+```javascript
+{
+        "_id" : ObjectId("5ea55f572109b8cadfc146e9"),
+        "username" : "chsakell",
+        "friends" : [
+                "John",
+                "Maria",
+                "Catherine"
+        ],
+        "blocked" : [
+                "Jake",
+                "Helen"
+        ]
+}
+```
+
+The following sample moves _friends_ and _blocked_ top level fields in a new embedded document field named _relationships._
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="ReplaceDocuments.cs" %}
+```csharp
+var socialAccountAfter = new SocialAccount
+{
+    Username = username,
+    RelationShips = new RelationShips
+    {
+        Friends = friends,
+        Blocked = blocked
+    }
+};
+
+await socialNetworkCollection
+    .ReplaceOneAsync(Builders<SocialAccount>.Filter
+        .Eq(ac => ac.Username, username), socialAccountAfter);
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Result" %}
+```javascript
+{
+        "_id" : ObjectId("5ea55f572109b8cadfc146e9"),
+        "username" : "chsakell",
+        "relationShips" : {
+                "friends" : [
+                        "John",
+                        "Maria",
+                        "Catherine"
+                ],
+                "blocked" : [
+                        "Jake",
+                        "Helen"
+                ]
+        }
+```
+{% endtab %}
+{% endtabs %}
+
 ## Upsert
 
 If the filter in the `ReplaceOne` operation fails to match a document then nothing happens in the database. You can change this behavior by passing a _replace options_ argument to the replace operation and setting `upsert = true`. 
