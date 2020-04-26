@@ -195,7 +195,11 @@ await personsBsonCollection
 
 ## Insert many documents
 
-To add multiple documents at once, you can use the `InsertMany` collection method, passing the array of items to be inserted in the collection.
+To add multiple documents at once, you can use the `InsertMany` collection method, passing the array of items to be inserted in the collection. 
+
+{% hint style="success" %}
+Prefer this method when you need to add multiple documents, instead looping the array and calling the `InsertOne` method. `InsertMany` is more efficient since you avoid making round trips to the database
+{% endhint %}
 
 {% tabs %}
 {% tab title="Syntax" %}
