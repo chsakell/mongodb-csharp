@@ -996,3 +996,142 @@ public class VisitedCountry
 Normally, based on the **$elemMatch** operator, the **$set** operator should have been applied to the root document\(s\) but the **$** position operator causes the update to be applied on the matched document instead
 {% endhint %}
 
+## Update multiple elements
+
+To update multiple array elements that match a specified condition, you need to use one or more `ArrayFilterDefinition` filters as the 3rd argument in the `UpdateOne` or `UpdateMany` methods. 
+
+Assume that you have a post which contains a list of comments.
+
+```javascript
+{
+        "_id" : ObjectId("5ea5f66430343616602d6bfe"),
+        "author" : "chsakell",
+        "content" : "hello world",
+        "comments" : [
+                {
+                        "text" : "comment 1",
+                        "author" : "author 1",
+                        "votes" : 1,
+                        "hidden" : false
+                },
+                {
+                        "text" : "comment 2",
+                        "author" : "author 2",
+                        "votes" : 2,
+                        "hidden" : false
+                },
+                {
+                        "text" : "comment 3",
+                        "author" : "author 3",
+                        "votes" : 3,
+                        "hidden" : false
+                },
+                {
+                        "text" : "comment 4",
+                        "author" : "author 4",
+                        "votes" : 4,
+                        "hidden" : false
+                }
+        ]
+}
+```
+
+The sample hides the comments that have votes greater or equal to 3.
+
+{% tabs %}
+{% tab title="Bson" %}
+```csharp
+var update = Builders<BsonDocument>.Update
+    .Set("comments.$[elem].hidden", true);
+
+var updateResult = await bsonPostsCollection.UpdateOneAsync(
+    Builders<BsonDocument>.Filter.Eq("_id", post.Id), update,
+    new UpdateOptions()
+    {
+        ArrayFilters = new List<ArrayFilterDefinition<BsonValue>>()
+        {
+            new BsonDocument("elem.votes", 
+            new BsonDocument("$gte", 3))
+        }
+    });
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.posts.updateOne(
+   {"_id" : ObjectId("5ea5f66430343616602d6bfe") },
+   { $set: { "comments.$[elem].hidden" : true } },
+   {
+     arrayFilters: [ { "elem.votes": { $gte: 3 } } ]
+   }
+)
+
+------------------------
+// document after update
+
+{
+        "_id" : ObjectId("5ea5f66430343616602d6bfe"),
+        "author" : "chsakell",
+        "content" : "hello world",
+        "comments" : [
+                {
+                        "text" : "comment 1",
+                        "author" : "author 1",
+                        "votes" : 1,
+                        "hidden" : false
+                },
+                {
+                        "text" : "comment 2",
+                        "author" : "author 2",
+                        "votes" : 2,
+                        "hidden" : false
+                },
+                {
+                        "text" : "comment 3",
+                        "author" : "author 3",
+                        "votes" : 3, // matched here
+                        "hidden" : true //  updated
+                },
+                {
+                        "text" : "comment 4",
+                        "author" : "author 4",
+                        "votes" : 4,  // matched here
+                        "hidden" : true // updated
+                }
+        ]
+}
+```
+{% endtab %}
+
+{% tab title="Models" %}
+```csharp
+public class Post
+{
+    public ObjectId Id { get; set; }
+    public string Author { get; set; }
+    public string Content { get; set; }
+    public List<Comment> Comments { get; set; }
+}
+
+public class Comment
+{
+    public string Text { get; set; }
+    public string Author { get; set; }
+    public int Votes { get; set; }
+    public bool Hidden { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+There update operation has 3 distinct parts:
+
+1. **The filter definition** - in the sample it's a specific post matched by its _\_id_ but it could be anything
+2. **The update definition** - the sample defines that the **matched elements** in the comments array field should set their _hidden_ value to _true._ This is defined using the _**$**_ positional operator and the _**elem**_ identifier for each matching document
+3. The **ArrayFilters** which defines how _**elem**_ array elements are matched, in other words, which are the elements to be updated
+
+{% hint style="info" %}
+Unfortunately, you cannot write this kind of operation using the typed way yet, because it's currently not supported by the driver 😞 . Of course, as soon as a new version that provides this functionality is released, the docs will be updated accordingly
+{% endhint %}
+
