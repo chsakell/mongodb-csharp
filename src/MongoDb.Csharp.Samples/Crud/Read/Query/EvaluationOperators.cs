@@ -45,9 +45,9 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
 
             #endregion
 
-            #region expression
+            #region text
 
-            // needs projection
+            // todo
 
             #endregion
 

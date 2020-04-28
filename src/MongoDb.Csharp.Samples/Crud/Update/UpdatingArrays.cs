@@ -258,7 +258,7 @@ namespace MongoDb.Csharp.Samples.Crud.Update
                 {
                     ArrayFilters = new List<ArrayFilterDefinition<BsonValue>>()
                     {
-                         new BsonDocument("elem.votes", new BsonDocument("$gte", 3))
+                            new BsonDocument("elem.votes", new BsonDocument("$gte", 3))
                     }
                 });
 
