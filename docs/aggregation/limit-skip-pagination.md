@@ -138,6 +138,28 @@ var linqTopLevelResults = await usersQueryableCollection
 ```
 {% endhint %}
 
+{% hint style="warning" %}
+Try to avoid skipping multiple documents because _$skip_ operator can become quite slow when used with large numbers and result sets. Instead, implement pagination logic by using a **filter expression** based on the last document retrieved.   
+  
+**Example**:  Assume that you paginate employee documents based on their hire date and each page contains 100 employee results.   
+
+
+```javascript
+{
+	"employee" : "Irene.OKon85",
+	"hireDate" : ISODate("2010-05-02T11:47:36.734+02:00")
+},
+
+/* 2 */
+{
+	"employee" : "Kristopher.Brown",
+	"hireDate" : ISODate("2015-12-15T13:41:54.000+02:00")
+}
+```
+
+Instead of skipping each _`(page -1 * 100)`_ documents try to use the last employee's hire date to fetch the next page results, meaning fetch the first _limit-size_ documents where _hireDate_  is greater than _\(or whatever condition you want\)_ the previous page last document's _hireDate_. Of course this is not always possible as it fits more for `previous-next` ⏮ ⏭ pagination type, for example what happens if you want to go from the 1st page directly to then 5th page
+{% endhint %}
+
 ## Paginate array field
 
 Paginating an array field requires at least an extra **$unwind** stage to deconstruct the array. The sample creates a pagination on the _FavoriteSports_ of the first `User` document that contains more than 10 items in its favorite sports array field.
