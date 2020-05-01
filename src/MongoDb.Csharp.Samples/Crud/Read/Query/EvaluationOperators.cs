@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDb.Csharp.Samples.Core;
 using MongoDb.Csharp.Samples.Models;
 using MongoDB.Driver;
@@ -24,15 +25,18 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
         private async Task ElementOperatorsSamples()
         {
             var database = Client.GetDatabase(Constants.SamplesDatabase);
-            var collection = database.GetCollection<User>(Constants.UsersCollection);
-            var bsonCollection = database.GetCollection<BsonDocument>(Constants.UsersCollection);
+            var usersCollection = database.GetCollection<User>(Constants.UsersCollection);
+            var usersBsonCollection = database.GetCollection<BsonDocument>(Constants.UsersCollection);
+
+            var productsCollection = database.GetCollection<Product>(Constants.ProductsCollection);
+            var productsBsonCollection = database.GetCollection<BsonDocument>(Constants.ProductsCollection);
 
             #region Prepare data
 
-            var users = RandomData.GenerateUsers(1000);
-
-            await collection.InsertManyAsync(users);
-
+            var users = RandomData.GenerateUsers(500);
+            var products = RandomData.GenerateProducts(500);
+            await usersCollection.InsertManyAsync(users);
+            await productsCollection.InsertManyAsync(products);
             #endregion
 
             #region Typed classes commands
@@ -40,14 +44,26 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             #region regex
 
             var gmailFilter = Builders<User>.Filter.Regex(u => u.Email, new BsonRegularExpression("/gmail/"));
-            var gmailUsers = await collection.Find(gmailFilter).ToListAsync();
+            var gmailUsers = await usersCollection.Find(gmailFilter).ToListAsync();
             Utils.Log($"{gmailUsers.Count} users found to have gmail acounts");
+
+            #endregion
+
+            #region expr
 
             #endregion
 
             #region text
 
-            // todo
+            productsCollection.Indexes.CreateOne(new CreateIndexModel<Product>
+                (Builders<Product>.IndexKeys.Text(p => p.Name)));
+
+            var searchFilter = Builders<Product>.Filter.Text("shirt");
+            var searchFilterQuery = searchFilter.Render(BsonSerializer.SerializerRegistry.GetSerializer<Product>(),
+                BsonSerializer.SerializerRegistry);
+            var shirtsProducts = await productsCollection.Find(searchFilter).ToListAsync();
+
+            Utils.Log($"There are {shirtsProducts.Count} total shirt products");
 
             #endregion
 
@@ -60,7 +76,14 @@ namespace MongoDb.Csharp.Samples.Crud.Read.Query
             var bsonGmailFilter = Builders<BsonDocument>.Filter
                 .Regex("email", new BsonRegularExpression("/gmail/"));
 
-            var bsonGmailUsers = await bsonCollection.Find(bsonGmailFilter).ToListAsync();
+            var bsonGmailUsers = await usersBsonCollection.Find(bsonGmailFilter).ToListAsync();
+
+            #endregion
+
+            #region text
+
+            var bsonSearchFilter = Builders<BsonDocument>.Filter.Text("shirt");
+            var bsonShirtsProducts = await productsBsonCollection.Find(bsonSearchFilter).ToListAsync();
 
             #endregion
 

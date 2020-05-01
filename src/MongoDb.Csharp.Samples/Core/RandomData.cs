@@ -76,6 +76,15 @@ namespace MongoDb.Csharp.Samples.Core
 
         }
 
+        public static List<Product> GenerateProducts(int count, string locale = "en")
+        {
+            var product = new Faker<Product>(locale)
+                .RuleFor(p => p.Name, f => f.Commerce.ProductName());
+
+            return product.Generate(count);
+
+        }
+
         public static ShipmentDetails GenerateShipmentDetails(string locale = "en")
         {
             var shipmentDetails = new Faker<ShipmentDetails>(locale)
