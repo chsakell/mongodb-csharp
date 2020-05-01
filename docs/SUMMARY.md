@@ -20,6 +20,7 @@
   * [Ordered insert](crud-basics/create-documents/ordered-insert.md)
 * [🔎 Read](crud-basics/read-documents/README.md)
   * [Basics](crud-basics/read-documents/basics.md)
+  * [Evaluation Operators](crud-basics/read-documents/evaluation-operators.md)
   * [Comparison Operators](crud-basics/read-documents/comparison-operators.md)
   * [Logical Operators](crud-basics/read-documents/logical-operators.md)
   * [Element Operators](crud-basics/read-documents/element-operators.md)
