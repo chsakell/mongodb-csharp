@@ -7,6 +7,7 @@ Evaluation operators are used to match documents based on some type of evaluatio
 | Operator | Description |
 | :--- | :--- |
 | **Regex** | Find documents where their field values match a specified regular expression |
+| **Text** | Searches the specified term in the fields indexed with a [text index](https://docs.mongodb.com/manual/core/index-text/) |
 
 ![Evaluation operators](../../.gitbook/assets/evaluation.png)
 
@@ -143,5 +144,148 @@ public class User
 
 {% hint style="info" %}
 MongoDB uses Perl compatible regular expressions version 8.42 with **UTF-8** support
+{% endhint %}
+
+## _Text_ operator - _$text_
+
+Text operator **$text** is used along with a [text index](https://docs.mongodb.com/manual/core/index-text/) for searching a term among **string content** inside documents. The text index indexes string content as if it was an array of string values while stops and stems all words. This means that it words in sentences such as _"and"_, _"or"_, _"it"_ or _"is"_ are ignored.
+
+You can create a text index using the C\# driver using an instance of `CreateIndexModel<T>`. The following snippet creates a text index on the _Name_ string field of the `Product` class.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="EvaluationOperator" %}
+```csharp
+var productsCollection = database
+                .GetCollection<Product>(Constants.ProductsCollection);
+                
+// create a text index on the name field                
+productsCollection.Indexes
+  .CreateOne(new CreateIndexModel<Product>
+                (Builders<Product>.IndexKeys.Text(p => p.Name)));
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.products.createIndex( { "name": "text" } )
+
+// Result
+{
+  "numIndexesBefore" : 1,
+  "numIndexesAfter" : 2,
+  "note" : "all indexes already exist",
+  "ok" : 1
+}
+
+// sample document
+
+{
+  "_id" : ObjectId("5eac24240a037a3b4b412366"),
+  "name" : "Awesome Concrete Shoes"
+}
+```
+{% endtab %}
+
+{% tab title="Product" %}
+```csharp
+public class Product
+{
+    public ObjectId Id { get; set; }
+    public string Name { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+In case the index already exists, nothing will change
+{% endhint %}
+
+To create a search text use the `FilterDefinitionBuilder.Text` method to create a filter definition.
+
+{% tabs %}
+{% tab title="C\#" %}
+```csharp
+Builders<Product>.Filter.Text(string term);
+```
+{% endtab %}
+{% endtabs %}
+
+The sample finds all `Product` documents that contain the term _"shirt"_.
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="EvaluationOperator" %}
+```csharp
+var productsCollection = database
+                .GetCollection<Product>(Constants.ProductsCollection);
+
+// create a text search filter          
+var searchFilter = Builders<Product>
+                .Filter.Text("shirt");
+
+var shirtsProducts = await productsCollection
+                .Find(searchFilter).ToListAsync();
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Bson" %}
+```csharp
+
+var productsBsonCollection = database
+  .GetCollection<BsonDocument>(Constants.ProductsCollection);
+  
+var bsonSearchFilter = Builders<BsonDocument>
+  .Filter.Text("shirt");
+  
+var bsonShirtsProducts = await productsBsonCollection
+  .Find(bsonSearchFilter).ToListAsync();
+```
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.products.find({ $text: { $search: 'shirt' } });
+
+-------------------------
+// sample results
+
+{ 
+  "_id" : ObjectId("5eac2a1a2d5d5e188996b00e"), 
+  "name" : "Handcrafted Steel Shirt"
+},
+{ 
+  "_id" : ObjectId("5eac2a1a2d5d5e188996affa"), 
+  "name" : "Licensed Wooden Shirt" 
+},
+{ 
+  "_id" : ObjectId("5eac2a1a2d5d5e188996afef"), 
+  "name" : "Sleek Soft Shirt" 
+}
+```
+{% endtab %}
+
+{% tab title="Product" %}
+```csharp
+public class Product
+{
+    public ObjectId Id { get; set; }
+    public string Name { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+**`FilterDefinitionBuilder.Text` method optionally** accepts a `TextSearchOptions` instance where you can control the case sensitivity on your search query.
+
+```csharp
+Builders<T>.Filter.Text(string term, 
+    new TextSearchOptions() 
+        { CaseSensitive = true });
+```
 {% endhint %}
 
