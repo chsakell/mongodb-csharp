@@ -203,7 +203,7 @@ public class Product
 In case the index already exists, nothing will change
 {% endhint %}
 
-To create a search text use the `FilterDefinitionBuilder.Text` method to create a filter definition.
+To create a search text query use the `FilterDefinitionBuilder.Text` method to build a filter definition.
 
 {% tabs %}
 {% tab title="C\#" %}
@@ -280,7 +280,7 @@ public class Product
 {% endtabs %}
 
 {% hint style="info" %}
-**`FilterDefinitionBuilder.Text` method optionally** accepts a `TextSearchOptions` instance where you can control the case sensitivity on your search query.
+**`FilterDefinitionBuilder.Text`** method optionally ****accepts a `TextSearchOptions` instance where you can control the case sensitivity on your search query.
 
 ```csharp
 Builders<T>.Filter.Text(string term, 
