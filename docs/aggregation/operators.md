@@ -367,3 +367,94 @@ public class Traveler
 {% endtab %}
 {% endtabs %}
 
+## Multiply operator - _$multiply_
+
+The **$multiply** operator is used to multiply numbers and return the result. The operator can be used with both raw and field values.
+
+Assuming a collection contains `Order` documents in the following format...
+
+```javascript
+{
+    "_id" : 0,
+    "item" : "Handmade Steel Shoes",
+    "price" : 172,
+    "quantity" : 3,
+    "shipmentDetails" : {
+        "shipAddress" : "547 Kris Hill, Dooleyville, Niger",
+        "city" : "Port Caryport",
+        "country" : "Northern Mariana Islands",
+        "contactName" : "Keenan McDermott",
+        "contactPhone" : "1-956-915-2404"
+    }
+}
+```
+
+The sample creates a **projectio**n stage to return the total for each order, with $$total = price * quantity$$ 
+
+{% tabs %}
+{% tab title="C\#" %}
+{% code title="Multiply.cs" %}
+```csharp
+var ordersCollection = tripsDatabase
+    .GetCollection<Order>(Constants.OrdersCollection);
+
+var multiplyQuery = 
+    from o in ordersCollection.AsQueryable()
+    select new // creates a projection stage
+    {
+      o.OrderId,
+      total = o.Quantity * o.Price // $multiply field
+    };
+
+var multiplyQueryResults = 
+    await multiplyQuery.ToListAsync();
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Shell" %}
+```javascript
+db.orders.aggregate([
+  {
+    $project: {
+      OrderId: '$_id',
+      total: { $multiply: ['$quantity', '$price'] },
+      _id: 0
+    }
+  }
+]);
+
+----------------------------
+
+// sample results
+
+{ "OrderId" : 0, "total" : 516 }
+{ "OrderId" : 1, "total" : 450 }
+{ "OrderId" : 2, "total" : 752 }
+{ "OrderId" : 3, "total" : 1848 }
+{ "OrderId" : 4, "total" : 870 }
+{ "OrderId" : 5, "total" : 544 }
+{ "OrderId" : 6, "total" : 752 }
+
+```
+{% endtab %}
+
+{% tab title="Order" %}
+```csharp
+public class Order
+{
+    [BsonId]
+    public int OrderId { get; set; }
+    public string Item { get; set; }
+    public  int Price { get; set; }
+    public int Quantity { get; set; }
+
+    [BsonIgnoreIfDefault]
+    public int? LotNumber { get; set; }
+
+    public ShipmentDetails ShipmentDetails { get; set; }
+}
+```
+{% endtab %}
+{% endtabs %}
+
