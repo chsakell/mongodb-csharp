@@ -42,6 +42,7 @@ namespace MongoDb.Csharp.Samples.Core
         Aggregation_Stages_Limit_Skip,
 
         Aggregation_Operators_Filter,
+        Aggregation_Operators_Multiply,
         Aggregation_Operators_Slice,
         #endregion
 

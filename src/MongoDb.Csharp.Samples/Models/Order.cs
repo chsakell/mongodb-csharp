@@ -8,11 +8,11 @@ namespace MongoDb.Csharp.Samples.Models
         [BsonId]
         public int OrderId { get; set; }
         public string Item { get; set; }
+        public  int Price { get; set; }
         public int Quantity { get; set; }
 
         [BsonIgnoreIfDefault]
         public int? LotNumber { get; set; }
-
         public ShipmentDetails ShipmentDetails { get; set; }
     }
 

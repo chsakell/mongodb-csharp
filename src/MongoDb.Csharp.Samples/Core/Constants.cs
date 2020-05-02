@@ -7,7 +7,7 @@
         public const string TravelersCollection = "travelers";
         public const string MessagesCollection = "messages";
         public const string SportsCollection = "sports";
-        public const string InvoicesCollection = "invoices";
+        public const string OrdersCollection = "orders";
         public const string StoreCollection = "store";
         public const string SocialNetworkCollection = "social_network";
         public const string PostsCollection = "posts";

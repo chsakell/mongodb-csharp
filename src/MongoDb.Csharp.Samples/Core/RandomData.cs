@@ -68,6 +68,7 @@ namespace MongoDb.Csharp.Samples.Core
                 .StrictMode(true)
                 .RuleFor(o => o.OrderId, f => orderIds++)
                 .RuleFor(o => o.Item, f => f.Commerce.ProductName())
+                .RuleFor(o => o.Price, f => f.Random.Int(1, 300))
                 .RuleFor(o => o.Quantity, f => f.Random.Number(1, 10))
                 .RuleFor(o => o.LotNumber, f => f.Random.Int(0, 100).OrNull(f, .8f))
                 .RuleFor(o => o.ShipmentDetails, f => GenerateShipmentDetails(locale));
