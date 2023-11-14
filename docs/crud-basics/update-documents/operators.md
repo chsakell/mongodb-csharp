@@ -2,7 +2,7 @@
 
 ## _Set_ operator - _$set_
 
-The _$set_ operator is used to update the value of a specified field. 
+The _$set_ operator is used to update the value of a specified field.&#x20;
 
 {% tabs %}
 {% tab title="Syntax" %}
@@ -15,7 +15,7 @@ Builders<T<.Update.Set(doc => doc.<field>, <value>)
 The sample updates the _FirstName_ field of the first document in the collection.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
 var collection = database
@@ -142,10 +142,10 @@ public class User
 
 You can update multiple document's fields in one operation by declaring more than one update definitions.
 
-The sample updates the first document's _Phone_, _Website_ and _FavoriteSports \(array field\)._
+The sample updates the first document's _Phone_, _Website_ and _FavoriteSports (array field)._
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
 var collection = database
@@ -275,7 +275,7 @@ public class User
 
 ## _Inc_ operator - _$inc_
 
-The _$inc_ operator is used to increase the value of a specified field by a specified amount. 
+The _$inc_ operator is used to increase the value of a specified field by a specified amount.&#x20;
 
 ```csharp
 Builders<T<.Update.Inc(doc => doc.<field>, <value>)
@@ -284,7 +284,7 @@ Builders<T<.Update.Inc(doc => doc.<field>, <value>)
 The sample increments the first document's salary.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
 var collection = database
@@ -423,10 +423,10 @@ Builders<T<.Update
 {% endtab %}
 {% endtabs %}
 
-The sample decreases the first document's _salary_ value from 3000 to 2000 💰 .
+The sample decreases the first document's _salary_ value from 3000 to 2000 :moneybag: .
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
 var collection = database
@@ -583,10 +583,10 @@ Builders<T<.Update
 {% endtab %}
 {% endtabs %}
 
-The sample increases the first document's _salary_ value from 3000 to 3500 💰 .
+The sample increases the first document's _salary_ value from 3000 to 3500 :moneybag: .
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
 var collection = database
@@ -730,10 +730,10 @@ Builders<T<.Update.Mul(doc => doc.<field>, <value>)
 {% endtab %}
 {% endtabs %}
 
-The sample doubles the first document's _salary_ value from 1000 to 2000 using the $mul operator 💰 .
+The sample doubles the first document's _salary_ value from 1000 to 2000 using the $mul operator :moneybag: .
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
 var collection = database
@@ -874,10 +874,10 @@ Builders<T<.Update.Unset(doc => doc.<field>)
 {% endtab %}
 {% endtabs %}
 
-The sample removes ❌ the _Website_ field from a user document.
+The sample removes :x: the _Website_ field from a user document.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
 var collection = database
@@ -999,7 +999,7 @@ public class User
 {% endtabs %}
 
 {% hint style="warning" %}
-####  ​​ ⚡ Danger ​ ⚡​​ Danger ​ ⚡​​ Danger ​ ⚡
+#### &#x20;​​ ⚡ Danger ​ ⚡​​ Danger ​ ⚡​​ Danger ​ ⚡
 
 Use **caution** when applying the _Unset_ operator!! In case you unset a _non nullable_ property then you might end up having unexpected results. For example, if you unset the _salary_ field on a user document, which is a decimal field, then the next time you read that document, the salary will be 0, not null!
 
@@ -1020,7 +1020,7 @@ var firstUser = await collection.Find(firstUserFilter)
 
 ## _Rename_ operator - _$rename_
 
-The _$rename_ operator is used to rename a field. 
+The _$rename_ operator is used to rename a field.&#x20;
 
 {% tabs %}
 {% tab title="Syntax" %}
@@ -1034,7 +1034,7 @@ Builders<T<.Update
 The sample updates the _Phone_ field of the first document to _PhoneNumber_ using the _$rename_ operator.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="Update/BasicOperators.cs" %}
 ```csharp
 var collection = database
@@ -1116,11 +1116,10 @@ public class User
 {% endtabs %}
 
 {% hint style="warning" %}
-When renaming document fields make sure the new field names can be matched back you your C\# models. You can control the field's name in the database using the**`[BsonElement]`** attribute. In the following example, the _Phone_ property will be saved as _phoneNumber_ in the database while can be deserialized back to the _Phone_ property properly.
+When renaming document fields make sure the new field names can be matched back you your C# models. You can control the field's name in the database using the**`[BsonElement]`** attribute. In the following example, the _Phone_ property will be saved as _phoneNumber_ in the database while can be deserialized back to the _Phone_ property properly.
 
 ```csharp
 [BsonElement("phoneNumber")]
 public string Phone {get; set; }
 ```
 {% endhint %}
-

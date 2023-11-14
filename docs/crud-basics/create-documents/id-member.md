@@ -2,7 +2,7 @@
 
 ## Unique Identifier
 
-Each top level document in MongoDB contains an \__id_ field that uniquely identifies documents in the collection.  This field can be mapped from/to a public property in _C\#_ models. By convention public members named _Id_, _id_ and _id_ will be used as the identifier. MongoDB will ensure to generate a value for your identifier field when inserting documents and deserialize it back your model member during reads.
+Each top level document in MongoDB contains an \__id_ field that uniquely identifies documents in the collection.  This field can be mapped from/to a public property in _C#_ models. By convention public members named _Id_, _id_ and _id_ will be used as the identifier. MongoDB will ensure to generate a value for your identifier field when inserting documents and deserialize it back your model member during reads.
 
 {% hint style="warning" %}
 The identifier member can be of any type but this doesn't mean that MongoDB will be able to automatically generate the value during insertions
@@ -17,7 +17,7 @@ You can use the following types for your Id identifier type:
 Let's assume that you have a Message class with a string Id public member:
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="IdMember.cs" %}
 ```csharp
 var message = new Message {Text = "hello world"};
@@ -52,7 +52,7 @@ public class Message
 {% endtabs %}
 
 {% hint style="danger" %}
-When you want to use a string member as an auto generated MongoDB `Id` member, then just declaring it as a `string` isn't enough. You need to inform the driver which [IdGenerator](https://mongodb.github.io/mongo-csharp-driver/2.10/reference/bson/mapping/#id-generators) should use so that can understand if the Id member has been assigned a value or not. 
+When you want to use a string member as an auto generated MongoDB `Id` member, then just declaring it as a `string` isn't enough. You need to inform the driver which [IdGenerator](https://mongodb.github.io/mongo-csharp-driver/2.10/reference/bson/mapping/#id-generators) should use so that can understand if the Id member has been assigned a value or not.&#x20;
 
 In case you don't do this, the next time you try to insert a document you will get a  **`E11000 duplicate key error collection`** error
 {% endhint %}
@@ -154,11 +154,11 @@ public class Message
 
 ### ObjectId
 
-MongoDB loves `ObjectId` ♥ which is a 12-byte special type for MongoDB which is fast to generate and contains:
+MongoDB loves `ObjectId` :hearts: which is a 12-byte special type for MongoDB which is fast to generate and contains:
 
-* A **timestamp** value representing the _ObjectId'_s creations _\(4-byte\)_
-* An auto-incrementing **counter** _\(3-byte\)_
-* A **random value** _\(5-byte\)_
+* A **timestamp** value representing the _ObjectId'_s creations _(4-byte)_
+* An auto-incrementing **counter** _(3-byte)_
+* A **random value** _(5-byte)_
 
 {% hint style="info" %}
 In fact, if you try to insert a document in MongoDB in the shell and don't provide any value for the `_id` field, it will be saved as an `ObjectId` type
@@ -189,10 +189,10 @@ public class Message
 {% endtab %}
 {% endtabs %}
 
-If you want to use a custom identifier name, just add the `[BsonId`\] attribute. Defining the `ObjectIdGenerator` is optional.
+If you want to use a custom identifier name, just add the `[BsonId`] attribute. Defining the `ObjectIdGenerator` is optional.
 
 {% tabs %}
-{% tab title="\[BsonId\]" %}
+{% tab title="[BsonId]" %}
 ```csharp
 public class Message
 {
@@ -244,10 +244,10 @@ public class Message
 {% endtab %}
 {% endtabs %}
 
-If you want to use a custom identifier name, just add the `[BsonId`\] attribute. Defining the `BsonObjectIdGenerator` is optional.
+If you want to use a custom identifier name, just add the `[BsonId`] attribute. Defining the `BsonObjectIdGenerator` is optional.
 
 {% tabs %}
-{% tab title="\[BsonId\]" %}
+{% tab title="[BsonId]" %}
 ```csharp
 public class Message
 {
@@ -298,4 +298,3 @@ await messagesCollection.InsertOneAsync(message);
 {% hint style="warning" %}
 Trying to insert a document without assigning a value first for an identifier field with NullIdChecker generator will throw  **`System.InvalidOperationException: <field> cannot be null.`**
 {% endhint %}
-

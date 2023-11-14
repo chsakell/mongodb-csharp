@@ -6,20 +6,20 @@ description: To be or not to be..
 
 ## Overview
 
-Logical operators allow you to match documents based on the **boolean result** ✅ ❌ coming from a set of expressions. The logical expressions are evaluated for each document in your filter and if their boolean result matches the expected one _\(true or false\)_ are included or excluded respectively in the returned result. The section contains samples for the following operators:
+Logical operators allow you to match documents based on the **boolean result** :white\_check\_mark: :x: coming from a set of expressions. The logical expressions are evaluated for each document in your filter and if their boolean result matches the expected one _(true or false)_ are included or excluded respectively in the returned result. The section contains samples for the following operators:
 
-| Operator | Description |
-| :--- | :--- |
-| **AND** | Matches documents that fulfill all specified conditions |
-| **NOT** | Matches documents that don't fulfill the specified expression |
-| **OR** | Matches documents that fulfill at least one of a set of conditions |
-| **NOR** | Matches documents that fail to fulfill both conditions |
+| Operator | Description                                                        |
+| -------- | ------------------------------------------------------------------ |
+| **AND**  | Matches documents that fulfill all specified conditions            |
+| **NOT**  | Matches documents that don't fulfill the specified expression      |
+| **OR**   | Matches documents that fulfill at least one of a set of conditions |
+| **NOR**  | Matches documents that fail to fulfill both conditions             |
 
 ![Logical operators](../../.gitbook/assets/logical.png)
 
 ## _AND_ operator - _$and_
 
-The AND _operator_ performs a logical AND on a set of expressions and match documents that satisfy all of them. 
+The AND _operator_ performs a logical AND on a set of expressions and match documents that satisfy all of them.&#x20;
 
 {% tabs %}
 {% tab title="Syntax" %}
@@ -30,12 +30,12 @@ Builders<T>.Filter
 {% endtab %}
 {% endtabs %}
 
-Create as many **filter definitions** you want and pass them as an argument to the **`And`** `FilterDefinitionBuilder` method. 
+Create as many **filter definitions** you want and pass them as an argument to the **`And`** `FilterDefinitionBuilder` method.&#x20;
 
 The sample uses an _And_ operator to find all documents that have male _gender_ **AND** have the _profession_ field equal to "_Doctor_".
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="LogicalOperators.cs" %}
 ```csharp
 var collection = database
@@ -168,17 +168,17 @@ public class User
 {% endtabs %}
 
 {% hint style="success" %}
-The _Gender_ property on the `User` class is an `Enum` type and the driver is smart enough 🧙♂ 🦉 to translate it properly when sending the query to MongoDB
+The _Gender_ property on the `User` class is an `Enum` type and the driver is smart enough :man\_mage: :owl: to translate it properly when sending the query to MongoDB
 {% endhint %}
 
 You can combine as many filters as you want to an AND operator. The following sample finds all documents that match the following criteria:
 
-1. They have gender _Female_ 👩⚕ 
-2. They are either _"Teacher", Nurse" or "Dentist"_  🏫 __🏥 
-3. Their salary is between 2000 AND 3200 💰 
+1. They have gender _Female_ :woman\_health\_worker:&#x20;
+2. They are either _"Teacher", Nurse" or "Dentist"_  :school: :hospital:&#x20;
+3. Their salary is between 2000 AND 3200 :moneybag:&#x20;
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="LogicalOperators.cs" %}
 ```csharp
 var collection = database.GetCollection<User>(Constants.UsersCollection);
@@ -332,7 +332,7 @@ The inner filter definitions passed as arguments in the **`And`** method can be 
 
 ## _NOT_ operator - _$ne_
 
-The NOT _operator_ performs a logical NOT on an expression and match documents that **don't satisfy** the expression. 
+The NOT _operator_ performs a logical NOT on an expression and match documents that **don't satisfy** the expression.&#x20;
 
 {% tabs %}
 {% tab title="Syntax" %}
@@ -348,7 +348,7 @@ Create a **filter definition** and pass it as an argument to the **`Not`** `Filt
 The sample uses an _Not_ operator to find all documents having male _gender,_ which can be translated as **NOT** _female_.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="LogicalOperators.cs" %}
 ```csharp
 var collection = database
@@ -465,7 +465,7 @@ public class User
 
 ## _OR_ operator - _$or_
 
-The _OR_ operator performs a logical OR on an **set of expressions** and matches documents that **satisfy** at least on of the expressions. 
+The _OR_ operator performs a logical OR on an **set of expressions** and matches documents that **satisfy** at least on of the expressions.&#x20;
 
 {% tabs %}
 {% tab title="Syntax" %}
@@ -477,10 +477,10 @@ Builders<T>.Filter.Or(FilterDefinition<T>[] filters)
 
 Create as many **filter definitions** you want and pass them as an argument to the **`Or`** `FilterDefinitionBuilder` method. The filters passed as parameters can be as complex as you want.
 
-The sample uses an _Or_ operator to find all documents having _salary,_ either too low _\(less than 1500\)_ or too high _\( greater than 4000\)._
+The sample uses an _Or_ operator to find all documents having _salary,_ either too low _(less than 1500)_ or too high _( greater than 4000)._
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="LogicalOperators.cs" %}
 ```csharp
 var collection = database.GetCollection<User>(Constants.UsersCollection);
@@ -591,7 +591,7 @@ public class User
 
 ## _NOR_ operator - _$nor_
 
-The _NOR_ operator performs a logical NOR on an **set of expressions** and matches documents that **fail to satisfy** all the expressions. Despite the fact that MongoDB supports the [$nor](https://docs.mongodb.com/manual/reference/operator/query/nor/) operator, you won't find any method on the C\# driver. That's totally fine though because you can built it using the AND operator and negating the internal filters. 
+The _NOR_ operator performs a logical NOR on an **set of expressions** and matches documents that **fail to satisfy** all the expressions. Despite the fact that MongoDB supports the [$nor](https://docs.mongodb.com/manual/reference/operator/query/nor/) operator, you won't find any method on the C# driver. That's totally fine though because you can built it using the AND operator and negating the internal filters.&#x20;
 
 Create as many filter definitions you want **to fail** and pass them as an argument to the **`And`** `FilterDefinitionBuilder` method. The filters passed as parameters can be as complex as you want.
 
@@ -603,7 +603,7 @@ The sample finds documents that **fail** to satisfy the following criteria:
 Since the matched documents needs to fail the above criteria, you should use their negates with an AND operator.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="LogicalOperators.cs" %}
 ```csharp
 var collection = database
@@ -728,10 +728,10 @@ public class User
 {% endtab %}
 {% endtabs %}
 
-💡 Of course you can build a simple extension method that does this for you and makes things a little bit easier.
+:bulb: Of course you can build a simple extension method that does this for you and makes things a little bit easier.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 ```csharp
 var collection = database.GetCollection<User>(Constants.UsersCollection);
 
@@ -761,4 +761,3 @@ public static FilterDefinition<T> Nor<T>(
 {% endcode %}
 {% endtab %}
 {% endtabs %}
-

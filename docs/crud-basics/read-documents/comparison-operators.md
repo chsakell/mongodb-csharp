@@ -2,18 +2,18 @@
 
 ## Overview
 
-Comparison operators are probably the most used operators when querying any type of database provider. MongoDB provides a set of operators 🛠 that can cover all type of comparisons you might need for your queries. This section presents samples for the following **query operators**:
+Comparison operators are probably the most used operators when querying any type of database provider. MongoDB provides a set of operators :tools: that can cover all type of comparisons you might need for your queries. This section presents samples for the following **query operators**:
 
-| Operator | Matches when |
-| :--- | :--- |
-| **Equal** | A field's value is _equal_ to a specified value |
-| **Not Equal** | A field's value is _not equal_ to a specified value |
-| **Greater Than** | A field's value is _greater than_ a specified value |
+| Operator                  | Matches when                                                    |
+| ------------------------- | --------------------------------------------------------------- |
+| **Equal**                 | A field's value is _equal_ to a specified value                 |
+| **Not Equal**             | A field's value is _not equal_ to a specified value             |
+| **Greater Than**          | A field's value is _greater than_ a specified value             |
 | **Greater Than or Equal** | A field's value is _greater than or equal_ to a specified value |
-| **Less Than** | A field's value is _less than_ a specified value |
-| **Less Than or Equal** | A field's value is _less than or equal_ to a specified value |
-| **In** | A field's value is ****_**contained**_ among specified values |
-| **Not In** | A field's value is _**not** contained_ among specified values |
+| **Less Than**             | A field's value is _less than_ a specified value                |
+| **Less Than or Equal**    | A field's value is _less than or equal_ to a specified value    |
+| **In**                    | A field's value is _**contained**_ among specified values       |
+| **Not In**                | A field's value is _**not** contained_ among specified values   |
 
 ![Comparison Operators](../../.gitbook/assets/compare.png)
 
@@ -29,10 +29,10 @@ Builders<T>.Filter.Eq(doc => doc.<field>, <value>)
 {% endtab %}
 {% endtabs %}
 
-The sample uses an _equal_ operator to find all documents that have the _profession_ field _\(top level field\)_ equal to "_Pilot_".
+The sample uses an _equal_ operator to find all documents that have the _profession_ field _(top level field)_ equal to "_Pilot_".
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
 var collection = database
@@ -151,7 +151,7 @@ public class User
 
 ## _Not Equal_ operator - _$ne_
 
-When you want to match all document that certain field\(s\) values **are not equal** to a specific value then you use the `Not Equal` operator. 
+When you want to match all document that certain field(s) values **are not equal** to a specific value then you use the `Not Equal` operator.&#x20;
 
 ```csharp
 Builders<T>.Filter.Ne(doc => doc.<field>, <value>)
@@ -160,7 +160,7 @@ Builders<T>.Filter.Ne(doc => doc.<field>, <value>)
 The sample uses a _not equal_ operator to match all documents that their _profession_ field is other than "_Doctor_".
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
 var collection = database
@@ -287,7 +287,7 @@ Builders<T>.Filter.Gt(doc => doc.<field>, <value>)
 The sample finds all user documents having their _salary_ field **greater than** 3500.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
 var collection = database.GetCollection<User>(Constants.UsersCollection);
@@ -416,7 +416,7 @@ Builders<T>.Filter.Gte(doc => doc.<field>, <value>)
 The sample finds all user documents having their _salary_ field **greater than or equal** to 4500.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
 var collection = database
@@ -548,7 +548,7 @@ Builders<T>.Filter.Lt(doc => doc.<field>, <value>)
 The sample finds all user documents having their _salary_ field **less than** 2500.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
 var collection = database
@@ -669,7 +669,7 @@ Builders<T>.Filter.Lte(doc => doc.<field>, <value>)
 The sample finds all user documents having their _salary_ field **less than or equal** to 1500.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
 var collection = database
@@ -793,10 +793,10 @@ Builders<T>.Filter.In(doc => doc.<field>,
 {% endtab %}
 {% endtabs %}
 
-The sample finds all user documents where their _profession_ field value is either  "_Dentist_",  "_Pharmacist_", or "_Nurse_" 🏥 . This means that all documents matched will have _profession_ value one of the above.
+The sample finds all user documents where their _profession_ field value is either  "_Dentist_",  "_Pharmacist_", or "_Nurse_" :hospital: . This means that all documents matched will have _profession_ value one of the above.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
 var collection = database
@@ -914,10 +914,10 @@ Builders<T>.Filter.Nin(doc => doc.<field>,
 {% endtab %}
 {% endtabs %}
 
-The sample finds all user documents where their _profession_ field value is **different than**  "_Dentist_",  "_Pharmacist_", or "_Nurse_" 🏥 . This means that all documents matched **will not** have _profession_ value one of the above.
+The sample finds all user documents where their _profession_ field value is **different than**  "_Dentist_",  "_Pharmacist_", or "_Nurse_" :hospital: . This means that all documents matched **will not** have _profession_ value one of the above.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ComparisonOperators.cs" %}
 ```csharp
 var collection = database.GetCollection<User>(Constants.UsersCollection);
@@ -1032,4 +1032,3 @@ public class User
 ```
 {% endtab %}
 {% endtabs %}
-

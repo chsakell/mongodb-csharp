@@ -2,16 +2,16 @@
 
 ## Overview
 
-There are many times when you want to match documents based on array field values. Luckily, MongoDB and the C\# driver provide the following 3 array query operators that help you build array based queries.
+There are many times when you want to match documents based on array field values. Luckily, MongoDB and the C# driver provide the following 3 array query operators that help you build array based queries.
 
-| Operator | Description |
-| :--- | :--- |
-| **Size** | Match documents based on the array's size |
-| **ElemMatch** | Match documents when array's elements match specified conditions |
-| **All** | Match documents when all specified values are contained in the array |
+| Operator      | Description                                                          |
+| ------------- | -------------------------------------------------------------------- |
+| **Size**      | Match documents based on the array's size                            |
+| **ElemMatch** | Match documents when array's elements match specified conditions     |
+| **All**       | Match documents when all specified values are contained in the array |
 
 {% hint style="info" %}
-These operators may seem simple at first 😇 , but when combined with other MongoDB features such as **projection** or **unwind**, you will find that you can build quite complex queries! 💪 
+These operators may seem simple at first :innocent: , but when combined with other MongoDB features such as **projection** or **unwind**, you will find that you can build quite complex queries! :muscle:&#x20;
 {% endhint %}
 
 > Other than the operators themselves, you can create array field base queries using lambda expressions and the methods provided by `Enumerable`, such as `Enumerable.Any`
@@ -22,15 +22,15 @@ These operators may seem simple at first 😇 , but when combined with other Mon
 
 ## _Size_ operator - _$size_
 
-The _$size_ operator is applied on array fields and matches documents when an array has a specific number of elements. MongoDB C\# driver, doesn't contain a dedicated method for the _$size_ operator but can resolve it from the `Count`property or `Count()` method of `IEnumerable`types.
+The _$size_ operator is applied on array fields and matches documents when an array has a specific number of elements. MongoDB C# driver, doesn't contain a dedicated method for the _$size_ operator but can resolve it from the `Count`property or `Count()` method of `IEnumerable`types.
 
 The following sample finds:
 
-*  `Traveler` documents having _VisitedCountries_ array with exact 5 elements 
-* `Traveler` documents having _VisitedCountries_ array with more than 10 elements 
+* &#x20;`Traveler` documents having _VisitedCountries_ array with exact 5 elements&#x20;
+* `Traveler` documents having _VisitedCountries_ array with more than 10 elements&#x20;
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ArrayOperators.cs" %}
 ```csharp
 var collection = database
@@ -169,14 +169,14 @@ public class GeoLocation
 {% endtabs %}
 
 {% hint style="info" %}
-Notice that using the `BsonDocument` approach, you need to write the exact query you would write in the shell. 
+Notice that using the `BsonDocument` approach, you need to write the exact query you would write in the shell.&#x20;
 
 ```javascript
 db.travelers
 	.find({ "visitedCountries.10" : { "$exists" : true } })
 ```
 
-🧙♂ This uses the `<array>.<index>` notation to check if the array contains an element at _11th_ position, which would also mean that has more than 10 documents
+:man\_mage: This uses the `<array>.<index>` notation to check if the array contains an element at _11th_ position, which would also mean that has more than 10 documents
 {% endhint %}
 
 
@@ -194,10 +194,10 @@ Builders<T>.Filter
 {% endtab %}
 {% endtabs %}
 
-The sample filters `Traveler` documents that their _VisitedCountries_ array field contains a `VisitedCountry` element with name _Greece_ and _TimesVisited = 3_. 
+The sample filters `Traveler` documents that their _VisitedCountries_ array field contains a `VisitedCountry` element with name _Greece_ and _TimesVisited = 3_.&#x20;
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ArrayOperators.cs" %}
 ```csharp
 var collection = database
@@ -327,10 +327,10 @@ db.travelers.find({$and: [
 This is **wrong** because it doesn't apply the criteria on each array element at a time but at all elements. This means that it might match documents that indeed  contain a visited country with name "_Greece_" which hasn't _TimesVisited = 3_, but a document matched because it also contains another visited country, _e.g. Italy_ with _TimesVisited = 3_.
 {% endhint %}
 
-The following sample filters `Traveler` documents that their _VisitedCountries_ array field contains a `VisitedCountry` element _TimesVisited = 3_ but this time, the country's name can be either _Greece_ or _Italy_. 
+The following sample filters `Traveler` documents that their _VisitedCountries_ array field contains a `VisitedCountry` element _TimesVisited = 3_ but this time, the country's name can be either _Greece_ or _Italy_.&#x20;
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ArrayOperators.cs" %}
 ```csharp
 var collection = database
@@ -452,7 +452,7 @@ To check if an array field contains a specified value you can use the `Enumerabl
 The sample finds the `Traveler` documents where _"Greece"_ is contained in the _VisitedCountries_ array field.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ArrayOperators.cs" %}
 ```csharp
 var collection = database
@@ -493,10 +493,10 @@ public class Traveler
 {% endtab %}
 {% endtabs %}
 
-You can go further, and add an **\|\|** __operator in the `Any` method. This will combine $el_emMatch_ and $in operators to build the query.
+You can go further, and add an **||** operator in the `Any` method. This will combine $el_emMatch_ and $in operators to build the query.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 ```csharp
 var collection = database
   .GetCollection<Traveler>(Constants.TravelersCollection);
@@ -570,7 +570,7 @@ public class Traveler
 
 ## _All_ operator - _$all_
 
-The _$all_ operator is applied on array fields and matches documents when the array field **contains all** the items specified. You use the _All_ operator when you want to ensure that an array contains _\(or doesn't\)_ a list of values.
+The _$all_ operator is applied on array fields and matches documents when the array field **contains all** the items specified. You use the _All_ operator when you want to ensure that an array contains _(or doesn't)_ a list of values.
 
 {% tabs %}
 {% tab title="Syntax" %}
@@ -584,7 +584,7 @@ Builders<T>.Filter
 The sample finds all `Traveler` documents having _"Backpacking"_ and _"Climbing"_ values on their _Activities_ list. _Activities_ is an array of **string** values.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ArrayOperators.cs" %}
 ```csharp
 var collection = database
@@ -671,6 +671,5 @@ public class Traveler
 {% endtabs %}
 
 {% hint style="info" %}
-The order of the array values passed in the **`All`** __method doesn't matter, in the same way it doesn't matter when writing the query in the shell with the _$all_ operator
+The order of the array values passed in the **`All`** method doesn't matter, in the same way it doesn't matter when writing the query in the shell with the _$all_ operator
 {% endhint %}
-

@@ -2,7 +2,7 @@
 
 ## Array deconstruction
 
-The **$unwind** operator is used to deconstruct array fields.  How deconstruction works ❓ For each array element a new document is produced having that element in the position of the field array. This means that applying the unwind operator on a single document's array field which contains 10 elements, produces 10 different documents having one of the array elements instead of the array field. It is possible to define if a new document will produced in case a document either doesn't contain the array field or it is empty.
+The **$unwind** operator is used to deconstruct array fields.  How deconstruction works :question: For each array element a new document is produced having that element in the position of the field array. This means that applying the unwind operator on a single document's array field which contains 10 elements, produces 10 different documents having one of the array elements instead of the array field. It is possible to define if a new document will produced in case a document either doesn't contain the array field or it is empty.
 
 {% tabs %}
 {% tab title="Document" %}
@@ -59,7 +59,7 @@ db.trips.aggregate()
 The following sample finds the distinct activities grouped by age for `Traveler` documents.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="Unwind.cs" %}
 ```csharp
 var travelersQueryableCollection = tripsDatabase
@@ -186,4 +186,3 @@ public class Traveler
 * `GroupBy` groups documents by age field
 * `Select`creates another _$project_ stage where `Distinct` ensures activities will not contain duplicate values per group - it does that by using **$addToSet** operator in the _$group_ stage rather than a **$push**
 {% endhint %}
-

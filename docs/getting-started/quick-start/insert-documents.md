@@ -2,7 +2,7 @@
 
 ## Insert one document
 
-You can insert a document using the `InsertOne` method on a `IMongoCollection<T>` reference. 
+You can insert a document using the `InsertOne` method on a `IMongoCollection<T>` reference.&#x20;
 
 {% tabs %}
 {% tab title="Syntax" %}
@@ -17,7 +17,7 @@ Depending on the collection type you can pass either your own class type or a `B
 The sample insert a `Use`r document in collection.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="InsertDocuments.cs" %}
 ```csharp
 var database = Client
@@ -175,9 +175,9 @@ db.users.insertOne({
 {% endtabs %}
 
 {% hint style="danger" %}
- Notice how overwhelming querying using `BsonDocument` can be. And it's not only that you have to carefully type all these in curly brackets, it is also dangerous that you might end up having wrong **type of data** in the database because MongoDB will use default data types for values that their type haven't explicitly defined. 
+&#x20;Notice how overwhelming querying using `BsonDocument` can be. And it's not only that you have to carefully type all these in curly brackets, it is also dangerous that you might end up having wrong **type of data** in the database because MongoDB will use default data types for values that their type haven't explicitly defined.&#x20;
 
-> \*\*\*\*⛔ **Building the documents manually or using the `Parse` method is not recommended**
+> :no\_entry: **Building the documents manually or using the `Parse` method is not recommended**
 
 Luckily, there is the **`ToBsonDocument`** helper method that builds the `BsonDocument` from your typed class automatically and saves you from all the trouble.
 
@@ -195,7 +195,7 @@ await personsBsonCollection
 
 ## Insert many documents
 
-To add multiple documents at once, you can use the `InsertMany` collection method, passing the array of items to be inserted in the collection. 
+To add multiple documents at once, you can use the `InsertMany` collection method, passing the array of items to be inserted in the collection.&#x20;
 
 {% hint style="success" %}
 Prefer this method when you need to add multiple documents, instead looping the array and calling the `InsertOne` method. `InsertMany` is more efficient since you avoid making round trips to the database
@@ -213,7 +213,7 @@ IMongoCollection<T>
 The sample inserts 10 `User` documents in the collection.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="InsertDocuments.cs" %}
 ```csharp
 // generate 10 users
@@ -319,6 +319,5 @@ public class User
 {% endtabs %}
 
 {% hint style="success" %}
-Notice that insert operations return the **inserted** _Id\(s_\) as part of the result. This way, the driver automatically updates the _Id_ field on the argument\(s\) passed on the update operation
+Notice that insert operations return the **inserted** _Id(s_) as part of the result. This way, the driver automatically updates the _Id_ field on the argument(s) passed on the update operation
 {% endhint %}
-

@@ -16,7 +16,7 @@ IMongoCollection<T>
 The sample replaces the first document with a new one.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ReplaceDocuments.cs" %}
 ```csharp
 var collection = database
@@ -135,7 +135,7 @@ The identifier field **\_**_**id**_  on the new document must fulfill one of the
 * If specified, **must be equal** to the current document's value
 * Not specified at all. MongoDB will create a new one automatically
 
-⚠ In case you do set a value for the identifier \_id field and it's different than the current one, you will get the exception:**`After applying the update, the (immutable) field '_id' was found to have been altered to _id: <new-id>`**
+:warning: In case you do set a value for the identifier \_id field and it's different than the current one, you will get the exception:**`After applying the update, the (immutable) field '_id' was found to have been altered to _id: <new-id>`**
 {% endhint %}
 
 One common scenario where you need to replace documents is when you want to **move fields** inside the documents. Consider that you have the following document.
@@ -159,7 +159,7 @@ One common scenario where you need to replace documents is when you want to **mo
 The following sample moves _friends_ and _blocked_ top level fields in a new embedded document field named _relationships._
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ReplaceDocuments.cs" %}
 ```csharp
 var socialAccountAfter = new SocialAccount
@@ -224,7 +224,7 @@ When replacing a document make sure to be precise 🎯 on your filter, otherwise
 
 ## Upsert
 
-If the filter in the `ReplaceOne` operation fails to match a document then nothing happens in the database. You can change this behavior by passing a _replace options_ argument to the replace operation and setting `upsert = true`. 
+If the filter in the `ReplaceOne` operation fails to match a document then nothing happens in the database. You can change this behavior by passing a _replace options_ argument to the replace operation and setting `upsert = true`.&#x20;
 
 {% tabs %}
 {% tab title="Syntax" %}
@@ -240,7 +240,7 @@ IMongoCollection<T>
 The sample tries to replace a user document that has company name "_Microsoft Corp_". If it finds a match  then it will replace it with the _microsoftCeo_ document but if it doesn't, it will insert it.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ReplaceDocuments.cs" %}
 ```csharp
 var collection = database
@@ -383,12 +383,12 @@ When no match found, the update result will be the following:
 }
 ```
 
-🦉 Since you set **`upsert = true`** a new document inserted with _\_id_ equal to the _upsertedId_ 
+:owl: Since you set **`upsert = true`** a new document inserted with _\_id_ equal to the _upsertedId_&#x20;
 {% endhint %}
 
 ## _FindOneAndReplaceOne_
 
-`IMongoCollection<T>` contains a `FindOneAndReplaceOne` __method that behaves exactly the same as the `ReplaceOne` except that the returned result is of type `T` instead of a `ReplaceOneResult`, in other words it returns the updated or _upserted_ document itself. This can be quite convenient when you want to keep working with the new document after replacing it. 
+`IMongoCollection<T>` contains a `FindOneAndReplaceOne` method that behaves exactly the same as the `ReplaceOne` except that the returned result is of type `T` instead of a `ReplaceOneResult`, in other words it returns the updated or _upserted_ document itself. This can be quite convenient when you want to keep working with the new document after replacing it.&#x20;
 
 {% tabs %}
 {% tab title="Syntax" %}
@@ -404,7 +404,7 @@ IMongoCollection<T>
 The sample replaces the first document with a new one and gets back the entire document.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="ReplaceDocuments.cs" %}
 ```csharp
 var collection = database
@@ -490,4 +490,3 @@ When using the `FindOneAndReplace` method you have two options for the returned 
 1. Return the updated document - you need to set **`ReturnDocument = ReturnDocument.After`** in the `FindOneAndReplaceOptions`
 2. Return the document before being updated - you need to set **`ReturnDocument = ReturnDocument.Before`** in the `FindOneAndREplaceOptions` or leave it as is since it's the default value
 {% endhint %}
-

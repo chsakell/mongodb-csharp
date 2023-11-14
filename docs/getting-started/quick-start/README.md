@@ -6,7 +6,7 @@ description: Run Forrest run!
 
 ## Do you like shortcuts?
 
-If the answer is yes then you are on the right page. Quick start section can help you get your hands dirty right on as it contains samples with the most common CRUD ➕➖📝 ❌ operations when dealing with any database. You will learn step by step how to:
+If the answer is yes then you are on the right page. Quick start section can help you get your hands dirty right on as it contains samples with the most common CRUD :heavy\_plus\_sign::heavy\_minus\_sign::pencil: :x: operations when dealing with any database. You will learn step by step how to:
 
 1. Connect to a MongoDB instance
 2. List all databases existing in the instance
@@ -23,7 +23,7 @@ Quick start is recommended for those who have never used the `MongoDB .NET` driv
 
 ## Install Nuget packages
 
-To start writing MongoDB queries using C\# , you need to install the **MongoDB.Driver** 🚘 Nuget package in your project with one of the following ways:
+To start writing MongoDB queries using C# , you need to install the **MongoDB.Driver** :oncoming\_automobile: Nuget package in your project with one of the following ways:
 
 ### dotnet CLI
 
@@ -40,4 +40,3 @@ Open the _Nuget Package Manager_, search for and install the package.
 ```csharp
 Install-Package MongoDB.Driver
 ```
-

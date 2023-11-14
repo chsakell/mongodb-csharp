@@ -16,7 +16,7 @@ Builders<T>.Update
 The sample pushes a new `VisitedCountry` in the _VisitedCountries_ array of a `Traveler` document.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="UpdatingArrays.cs" %}
 ```csharp
 var collection = database
@@ -127,7 +127,7 @@ Builders<Traveler>.Update
 The sample adds 10 new `VisitedCountry` items in the _VisitedCountries_ array field.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="UpdatingArrays.cs" %}
 ```csharp
 var collection = database
@@ -297,7 +297,7 @@ public class RelationShips
 The sample tries to add 4 new notifications in the _lastNotifications_ array field using a **$slice:-2** operation. The resulting document contains only the last 2 notifications added.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 ```csharp
 var newNotifications = new List<Notification>();
 for (int i = 0; i < 4; i++)
@@ -404,10 +404,10 @@ Builders<StoreItem>.Update
 {% endtab %}
 {% endtabs %}
 
-The sample removes two **string** values _\("FIFA 20", "NBA 2K17"\)_ from the _PcGames_ string array field. The empty filter ensures to remove the items for all documents in the collection.
+The sample removes two **string** values _("FIFA 20", "NBA 2K17")_ from the _PcGames_ string array field. The empty filter ensures to remove the items for all documents in the collection.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="UpdatingArrays.cs" %}
 ```csharp
 var storesCollection = database
@@ -561,7 +561,7 @@ Builders<StoreItem>.Update
 The sample removes two string values from the _PcGames_ array field and one from the _XboxGames_.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="UpdatingArrays.cs" %}
 ```csharp
 var storesCollection = database
@@ -724,7 +724,7 @@ var pullDefinition =
 The sample removes `VisitedCountry` documents from the _VisitedCountries_ array field of `Traveler` documents based on the `VisitedCountry.TimesVisited` value.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="UpdatingArrays.cs" %}
 ```csharp
 var travelersCollection = database
@@ -859,12 +859,12 @@ public class VisitedCountry
 
 ## Update matched array document
 
-To update a specific array element **without  knowing** its position in the array, you can use the [$](https://docs.mongodb.com/manual/reference/operator/update/positional/#up._S_) positional operator.  The driver can build such a query by translating the `array[-1]` as a positional operator.
+To update a specific array element **without  knowing** its position in the array, you can use the [$](https://docs.mongodb.com/manual/reference/operator/update/positional/#up.\_S\_) positional operator.  The driver can build such a query by translating the `array[-1]` as a positional operator.
 
 The sample sets the _Name_ value for all matched array `VisitedCountry` elements having _Name = Greece_ and _TimesVisited = 3._
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="UpdatingArrays.cs" %}
 ```csharp
 var travelersCollection = database
@@ -993,12 +993,12 @@ public class VisitedCountry
 {% endtabs %}
 
 {% hint style="success" %}
-Normally, based on the **$elemMatch** operator, the **$set** operator should have been applied to the root document\(s\) but the **$** position operator causes the update to be applied on the matched document instead
+Normally, based on the **$elemMatch** operator, the **$set** operator should have been applied to the root document(s) but the **$** position operator causes the update to be applied on the matched document instead
 {% endhint %}
 
 ## Update multiple elements
 
-To update multiple array elements that match a specified condition, you need to use one or more `ArrayFilterDefinition` filters as the 3rd argument in the `UpdateOne` or `UpdateMany` methods. 
+To update multiple array elements that match a specified condition, you need to use one or more `ArrayFilterDefinition` filters as the 3rd argument in the `UpdateOne` or `UpdateMany` methods.&#x20;
 
 Assume that you have a post which contains a list of comments.
 
@@ -1132,6 +1132,5 @@ There update operation has 3 distinct parts:
 3. The **ArrayFilters** which defines how _**elem**_ array elements are matched, in other words, which are the elements to be updated
 
 {% hint style="info" %}
-Unfortunately, you cannot write this kind of operation using the typed way yet, because it's currently not supported by the driver 😞 . Of course, as soon as a new version that provides this functionality is released, the docs will be updated accordingly
+Unfortunately, you cannot write this kind of operation using the typed way yet, because it's currently not supported by the driver :disappointed: . Of course, as soon as a new version that provides this functionality is released, the docs will be updated accordingly
 {% endhint %}
-

@@ -24,10 +24,10 @@ var simpleProjectionResults = await usersCollection
 {% endtab %}
 {% endtabs %}
 
-The sample uses a projection stage to re-format `User` documents by excluding the _Id_ field and only include the _Gender_ and _DateOfBirth_. 
+The sample uses a projection stage to re-format `User` documents by excluding the _Id_ field and only include the _Gender_ and _DateOfBirth_.&#x20;
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="Projection.cs" %}
 ```csharp
 var collection = database
@@ -122,7 +122,7 @@ You can use projection to include new custom calculated fields in the final resu
 4. _**age**_: equal to current year minus the _dateOfBirth'_s field year
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="Projection.cs" %}
 ```csharp
 var collection = database
@@ -197,7 +197,7 @@ The driver didn't build any complex query to the MongoDB database, instead it cr
 
 ## Projection with LINQ
 
-If you want the driver to create the exact query that matches your projection you can build it using an **`IMongoQueryable<T>`** reference. There are some **limitations** though: you cannot use any custom C\# functions you want as you did using a `ProjectDefinition<T>`, but only those functions that are supported by the driver. You can get an `IMongoQueryable<T>` ****reference by calling the **`AsQueryable`** method on a `IMongoCollection<T>` reference.
+If you want the driver to create the exact query that matches your projection you can build it using an **`IMongoQueryable<T>`** reference. There are some **limitations** though: you cannot use any custom C# functions you want as you did using a `ProjectDefinition<T>`, but only those functions that are supported by the driver. You can get an `IMongoQueryable<T>` reference by calling the **`AsQueryable`** method on a `IMongoCollection<T>` reference.
 
 {% tabs %}
 {% tab title="Syntax" %}
@@ -209,7 +209,7 @@ IMongoCollection<T>
 {% endtabs %}
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="Projection.cs" %}
 ```csharp
 // get an IMongoQueryable<T> reference
@@ -299,7 +299,7 @@ public class User
 {% endtabs %}
 
 {% hint style="warning" %}
-This time the driver did built the exact query defined in the projection stage but if you try to use a custom C\# function despite the fact it compiles you will get a runtime error.
+This time the driver did built the exact query defined in the projection stage but if you try to use a custom C# function despite the fact it compiles you will get a runtime error.
 
 ```csharp
 var linqSimpleProjection = 
@@ -316,4 +316,3 @@ var linqSimpleProjection =
 
 Exception: **`System.NotSupportedException: ToUpperCase of type MongoDb.Csharp.Samples.Aggregation.ProjectionStage is not supported in the expression tree value(MongoDb.Csharp.Samples.Aggregation.ProjectionStage).ToUpperCase(Format("{0} {1}", {document}{firstName}, {document}{lastName})).`**
 {% endhint %}
-

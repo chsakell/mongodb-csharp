@@ -4,10 +4,10 @@
 
 Evaluation operators are used to match documents based on some type of evaluation applied on the field values, for example,  find all documents that one of their field values matches a specified **Regex** pattern. The evaluation applied on this example is to check if a field's value matches the regex pattern given.
 
-| Operator | Description |
-| :--- | :--- |
-| **Regex** | Find documents where their field values match a specified regular expression |
-| **Text** | Searches the specified term in the fields indexed with a [text index](https://docs.mongodb.com/manual/core/index-text/) |
+| Operator  | Description                                                                                                             |
+| --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Regex** | Find documents where their field values match a specified regular expression                                            |
+| **Text**  | Searches the specified term in the fields indexed with a [text index](https://docs.mongodb.com/manual/core/index-text/) |
 
 ![Evaluation operators](../../.gitbook/assets/evaluation.png)
 
@@ -28,7 +28,7 @@ Builders<User>.Filter
 The sample finds all `User` documents that their email field contains the _"gmail_" word. It does this by evaluating if there's a match between the email field and the regular expression, which by the way can be as complex as you wish.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="EvaluationOperators.cs" %}
 ```csharp
 var collection = database
@@ -150,10 +150,10 @@ MongoDB uses Perl compatible regular expressions version 8.42 with **UTF-8** sup
 
 Text operator **$text** is used along with a [text index](https://docs.mongodb.com/manual/core/index-text/) for searching a term among **string content** inside documents. The text index indexes string content as if it was an array of string values while stops and stems all words. This means that it words in sentences such as _"and"_, _"or"_, _"it"_ or _"is"_ are ignored.
 
-You can create a text index using the C\# driver using an instance of `CreateIndexModel<T>`. The following snippet creates a text index on the _Name_ string field of the `Product` class.
+You can create a text index using the C# driver using an instance of `CreateIndexModel<T>`. The following snippet creates a text index on the _Name_ string field of the `Product` class.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="EvaluationOperator" %}
 ```csharp
 var productsCollection = database
@@ -206,7 +206,7 @@ In case the index already exists, nothing will change
 To create a search text query use the `FilterDefinitionBuilder.Text` method to build a filter definition.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 ```csharp
 Builders<Product>.Filter.Text(string term);
 ```
@@ -216,7 +216,7 @@ Builders<Product>.Filter.Text(string term);
 The sample finds all `Product` documents that contain the term _"shirt"_.
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 {% code title="EvaluationOperator" %}
 ```csharp
 var productsCollection = database
@@ -280,7 +280,7 @@ public class Product
 {% endtabs %}
 
 {% hint style="info" %}
-**`FilterDefinitionBuilder.Text`** method optionally ****accepts a `TextSearchOptions` instance where you can control the case sensitivity on your search query.
+**`FilterDefinitionBuilder.Text`** method optionally accepts a `TextSearchOptions` instance where you can control the case sensitivity on your search query.
 
 ```csharp
 Builders<T>.Filter.Text(string term, 
@@ -288,4 +288,3 @@ Builders<T>.Filter.Text(string term,
         { CaseSensitive = true });
 ```
 {% endhint %}
-

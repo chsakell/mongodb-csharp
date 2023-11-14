@@ -12,10 +12,10 @@ In case you want to run and debug the samples existing in these docs locally, yo
 * **.NET Core SDK:** Download the latest .NET Core SDK from Microsoft's official [page](https://dotnet.microsoft.com/download).
 
 {% hint style="success" %}
-Both MongoDB and .NET Core are open source projects which means you can run the samples either in a MAC, Linux or Windows machine 👏 
+Both MongoDB and .NET Core are open source projects which means you can run the samples either in a MAC, Linux or Windows machine :clap:&#x20;
 {% endhint %}
 
-## ⬇ Clone the repository
+## :arrow\_down: Clone the repository
 
 You can download the source code for the docs by either selecting _**Clone or download**_ in the repository's [page](https://github.com/chsakell/mongodb-csharp) or by running the following git command
 
@@ -31,4 +31,3 @@ After doing so, don't forget to set the connection string to point your MongoDB 
     "MongoDBConnection": "mongodb://localhost:27017"
 }
 ```
-

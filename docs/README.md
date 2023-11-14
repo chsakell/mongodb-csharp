@@ -1,45 +1,49 @@
 ---
-description: '♥ Welcome to the MongoDB C# driver docs! ♥'
+description: ♥ Welcome to the MongoDB C# driver docs! ♥
 ---
 
 # ⭐ Introduction
 
-## ℹ About the docs
+## :information\_source: About the docs
 
-MongoDB has been evolved rapidly over the years 💪 attracting more and more developers from different languages and backgrounds. While there are official MongoDB [drivers](https://docs.mongodb.com/ecosystem/drivers/) for different programming languages, many developers struggle to solve their problems based on each driver's reference or API. 
+MongoDB has been evolved rapidly over the years :muscle: attracting more and more developers from different languages and backgrounds. While there are official MongoDB [drivers](https://docs.mongodb.com/ecosystem/drivers/) for different programming languages, many developers struggle to solve their problems based on each driver's reference or API.&#x20;
 
-These MongoDB C\# driver docs have been created for one purpose only - to **bridge the gap between MongoDB and C\# developers** 👏. You will find numerous samples solving problems all developers facing on a daily basis.
+These MongoDB C# driver docs have been created for one purpose only - to **bridge the gap between MongoDB and C# developers** :clap:. You will find numerous samples solving problems all developers facing on a daily basis.
 
-![MongoDB for C\# developers](.gitbook/assets/main.png)
+![MongoDB for C# developers](.gitbook/assets/main.png)
 
 {% hint style="success" %}
-These docs don't intend to replace the official MongoDB C\# Driver [reference](https://mongodb.github.io/mongo-csharp-driver/), their purpose is to act as a complementary reference. Also, the C\# samples in the MongoDB [docs](https://docs.mongodb.com/) are written using **`BsonDocument`** which is not ideal for C\# developers
+These docs don't intend to replace the official MongoDB C# Driver [reference](https://mongodb.github.io/mongo-csharp-driver/), their purpose is to act as a complementary reference. Also, the C# samples in the MongoDB [docs](https://docs.mongodb.com/) are written using **`BsonDocument`** which is not ideal for C# developers
 {% endhint %}
 
-## ❓ How to read the docs
+## :question: How to read the docs
 
-It depends on what your are looking for. In case your are dealing for the first time with MongoDB using the [C\# driver](https://docs.mongodb.com/ecosystem/drivers/csharp/), then you should definitely read the entire Getting Started section.
+It depends on what your are looking for. In case your are dealing for the first time with MongoDB using the [C# driver](https://docs.mongodb.com/ecosystem/drivers/csharp/), then you should definitely read the entire Getting Started section.
 
-On the other hand, in case you already have some experience with the driver and you simply want to find a sample that may help you solve your problem, just search for it. 
+{% content-ref url="broken-reference" %}
+[Broken link](broken-reference)
+{% endcontent-ref %}
 
-### ✨ Samples
+On the other hand, in case you already have some experience with the driver and you simply want to find a sample that may help you solve your problem, just search for it.&#x20;
+
+### :sparkles: Samples
 
 All pages contain some introductory theory to get the reader on the right context. For all samples the solutions are presented in 3 different ways:
 
-* Using the C\# driver in typed manner
-* Using the C\# driver with `BsonDocument` which is a schema-less way to build MongoDB queries
+* Using the C# driver in typed manner
+* Using the C# driver with `BsonDocument` which is a schema-less way to build MongoDB queries
 * Using the pure MongoDB shell commands
 
 This way you can always compare the shell commands with the .NET code used.
 
 {% hint style="info" %}
-The main goal of the docs is to teach you how to use the C\# driver in a **typed** way using your C\# class models and avoiding the generic `BsonDocument`. While you can easily build any MongoDB query you want with the schema-less way, it's way too ugly plus you will face problems when changing/renaming your model properties, thus it's not recommended.
+The main goal of the docs is to teach you how to use the C# driver in a **typed** way using your C# class models and avoiding the generic `BsonDocument`. While you can easily build any MongoDB query you want with the schema-less way, it's way too ugly plus you will face problems when changing/renaming your model properties, thus it's not recommended.
 {% endhint %}
 
 The code for solving a specific case looks like this:
 
 {% tabs %}
-{% tab title="C\#" %}
+{% tab title="C#" %}
 ```csharp
 // get a collection reference
 var collection = database
@@ -166,11 +170,11 @@ public class User
 As you can see, the solution is presented in 3 different ways. If any other code snippet will be required, it will be added in a new tab.
 
 {% hint style="success" %}
-* The **C\#** tab contains the typed way of querying MongoDB
+* The **C#** tab contains the typed way of querying MongoDB
 * The **Bson** tab contains the code using `BsonDocument`
 * The **Shell** contains the code you would write directly in a MongoDB shell, followed by sample results. This tab may also include some documents directly from the database to get an idea of their schema
 
-> Other than these tabs, samples might also contain result documents or the C\# class models used in the queries
+> Other than these tabs, samples might also contain result documents or the C# class models used in the queries
 {% endhint %}
 
 ### Repository
@@ -214,10 +218,10 @@ All samples of the docs are part of the [mongodb-csharp](https://github.com/chsa
 According to the above configuration when the app fires, the samples that will run are inside the _OrderedInsert.cs_ file in the _Crud/Insert_ folder.
 
 {% hint style="warning" %}
-Avoid running multiple samples simultaneously 🚫 . Each sample usually starts with dropping the database to be used and adding a banch of documents _\(sometimes 500 documents\)_ to a collection.
+Avoid running multiple samples simultaneously :no\_entry\_sign: . Each sample usually starts with dropping the database to be used and adding a banch of documents _(sometimes 500 documents)_ to a collection.
 {% endhint %}
 
-## 👨💻 How to contribute
+## :man\_technologist: How to contribute
 
 The docs are being updated 🔃 as soon as new samples are available or new MongoDB driver's features are released. Contribution is highly welcomed as long as it fulfills the following criteria:
 
@@ -228,4 +232,3 @@ The docs are being updated 🔃 as soon as new samples are available or new Mong
 
 The issue's title for new samples should have the format **`Request sample - <short-description>`**, for example _Request sample - add array element_
 {% endhint %}
-
